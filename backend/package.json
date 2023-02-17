@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest",
+    "server": "nodemon src/index.ts",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "serverAlt": "nodemon dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/node": "^18.13.0",
+    "dotenv": "^16.0.3",
+    "jest": "^29.4.3",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@types/express": "^,4.17.17",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+}
+}
