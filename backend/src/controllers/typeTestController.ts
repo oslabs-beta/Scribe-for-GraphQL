@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getTypeName } from '../utils/getTypeName';
 import { validateSchema } from '../utils/validateSchema';
-import { buildSchema, GraphQLObjectType } from 'graphql'
+import { astFromValue, buildSchema, GraphQLObjectType } from 'graphql'
 
 export const generateTypeTest = async (
   req: Request,
@@ -10,7 +10,8 @@ export const generateTypeTest = async (
 ) => {
   const { schema } = req.body;
   try {
-    console.log('testing schema in postman', schema);
+    /*VALIDATING AND BUILDLING OUR SCHEMA */
+
     validateSchema(schema);
     if (!validateSchema) {
       throw new Error('Schema is invalid GraphQL Schema');
@@ -20,33 +21,39 @@ export const generateTypeTest = async (
       throw new Error('Schema is invalid GraphQL Schema');
     }
     const schemaBuilt = buildSchema(schema)
-    //create array of types from schema
-    const types = Object.values(schemaBuilt.getTypeMap()).filter(
-        (type) => !type.name.startsWith('__'))
 
-    console.log('types in backend before array', types)
-    //for each on that array, create an array of strings of tests where tests = [{type: 'test'}]
-    //@ts-ignore
-    let tests = types.filter((ele) => {
-      console.log('element',ele)
+    /* FILTERING SCHEMA TYPE MAP TO ONLY INCLUDE OUR OBJECT TYPES THAT WE WANT TO TEST */
+    const types = Object.values(schemaBuilt.getTypeMap()).filter(
+        (type) => !type.name.startsWith('__') && type.constructor.name === 'GraphQLObjectType')
+
+
+        
+    /* CREATING AN ARRAY OF TYPE NAMES AND THEIR FIELDS WITH THEIR RESPECTIVE TYPES */    
+    let tests: any = [];
+    types.forEach((type) => {
       //@ts-ignore
-      return ele.includes('isTypeOf')
+      let name = typeName; console.log('NAME', name);
+      //@ts-ignore
+      let obj = {type : {}}
+      //@ts-ignore
+      for (let i = 0; i < type.astNode.fields.length; i++) {
+        //@ts-ignore
+        obj.type[type.astNode.fields[i].name.value] = type.astNode.fields[i].type.name.value
+      }
+      tests.push(obj)
     })
-      .map((type) => {
-      return {type: `
-      it('check if type ${type.name} has correct fields', () => {
-        expect(${type.name}.toBe(${type.astNode}))
+
+    /* THIS FUNCTION FORMATS THE TEST OBJECT INTO ACTAUL JEST TESTS' */
+    const formattedTests = types.map((type, i) => {
+      let fields = Object.entries(tests[i].type).map(([key, value]) => `${key} : ${value}`).join(',');
+      return {test:`it('check if type ${type.name} has correct fields', () => {
+        expect(${type.name}.toBe(${fields}))
       })
     `}
-    })
-    console.log('tests to be printed', tests)
-    res.status(200).json({
-      test: `
-        it('check if type ${typeName} has correct fields', () => {
-          expect(${typeName}.toBe(${schema}))
-        })
-      `,
-    });
+    }).map(obj => obj.test).join('\n');
+   
+    /*SENDING OUR RESPONSE */
+    res.status(200).json(formattedTests);
 
 
   } catch (err) {
@@ -60,7 +67,7 @@ export const generateTypeTest = async (
 //   link: String
 // }
 
-// {TeamType: {id: Int, name: String, link: String}}
+
 
 // it('check if type Team has correct fields', () => {
 // expect(TeamType).toBe({
@@ -69,3 +76,5 @@ export const generateTypeTest = async (
 //   link: String
 // })
 // })
+
+// {TeamType: {id: Int, name: String, link: String}}
