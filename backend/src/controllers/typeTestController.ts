@@ -45,13 +45,14 @@ export const generateTypeTest = async (
 
     /* THIS FUNCTION FORMATS THE TEST OBJECT INTO ACTAUL JEST TESTS' */
     const formattedTests = types.map((type, i) => {
-      let fields = Object.entries(tests[i].type).map(([key, value]) => `${key} : ${value}`).join(',');
+      let fields = Object.entries(tests[i].type).map(([key, value]) => `${key} : ${value}`);
       return {test:`it('check if type ${type.name} has correct fields', () => {
         expect(${type.name}.toBe(${fields}))
       })
     `}
     }).map(obj => obj.test).join('\n');
    
+    console.log('tests', formattedTests)
     /*SENDING OUR RESPONSE */
     res.status(200).json(formattedTests);
 
@@ -70,7 +71,7 @@ export const generateTypeTest = async (
 
 
 // it('check if type Team has correct fields', () => {
-// expect(TeamType).toBe({
+// expect(TeamType).toBe(type TeamType {
 //   id: Int
 //   name: String
 //   link: String
