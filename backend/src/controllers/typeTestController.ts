@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { getTypeName } from '../utils/getTypeName';
 import { validateSchema } from '../utils/validateSchema';
 import { buildSchema, Source, parse } from 'graphql'
+import { isArray } from 'util';
 
 
 export const generateTypeTest = async (
@@ -25,26 +26,43 @@ export const generateTypeTest = async (
 
     const schemaBuilt = buildSchema(schema)
 
-    function generateTypeTests(schema: any) {
-      const ast = parse(schema);
+    function generateTypeTests(schema: string) {
+      const ast = parse(schema); //converts to AST
       console.log('ast', ast.definitions) // TYPES
       //@ts-ignore
       console.log('ast fields', ast.definitions[0].fields[1])
 
+      //what is returned from typeDefs:
+      //typeDefs {
+  // SluggingLeadersByYearType: [
+//     { name: 'copyright', type: 'String' },
+//     { name: 'stats', type: '[StatsType]' },
+//     { name: 'playPool', type: 'String' }
+//   ],
+//   StatsType: [
+//     { name: 'type', type: 'String' },
+//     { name: 'group', type: 'String' },
+//     { name: 'totalSplits', type: 'Int' },
+//     { name: 'exemptions', type: 'String' },
+//     { name: 'splits', type: 'String' }
+//   ]
+// } <-- object that contains key of type name and value of array 
+
+// ('["StatsType"]'); [StatsType]
       const typeDefs = ast.definitions.reduce((acc, def) => {
         if (def.kind === 'ObjectTypeDefinition') {
           //@ts-ignore
           const fields = def.fields.map((field) => ({
             name: field.name.value,
             //@ts-ignore
-            type: field.type.type?.name.value ? field.type.type.name.value : field.type.name.value,
+            type: field.type.type?.name.value ? [field.type.type.name.value] : field.type.name.value,
           }));
           //@ts-ignore
           acc[def.name.value] = fields;
         }
         return acc;
       }, {});
-
+      console.log('typeDefs', typeDefs)
       const tests = Object.entries(typeDefs).map(([typeName, fields]) => {
         return `
             test('${typeName} should have the correct types', () => {
@@ -53,16 +71,17 @@ export const generateTypeTest = async (
               ${/*@ts-ignore*/''}
               ${fields
                 .map((field: any) => {
-                  return `
-                    expect(type.getFields().${field.name}.type.name).toBe('${
-                    field.type
-                  }');
-                  `;
+                  if (Array.isArray(field.type)) {
+                    return`expect(JSON.stringify(type.getFields().${field.name}.type)).toBe(JSON.stringify("[${field.type}]"));
+                    `;
+                  }      
+                  else {
+                  return `expect(type.getFields().${field.name}.type.name).toBe('${field.type}');
+                `;
+                }
                 })
                 .join('')}
-            });
-          });
-        `;
+              })`;
       });
       const boilerplate = `describe('Schema Types Are Correct', () => {
         const schema = makeExecutableSchema({ typeDefs });`
