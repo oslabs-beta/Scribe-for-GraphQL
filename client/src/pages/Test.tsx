@@ -1,34 +1,56 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import TestHeader from '../components/TestHeader';
-import CodeMirror from 'codemirror';
-import 'codemirror/mode/javascript/javascript';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 type Props = {};
 
 const Test = (props: Props) => {
-  const [code, setCode] = useState('');
 
-  function handleCodeChange(editor: any) {
-    setCode(editor.getValue());
+  function generateTest () {
+
   }
 
-  function handleEditorDidMount(editor: any) {
-    editor.setSize('100%', '100%');
-    editor.on('change', handleCodeChange);
+  function saveTest () {
+    
   }
 
   return (
     <>
       <TestHeader />
-    <CodeMirror
-    value={code}
-    options={{
-      mode:'javascript',
-      lineNumbers: true,
-      theme: 'monokai'
-    }}
-    editorDidMount={handleEditorDidMount}
-    />
+      <Box sx={{display:'flex', justifyContent: 'space-evenly'}}>
+        <TextField
+          label='user input'
+          variant='filled'
+          multiline
+          minRows={30}
+          maxRows={30}
+          sx={{
+            width: 0.49,
+            backgroundColor: 'white',
+            borderRadius: 5,
+          }}
+        />
+        <TextField
+          label='test'
+          variant='filled'
+          multiline
+          minRows={30}
+          maxRows={30}
+          sx={{
+            width: 0.49,
+            backgroundColor: 'white',
+            borderRadius: 5,
+          }}
+        />    
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'space-around', mt:'1rem'}}>
+        <Button variant='outlined' >Generate</Button>
+        <Button variant='outlined' >Save</Button>
+        </Box>
     </>
   );
 };

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link} from 'react-router-dom'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -35,9 +36,13 @@ export default function IndexHeader(props: Props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant='h6' sx={{ my: 2 }}>
-        Scribe
-      </Typography>
+      <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            Scribe
+          </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (

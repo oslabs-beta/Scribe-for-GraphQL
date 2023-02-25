@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,6 +23,8 @@ export type registerFormSchemaType = z.infer<typeof registerFormSchema>;
 
 // type Props = {};
 const Register = (props: {}) => {
+  const [hidePassword, setHidePassword] = useState(true);
+
   const {
     register,
     handleSubmit,
@@ -44,7 +46,7 @@ const Register = (props: {}) => {
   };
   return (
     <>
-      <div className=''>Register</div>
+      <div className='register'>Register</div>
       <form onSubmit={handleSubmit(handleRegister)}>
         <input
           type='text'
@@ -53,6 +55,35 @@ const Register = (props: {}) => {
           {...register('firstName')}
         />
         <p className='error-message'>{errors.firstName?.message}</p>
+        <input
+          type='text'
+          placeholder='Last Name'
+          disabled={isSubmitting}
+          {...register('lastName')}
+        />
+        <p className='error-message'>{errors.lastName?.message}</p>
+        <input
+          type='text'
+          placeholder='Email'
+          disabled={isSubmitting}
+          {...register('email')}
+        />
+        <p className='error-message'>{errors.email?.message}</p>
+        <input
+          type={hidePassword ? 'password' : 'text'}
+          placeholder='Password'
+          disabled={isSubmitting}
+          {...register('password')}
+        />
+        <p className='error-message'>{errors.password?.message}</p>
+        <input
+          type='password'
+          placeholder='Confirm password'
+          disabled={isSubmitting}
+          {...register('confirmPassword')}
+        />
+        <p className='error-message'>{errors.confirmPassword?.message}</p>
+        <button type='submit'>Register</button>
       </form>
     </>
   );
