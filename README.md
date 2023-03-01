@@ -1,1 +1,1 @@
-# Herman - No Code Gui
+# Herman - Gui for GraphQL jest test automation
