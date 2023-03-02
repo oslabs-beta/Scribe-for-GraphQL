@@ -2,6 +2,13 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { registerFormSchemaType } from './Register';
 
 const loginFormSchema = z.object({
@@ -28,25 +35,54 @@ const Login = (props: Props) => {
       console.log('fail');
     }
   };
+
   return (
-    <>
-      <h1>login</h1>
-      <form onSubmit={handleSubmit(handleLogin)}>
-        <input
-          type='text'
-          {...register('usernameOrEmail')}
-          disabled={isSubmitting}
-        />
-        <p className='error-message'>{errors.usernameOrEmail?.message}</p>
-        <input
-          type='password'
-          {...register('password')}
-          disabled={isSubmitting}
-        />
-        <button type='submit'>Login</button>
-      </form>
-    </>
+    <Container maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Login
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(handleLogin)} sx={{ mt: 3 }}>
+          <TextField
+            margin="normal"
+            fullWidth
+            label="Username or Email"
+            {...register('usernameOrEmail')}
+            disabled={isSubmitting}
+            error={!!errors.usernameOrEmail}
+            helperText={errors.usernameOrEmail?.message}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            label="Password"
+            type="password"
+            {...register('password')}
+            disabled={isSubmitting}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isSubmitting}
+          >
+            Login
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
 export default Login;
+
