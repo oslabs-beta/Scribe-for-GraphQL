@@ -40,8 +40,8 @@ const Test = (props: Props) => {
           label='user input'
           variant='filled'
           multiline
-          minRows={30}
-          maxRows={30}
+          minRows={20}
+          maxRows={20}
           sx={{
             width: 0.49,
             backgroundColor: 'white',
@@ -53,8 +53,8 @@ const Test = (props: Props) => {
           variant='filled'
           value = {outputTest}
           multiline
-          minRows={30}
-          maxRows={30}
+          minRows={20}
+          maxRows={20}
           sx={{
             width: 0.49,
             backgroundColor: 'white',
