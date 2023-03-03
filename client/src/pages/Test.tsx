@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { generateTypeTest } from '../services/testService';
+import Swal from 'sweetalert2';
 
 
 type Props = {};
@@ -18,6 +19,17 @@ const Test = (props: Props) => {
     try{
       console.log('clicked generateTest')
       const test = await generateTypeTest(input);
+      console.log('test ', test)
+      if(test.message) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${test.message}`,
+          confirmButtonText: 'Try Again',
+          confirmButtonColor: ''
+        })
+        return;
+      }
       setOutputTest(test);
     } catch(err:any){
       const message = err.response?.data.message || err.toString();
@@ -36,6 +48,7 @@ const Test = (props: Props) => {
       <Box sx={{display:'flex', justifyContent: 'space-evenly'}}>
         <TextField
           id = 'userInput'
+          value = {userInput}
           onChange = {(e)=> setUserInput(e.target.value)}
           label='user input'
           variant='filled'
@@ -49,9 +62,11 @@ const Test = (props: Props) => {
           }}
         />
         <TextField
+          id = 'testOutput'
+          value = {outputTest}
+          onChange = {(e) => setOutputTest(e.target.value)}
           label='test'
           variant='filled'
-          value = {outputTest}
           multiline
           minRows={20}
           maxRows={20}
