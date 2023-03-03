@@ -3,5 +3,9 @@ node_modules
 dist
 notes.txt
 
+#Prisma
+prisma/client
+prisma/migrations
+
 #redis
 dump.rdb

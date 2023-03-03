@@ -7,6 +7,7 @@ const registerFormSchema = z
   .object({
     firstName: z.string().min(1, 'First name required'),
     lastName: z.string().min(1, 'Last name required'),
+    username: z.string().min(1, 'Please enter a username'),
     email: z
       .string()
       .min(1, 'Email required')
@@ -62,6 +63,13 @@ const Register = (props: {}) => {
           {...register('lastName')}
         />
         <p className='error-message'>{errors.lastName?.message}</p>
+        <input
+          type='text'
+          placeholder='Username'
+          disabled={isSubmitting}
+          {...register('username')}
+        />
+        <p className='error-message'>{errors.username?.message}</p>
         <input
           type='text'
           placeholder='Email'
