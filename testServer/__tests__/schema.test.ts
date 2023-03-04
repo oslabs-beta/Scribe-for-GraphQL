@@ -1,21 +1,35 @@
 //need proper imports for tests here
 import {describe, expect, test} from '@jest/globals';
-const { makeExecutableSchema } = require('graphql-tools');
+const { makeExecutableSchema, addMocksToSchema } = require('graphql-tools');
 const typeDefs  = require('../schema')
-
-// describe('schema type checks', () => {
-//     test('type such and such should have the correct types', () => {
-//     const schema = makeExecutableSchema({ typeDefs });
-//     const TeamType = schema.getType('TeamType');
+const resolvers = require('../schema')
+import * as casual from "casual"
 
 
-//     expect(TeamType).toBeDefined();
-//     expect(TeamType.getFields().id.type.name).toBe('Int');
-//     expect(TeamType.getFields().name.type.name).toBe('String');
-//     expect(TeamType.getFields().link.type.name).toBe('String');
-//     expect(TeamType.getFields().string.type.name).toBe('String');
-//     });
-// });
+describe('Resolvers return the correct values', () => {
+  const schema = makeExecutableSchema({ typeDefs, resolvers})
+  const mocks = { 
+    String: () => casual.sentence,
+    Int: () => casual.integer(1,100),
+    Float: () => 22.7,
+    Boolean: () => casual.boolean,
+    //If you'd like more specific mocks for any of your fields, feel free to add them below, using this as an example:
+    /*
+    User: () => ({ id: casual.uuid, name: casual.name, email: casual.email, age: casual.integer(18,100),}),
+
+    Please refer to the npm package 'casual' for random javascript generator calls.
+    */
+  }
+  const preserveResolvers = true;
+  const mockedSchema = addMocksToSchema({
+    schema,
+    mocks,
+    preserveResolvers
+  })
+  
+
+})
+
 describe('Schema Types Are Correct', () => {
   const schema = makeExecutableSchema({ typeDefs });
       test('Query should have the correct types', () => {
@@ -272,6 +286,8 @@ describe('Schema Types Are Correct', () => {
           
         })
 });
+
+
 
 
 
