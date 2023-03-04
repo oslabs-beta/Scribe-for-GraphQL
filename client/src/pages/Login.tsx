@@ -10,6 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import { registerFormSchemaType } from './Register';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { login, reset } from '../features/authSlice';
 
 const loginFormSchema = z.object({
   usernameOrEmail: z.string().min(1, 'Username or email required'),
@@ -20,6 +23,9 @@ export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 type Props = {};
 const Login = (props: Props) => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,11 +35,7 @@ const Login = (props: Props) => {
   });
 
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (formData) => {
-    try {
-      console.log('login');
-    } catch (err) {
-      console.log('fail');
-    }
+    dispatch(login)
   };
 
   return (

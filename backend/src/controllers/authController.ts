@@ -49,7 +49,12 @@ export const register = async (
     //save session
     req.session.userId = user!.id;
     //send response back
-    res.status(200).json('user created');
+    res.status(200).json({
+      firstName,
+      lastName,
+      username,
+      email,
+    });
   } catch (err) {
     return next(err);
   }
@@ -73,6 +78,18 @@ export const login = async (
           : { username: usernameOrEmail }),
       },
     });
+
+    if(user &&(await bcrypt.compare(password, user.password))) {
+      res.status(200).json({
+        username: user.username,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name
+      })
+    } else {
+      res.status(400);
+      throw new Error('invalid login credentials')
+    }
   } catch (err) {
     return next(err);
   }
