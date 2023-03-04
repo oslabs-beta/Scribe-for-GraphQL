@@ -55,4 +55,25 @@ export const register = async (
   }
 };
 
-export const 
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { usernameOrEmail, password } = req.body;
+  try {
+    if (!usernameOrEmail || !password) {
+      res.status(400);
+      throw new Error('please enter all required fields');
+    }
+    const user = await prisma.user.findUnique({
+      where: {
+        ...(usernameOrEmail.includes('@')
+          ? { email: usernameOrEmail }
+          : { username: usernameOrEmail }),
+      },
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
