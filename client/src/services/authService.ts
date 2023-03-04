@@ -1,5 +1,7 @@
 import { loginFormSchemaType } from '../pages/Login';
 import { registerFormSchemaType } from '../pages/Register';
+import axios from 'axios';
+import { API_URL } from '../utils/constants';
 
 export const registerUser = (userData: registerFormSchemaType) => {
   console.log(
@@ -7,8 +9,10 @@ export const registerUser = (userData: registerFormSchemaType) => {
   );
 };
 
-export const loginUser = (userData: loginFormSchemaType) => {
-  console.log(
-    'this will be axios request to backend, destructure data and return it'
-  );
+export const loginUser = async(userData: loginFormSchemaType) => {
+  const {data} = await axios.post(API_URL + 'login', userData, {withCredentials:true})
+  if(data) {
+    localStorage.setItem('user', JSON.stringify(data))
+  }
+  return data;
 };
