@@ -8,8 +8,13 @@ import cors from 'cors';
 import typeTestRouter from './routes/typeTestRoute';
 import { COOKIE_NAME, __prod__ } from './utils/constants';
 import { CLIENT_URL } from './utils/constants';
+import { PrismaClient } from '@prisma/client';
 config({ path: '../.env' });
 const PORT = process.env.PORT || 8080;
+
+export const prisma = new PrismaClient({
+  log: ['query'], //shows SQL in console log
+});
 
 const main = async () => {
   // const RedisStore = connectRedis(session);
