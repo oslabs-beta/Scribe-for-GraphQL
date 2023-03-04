@@ -13,9 +13,15 @@ describe('Resolvers return the correct values', () => {
     Int: () => casual.integer(1,100),
     Float: () => 22.7,
     Boolean: () => casual.boolean,
-    //If you'd like more specific mocks for any of your fields, feel free to add them below, using this as an example:
     /*
-    User: () => ({ id: casual.uuid, name: casual.name, email: casual.email, age: casual.integer(18,100),}),
+    If you'd like more specific mocks for any of your fields, add them below, using this as an example:
+    
+    User: () => ({ 
+      id: casual.uuid, 
+      name: casual.name, 
+      email: casual.email, 
+      age: casual.integer(18,100),
+    }),
 
     Please refer to the npm package 'casual' for random javascript generator calls.
     */
@@ -26,7 +32,6 @@ describe('Resolvers return the correct values', () => {
     mocks,
     preserveResolvers
   })
-  
 
 })
 
