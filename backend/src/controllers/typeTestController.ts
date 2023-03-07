@@ -31,7 +31,7 @@ export const generateTypeTest = async (
       //@ts-ignore
       console.log('ast fields', ast.definitions[0].fields[1])
       
-      const typeDefs = ast.definitions.reduce((acc, def) => {
+      const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
         if (def.kind === 'ObjectTypeDefinition') {
           //@ts-ignore
           const fields = def.fields.map((field) => ({
@@ -104,8 +104,6 @@ describe('Schema Types Are Correct', () => {
   
   
 });
-
-
       // const types = Object.values(schemaBuilt.getTypeMap()).filter(
       //     (type) => !type.name.startsWith('__') && type.constructor.name === 'GraphQLObjectType')
       

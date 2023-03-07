@@ -7,6 +7,7 @@ import Redis from 'ioredis';
 import cors from 'cors';
 import typeTestRouter from './routes/typeTestRoute';
 import { COOKIE_NAME, __prod__ } from './utils/constants';
+import { CLIENT_URL } from './utils/constants';
 config({ path: '../.env' });
 const PORT = process.env.PORT || 8080;
 
@@ -19,7 +20,7 @@ const main = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(
     cors({
-      origin: 'blah blah', //wherever are front end is,
+      origin: CLIENT_URL, //wherever are front end is,
       credentials: true,
     })
   );
