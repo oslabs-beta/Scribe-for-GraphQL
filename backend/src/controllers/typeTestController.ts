@@ -24,7 +24,7 @@ export const generateTypeTest = async (
     }
 
     const schemaBuilt = buildSchema(schema)
-
+    //Free Bird
     function generateTypeTests(schema: string) {
       const ast = parse(schema); //converts to AST
       console.log('ast', ast.definitions) // TYPES
