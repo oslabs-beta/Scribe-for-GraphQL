@@ -74,3 +74,10 @@ select {
   }
 }
 /* end of reset */
+#userInput {
+  font-family: 'Source Code Pro', monospace;
+}
+
+#testOutput {
+  font-family: 'Source Code Pro', monospace;
+}

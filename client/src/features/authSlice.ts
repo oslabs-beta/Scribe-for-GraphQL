@@ -26,7 +26,7 @@ const initialState = {
   message: '',
 };
 
-export const login = createAsyncThunk(
+export const login = createAsyncThunk<User, loginFormSchemaType >(
   'auth/login',
   async (userData: loginFormSchemaType, { rejectWithValue }) => {
     try {

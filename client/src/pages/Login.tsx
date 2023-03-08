@@ -6,6 +6,7 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { registerFormSchemaType } from './Register';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
 import { login, reset } from '../features/authSlice';
 
 const loginFormSchema = z.object({
@@ -17,7 +18,7 @@ export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 type Props = {};
 const Login = (props: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const {
     register,
@@ -30,7 +31,7 @@ const Login = (props: Props) => {
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
   ) => {
-    dispatch(login(formData));
+    dispatch(login(formData))
   };
 
   return (

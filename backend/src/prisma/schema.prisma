@@ -16,7 +16,7 @@ model User {
   last_name        String   @db.VarChar(25)
   username         String   @db.VarChar(25)
   email            String   @db.VarChar(25)
-  password         String   @db.VarChar(25)
+  password         String   @db.VarChar(500)
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
 

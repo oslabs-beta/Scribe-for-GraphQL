@@ -1,8 +1,8 @@
 export const validateRegister = (
   firstName: string,
   lastName: string,
-  email: string,
   username: string,
+  email: string,
   password: string,
   confirmPassword: string
 ): { errorMessage: null | string } => {
@@ -15,7 +15,7 @@ export const validateRegister = (
       !username ||
       !password ||
       !confirmPassword:
-      errorMessage = 'please enter all required fields!';
+      errorMessage = 'please enter all required fields';
       break;
 
     //set more specific username rules here
@@ -27,7 +27,7 @@ export const validateRegister = (
       errorMessage = 'please enter valid an email';
       break;
 
-    case password.length <= 8:
+    case Number(password.length) <= 8:
       errorMessage = 'password must contain at least 8 characters';
       break;
   }
