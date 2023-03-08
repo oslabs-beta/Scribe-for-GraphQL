@@ -54,6 +54,8 @@ export const generateTypeTest = async (
               ${fields
                 .map((field: any) => {
                   if (Array.isArray(field.type)) {
+                    //NEED TO ACCOUNT FOR EXCLAMATION POINTS HERE?
+                    console.log('FIELD TYPE:', field.type)
                     return`expect(JSON.stringify(type.getFields().${field.name}.type)).toBe(JSON.stringify("[${field.type}]"));
                     `;
                   }      
