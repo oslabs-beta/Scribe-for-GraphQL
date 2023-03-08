@@ -71,13 +71,13 @@ export default function TextHeader(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant='h6'
-            component='div'
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Scribe
-          </Typography>
+            <Typography
+              variant='h6'
+              component='div'
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              Scribe
+            </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>

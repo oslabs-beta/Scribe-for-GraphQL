@@ -219,6 +219,17 @@ type PitchHandType {
     description: String
 }
 `
+
+const resolvers = {
+    Query: {
+        SluggingLeadersByYear: (root, args) => {
+          return fetchSluggingLeaderboardByYear(args.year);
+        },
+        LeaderCategoriesCareer: (root, args) => {
+          return fetchLeaderCategoriesCareerBatting(args.stat);
+        },
+      },
+  };
 /* LEADER BY YEAR */
 
 // const PlayerType = new GraphQLObjectType({
@@ -250,16 +261,7 @@ type PitchHandType {
 /* ROOT QUERY */
 const schema = makeExecutableSchema({
   typeDefs: typeDefs,
-  resolvers: {
-    Query: {
-      SluggingLeadersByYear: (root, args) => {
-        return fetchSluggingLeaderboardByYear(args.year);
-      },
-      LeaderCategoriesCareer: (root, args) => {
-        return fetchLeaderCategoriesCareerBatting(args.stat);
-      },
-    },
-  },
+  resolvers: resolvers,
 });
 
 module.exports = schema
