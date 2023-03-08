@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { getTypeName } from '../utils/getTypeName';
 import { validateSchema } from '../utils/validateSchema';
 import { buildSchema, Source, parse } from 'graphql'
-import { isArray } from 'util';
 
 
 export const generateTypeTest = async (
@@ -25,31 +24,14 @@ export const generateTypeTest = async (
     }
 
     const schemaBuilt = buildSchema(schema)
-
+    //Free Bird
     function generateTypeTests(schema: string) {
       const ast = parse(schema); //converts to AST
       console.log('ast', ast.definitions) // TYPES
       //@ts-ignore
       console.log('ast fields', ast.definitions[0].fields[1])
-
-      //what is returned from typeDefs:
-      //typeDefs {
-  // SluggingLeadersByYearType: [
-//     { name: 'copyright', type: 'String' },
-//     { name: 'stats', type: '[StatsType]' },
-//     { name: 'playPool', type: 'String' }
-//   ],
-//   StatsType: [
-//     { name: 'type', type: 'String' },
-//     { name: 'group', type: 'String' },
-//     { name: 'totalSplits', type: 'Int' },
-//     { name: 'exemptions', type: 'String' },
-//     { name: 'splits', type: 'String' }
-//   ]
-// } <-- object that contains key of type name and value of array 
-
-// ('["StatsType"]'); [StatsType]
-      const typeDefs = ast.definitions.reduce((acc, def) => {
+      
+      const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
         if (def.kind === 'ObjectTypeDefinition') {
           //@ts-ignore
           const fields = def.fields.map((field) => ({
@@ -122,8 +104,6 @@ describe('Schema Types Are Correct', () => {
   
   
 });
-
-
       // const types = Object.values(schemaBuilt.getTypeMap()).filter(
       //     (type) => !type.name.startsWith('__') && type.constructor.name === 'GraphQLObjectType')
       
