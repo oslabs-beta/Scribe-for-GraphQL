@@ -75,6 +75,7 @@ export const login = async (
       res.status(400);
       throw new Error('please enter all required fields');
     }
+    
     const user = await prisma.user.findFirst({
       where:{
         OR: [
@@ -82,11 +83,6 @@ export const login = async (
           {username: usernameOrEmail}
         ]
       }
-      // where: {
-      //   ...(usernameOrEmail.includes('@')
-      //     ? { email: usernameOrEmail }
-      //     : { username: usernameOrEmail }),
-      // },
     });
 
     if(user &&(await bcrypt.compare(password, user.password))) {

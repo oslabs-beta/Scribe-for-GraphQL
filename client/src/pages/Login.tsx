@@ -40,6 +40,7 @@ const Login = (props: Props) => {
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
   ) => {
+
     console.log('CLICKED LOGIN')
     const data = dispatch(login(formData))
 

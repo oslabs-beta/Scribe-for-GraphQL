@@ -21,6 +21,7 @@ const Test = (props: Props) => {
       const test = await generateTypeTest(input);
       console.log('test ', test)
       if(test.message) {
+
         const Toast = Swal.mixin({
           toast: true,
           position: 'top',
