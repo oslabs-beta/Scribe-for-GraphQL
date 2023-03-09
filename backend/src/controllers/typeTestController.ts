@@ -29,21 +29,24 @@ export const generateTypeTest = async (
     const nestedTypes = (field: any) => {
       let resultType = '';
       let currentNode = field.loc.startToken
-      console.log('nested resultType', resultType)
+
       //@ts-ignore
       let start = field.loc.start
       //@ts-ignore
       let end = field.loc.end
 
-      while (currentNode.end < end) {
+      for (let i = field.loc.start; i <= end; i) {
+        if (currentNode.kind === '}' || currentNode.kind === ':') return resultType
+        let iterate = currentNode.end - currentNode.start
         if (currentNode.kind === 'Name') {
           resultType += currentNode.value
-          currentNode = currentNode.next
         } else {
           resultType += currentNode.kind
-          currentNode.next
         }
+        currentNode = currentNode.next
+        i += iterate
       }
+      console.log('RESULTS:', resultType)
       return resultType
     }
     
@@ -52,14 +55,14 @@ export const generateTypeTest = async (
       const ast = parse(schema); //converts to AST
       console.log('ast', ast.definitions) // TYPES
       //@ts-ignore
-      console.log('startToken LOC, field 1', ast.definitions[1].fields[1].type)
+      console.log('startToken LOC, field 1', ast.definitions[0].fields[1].type)
       //@ts-ignore
       console.log('startToken LOC, field 2', ast.definitions[1].fields[2].type)
       
       //@ts-ignore
       // console.log('start token next next', ast.definitions[1].fields[1].type.loc.startToken.next.next)
       //@ts-ignore
-      console.log('TESTING', nestedTypes(ast.definitions[1].fields[1].type));
+      console.log('TESTING', nestedTypes(ast.definitions[1].fields[2].type));
       
       const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
         if (def.kind === 'ObjectTypeDefinition') {
@@ -67,7 +70,7 @@ export const generateTypeTest = async (
           const fields = def.fields.map((field) => ({
             name: field.name.value,
             //@ts-ignore
-            type: field.type.type?.name.value ? [field.type.type.name.value] : field.type.name.value,
+            type: field.type.type?.kind ? nestedTypes(field.type.type) : field.type.name.value,
           }));
           //@ts-ignore
           acc[def.name.value] = fields;
