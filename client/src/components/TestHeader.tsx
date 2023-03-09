@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { RootState } from '../app/store';
 import { useSelector } from 'react-redux';
+import Login from './LoginModal'
 
 interface Props {
   /**
@@ -35,6 +36,13 @@ export default function TextHeader(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  //list item: 
+  // <ListItem key='hello'>
+  // <ListItemButton sx={{ textAlign: 'center' }}>
+  // <ListItemText primary='hello' />
+  // </ListItemButton>
+  // </ListItem>
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -78,12 +86,24 @@ export default function TextHeader(props: Props) {
             >
               Scribe
             </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
+          <Box sx={{ display: { xs: 'none', sm: 'block'} }}>
+            {/* {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
                 {item}
-              </Button>
-            ))}
+              </Button> */}
+            {/* ))} */}
+            <List style ={{display: 'flex'}}  >
+            <ListItem key='hello'>
+  <ListItemButton sx={{ textAlign: 'center'}}>
+  <ListItemText primary='hello' />
+  </ListItemButton>
+  </ListItem>
+            <ListItem key='hello'>
+  <ListItemButton sx={{ textAlign: 'center'}}>
+  <ListItemText primary='hello' />
+  </ListItemButton>
+  </ListItem>
+  </List>
           </Box>
         </Toolbar>
       </AppBar>

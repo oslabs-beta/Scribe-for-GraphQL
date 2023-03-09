@@ -81,3 +81,7 @@ select {
 #testOutput {
   font-family: 'Source Code Pro', monospace;
 }
+
+.swal2-container {
+  z-index: 20000 !important;
+}

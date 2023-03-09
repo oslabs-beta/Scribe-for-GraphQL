@@ -1,13 +1,14 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { registerFormSchemaType } from './Register';
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../app/store';
 import { login, reset } from '../features/authSlice';
+import Swal from 'sweetalert2';
 
 const loginFormSchema = z.object({
   usernameOrEmail: z.string().min(1, 'Username or email required'),
@@ -18,8 +19,16 @@ export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 type Props = {};
 const Login = (props: Props) => {
+
+  const {user, isLoading, isError, isSuccess, message} = useSelector((state:RootState) => state.auth)
+
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+   if (user) navigate('/test')
+  },[user])
+
   const {
     register,
     handleSubmit,
@@ -31,7 +40,34 @@ const Login = (props: Props) => {
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
   ) => {
-    dispatch(login(formData))
+
+    console.log('CLICKED LOGIN')
+    const data = dispatch(login(formData))
+
+    //useEffect not working correctly with modal
+    if ((await data).payload === 'invalid login credentials') {
+
+      const errMessage = (await data).payload;
+      
+      const Toast = Swal.mixin({
+              toast: true,
+              position: 'top',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+            
+            Toast.fire({
+              icon: 'error',
+              title: errMessage
+            })
+    } else  {navigate('/test')}
+
+    dispatch(reset());
   };
 
   return (
