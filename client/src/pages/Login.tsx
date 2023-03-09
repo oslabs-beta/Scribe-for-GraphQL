@@ -29,9 +29,9 @@ const Login = (props: Props) => {
     if (isError) {
       const Toast = Swal.mixin({
         toast: true,
-        position: 'center',
+        position: 'top',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.addEventListener('mouseenter', Swal.stopTimer)
