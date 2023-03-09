@@ -22,14 +22,44 @@ export const generateTypeTest = async (
     if (!typeName) {
       throw new Error('Schema is invalid GraphQL Schema');
     }
-
+    // Free Bird
     const schemaBuilt = buildSchema(schema)
     //Free Bird
+    
+    const nestedTypes = (field: any) => {
+      let resultType = '';
+      let currentNode = field.loc.startToken
+      console.log('nested resultType', resultType)
+      //@ts-ignore
+      let start = field.loc.start
+      //@ts-ignore
+      let end = field.loc.end
+
+      while (currentNode.end < end) {
+        if (currentNode.kind === 'Name') {
+          resultType += currentNode.value
+          currentNode = currentNode.next
+        } else {
+          resultType += currentNode.kind
+          currentNode.next
+        }
+      }
+      return resultType
+    }
+    
+   // Free Bird,  
     function generateTypeTests(schema: string) {
       const ast = parse(schema); //converts to AST
       console.log('ast', ast.definitions) // TYPES
       //@ts-ignore
-      console.log('ast fields', ast.definitions[0].fields[1])
+      console.log('startToken LOC, field 1', ast.definitions[1].fields[1].type)
+      //@ts-ignore
+      console.log('startToken LOC, field 2', ast.definitions[1].fields[2].type)
+      
+      //@ts-ignore
+      // console.log('start token next next', ast.definitions[1].fields[1].type.loc.startToken.next.next)
+      //@ts-ignore
+      console.log('TESTING', nestedTypes(ast.definitions[1].fields[1].type));
       
       const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
         if (def.kind === 'ObjectTypeDefinition') {
@@ -41,6 +71,7 @@ export const generateTypeTest = async (
           }));
           //@ts-ignore
           acc[def.name.value] = fields;
+        
         }
         return acc;
       }, {});
@@ -67,7 +98,11 @@ export const generateTypeTest = async (
                 .join('')}
               })`;
       });
-      const boilerplate = `describe('Schema Types Are Correct', () => {
+      const boilerplate = `//> npm install graphql-tools
+      const { makeExecutableSchema, addMocksToSchema } = require('graphql-tools');
+      const typeDefs = require(/* schema file */)
+      
+      describe('Schema Types Are Correct', () => {
         const schema = makeExecutableSchema({ typeDefs });`
       const endboiler = `
       });`
