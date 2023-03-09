@@ -53,7 +53,7 @@ export const register = async (
     //save session
     req.session.userId = newUser.id;
     //send response back
-    res.status(200).json({
+    res.status(201).json({
       firstName,
       lastName,
       username,
@@ -75,13 +75,18 @@ export const login = async (
       res.status(400);
       throw new Error('please enter all required fields');
     }
-    const user = await prisma.user.findUnique({
-      //@ts-ignore
-      where: {
-        ...(usernameOrEmail.includes('@')
-          ? { email: usernameOrEmail }
-          : { username: usernameOrEmail }),
-      },
+    const user = await prisma.user.findFirst({
+      where:{
+        OR: [
+          {email: usernameOrEmail},
+          {username: usernameOrEmail}
+        ]
+      }
+      // where: {
+      //   ...(usernameOrEmail.includes('@')
+      //     ? { email: usernameOrEmail }
+      //     : { username: usernameOrEmail }),
+      // },
     });
 
     if(user &&(await bcrypt.compare(password, user.password))) {
