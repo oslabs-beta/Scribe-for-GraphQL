@@ -25,32 +25,10 @@ const Login = (props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  useEffect(()=> {
-    if (isError) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
-      
-      Toast.fire({
-        icon: 'error',
-        title: message
-      })
-    }
+  useEffect(() => {
+   if (user) navigate('/test')
+  },[user])
 
-    if(isSuccess || user) {
-      navigate('/test');
-    }
-
-    dispatch(reset())
-  },[user,isError, isSuccess, message, navigate, dispatch]);
   const {
     register,
     handleSubmit,
@@ -63,7 +41,32 @@ const Login = (props: Props) => {
     formData: loginFormSchemaType
   ) => {
     console.log('CLICKED LOGIN')
-    dispatch(login(formData))
+    const data = dispatch(login(formData))
+
+    //useEffect not working correctly with modal
+    if ((await data).payload === 'invalid login credentials') {
+
+      const errMessage = (await data).payload;
+      
+      const Toast = Swal.mixin({
+              toast: true,
+              position: 'top',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+            
+            Toast.fire({
+              icon: 'error',
+              title: errMessage
+            })
+    } else  {navigate('/test')}
+
+    dispatch(reset());
   };
 
   return (
