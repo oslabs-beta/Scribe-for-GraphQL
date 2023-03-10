@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -38,12 +38,12 @@ export default function IndexHeader(props: Props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography
-            variant='h6'
-            component='div'
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Scribe
-          </Typography>
+        variant='h6'
+        component='div'
+        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+      >
+        Scribe
+      </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
@@ -81,7 +81,7 @@ export default function IndexHeader(props: Props) {
           >
             Scribe
           </Typography>
-          <LoginModal/>
+          <LoginModal />
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
@@ -108,7 +108,7 @@ export default function IndexHeader(props: Props) {
             },
           }}
         >
-          <LoginModal/>
+          <LoginModal />
           {drawer}
         </Drawer>
       </Box>
@@ -116,6 +116,5 @@ export default function IndexHeader(props: Props) {
         <Toolbar />
       </Box>
     </Box>
-    
   );
 }

@@ -74,3 +74,14 @@ select {
   }
 }
 /* end of reset */
+#userInput {
+  font-family: 'Source Code Pro', monospace;
+}
+
+#testOutput {
+  font-family: 'Source Code Pro', monospace;
+}
+
+.swal2-container {
+  z-index: 20000 !important;
+}
