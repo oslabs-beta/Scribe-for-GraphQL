@@ -21,22 +21,12 @@ const Test = (props: Props) => {
       const test = await generateTypeTest(input);
       console.log('test ', test)
       if(test.message) {
-
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-        
-        Toast.fire({
+        Swal.fire({
           icon: 'error',
-          title: test.message
+          title: 'Oops...',
+          text: `${test.message}`,
+          confirmButtonText: 'Try Again',
+          confirmButtonColor: ''
         })
         return;
       }
