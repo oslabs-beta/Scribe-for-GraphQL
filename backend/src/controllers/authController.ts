@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import { prisma } from '..';
 import { validateRegister } from '../utils/validateRegister';
+import '../utils/types'
 
 export const register = async (
   req: Request,
@@ -21,6 +22,7 @@ export const register = async (
       confirmPassword
     );
 
+
     if (validated.errorMessage) {
       res.status(400);
       throw new Error(validated.errorMessage);
@@ -32,12 +34,13 @@ export const register = async (
         OR: [{ email }, { username }],
       },
     });
+    console.log('user: ', user)
     if (user) {
       res.status(400);
       throw new Error('user already exists');
     }
     //if they dont make new thing
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         first_name: firstName,
         last_name: lastName,
@@ -46,10 +49,11 @@ export const register = async (
         password: await bcrypt.hash(password, 12),
       },
     });
+    console.log('newUser: ', newUser);
     //save session
-    req.session.userId = user!.id;
+    req.session.userId = newUser.id;
     //send response back
-    res.status(200).json({
+    res.status(201).json({
       firstName,
       lastName,
       username,
@@ -71,15 +75,18 @@ export const login = async (
       res.status(400);
       throw new Error('please enter all required fields');
     }
-    const user = await prisma.user.findUnique({
-      where: {
-        ...(usernameOrEmail.includes('@')
-          ? { email: usernameOrEmail }
-          : { username: usernameOrEmail }),
-      },
+    
+    const user = await prisma.user.findFirst({
+      where:{
+        OR: [
+          {email: usernameOrEmail},
+          {username: usernameOrEmail}
+        ]
+      }
     });
 
     if(user &&(await bcrypt.compare(password, user.password))) {
+      req.session.userId = user.id
       res.status(200).json({
         username: user.username,
         email: user.email,

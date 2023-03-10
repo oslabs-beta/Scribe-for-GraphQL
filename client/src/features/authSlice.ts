@@ -16,7 +16,7 @@ interface authState {
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
-  message: string;
+  message: string | unknown;
 }
 const initialState = {
   user: user ? user : null,
@@ -26,7 +26,7 @@ const initialState = {
   message: '',
 };
 
-export const login = createAsyncThunk(
+export const login = createAsyncThunk<User, loginFormSchemaType >(
   'auth/login',
   async (userData: loginFormSchemaType, { rejectWithValue }) => {
     try {
@@ -49,6 +49,21 @@ export const authSlice = createSlice({
       message = '';
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(login.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(login.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError =true;
+      state.message = action.payload as string;
+    })
+    .addCase(login.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.user = action.payload;
+    })
+  }
 });
 
 //type of action: PayloadAction<string>

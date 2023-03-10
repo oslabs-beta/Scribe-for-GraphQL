@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_URL } from '../utils/constants';
 
 export const registerUser = async (userData: registerFormSchemaType) => {
-  const { data } = await axios.post(API_URL + 'register', userData, {
+  const { data } = await axios.post(API_URL + 'auth/register', userData, {
     withCredentials: true,
   });
 
@@ -18,7 +18,7 @@ export const registerUser = async (userData: registerFormSchemaType) => {
 export const loginUser = async (
   userData: loginFormSchemaType
 ): Promise<any> => {
-  const { data } = await axios.post(API_URL + 'login', userData, {
+  const { data } = await axios.post(API_URL + 'auth/login', userData, {
     withCredentials: true,
   });
   if (data) {

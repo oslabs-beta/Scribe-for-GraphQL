@@ -10,3 +10,5 @@ prisma/migrations
 
 #redis
 dump.rdb
+
+package-lock.json

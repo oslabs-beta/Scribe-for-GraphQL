@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { generateTypeTest } from '../services/testService';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 
 type Props = {};
@@ -21,13 +21,23 @@ const Test = (props: Props) => {
       const test = await generateTypeTest(input);
       console.log('test ', test)
       if(test.message) {
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Oops...',
-        //   text: `${test.message}`,
-        //   confirmButtonText: 'Try Again',
-        //   confirmButtonColor: ''
-        // })
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'error',
+          title: test.message
+        })
         return;
       }
       setOutputTest(test);
