@@ -18,7 +18,7 @@ const loginFormSchema = z.object({
 export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 type Props = {};
-       const Login = (props: Props) => {
+const Login = (props: Props) => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state: RootState) => state.auth
   );
