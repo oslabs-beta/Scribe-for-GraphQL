@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { RootState } from '../app/store';
 import { useSelector } from 'react-redux';
-import Login from './LoginModal'
+import Login from './LoginModal';
 
 interface Props {
   /**
@@ -37,7 +37,7 @@ export default function TextHeader(props: Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
-  //list item: 
+  //list item:
   // <ListItem key='hello'>
   // <ListItemButton sx={{ textAlign: 'center' }}>
   // <ListItemText primary='hello' />
@@ -79,31 +79,31 @@ export default function TextHeader(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-            <Typography
-              variant='h6'
-              component='div'
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            >
-              Scribe
-            </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block'} }}>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            Scribe
+          </Typography>
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {/* {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
                 {item}
               </Button> */}
             {/* ))} */}
-            <List style ={{display: 'flex'}}  >
-            <ListItem key='hello'>
-  <ListItemButton sx={{ textAlign: 'center'}}>
-  <ListItemText primary='hello' />
-  </ListItemButton>
-  </ListItem>
-            <ListItem key='hello'>
-  <ListItemButton sx={{ textAlign: 'center'}}>
-  <ListItemText primary='hello' />
-  </ListItemButton>
-  </ListItem>
-  </List>
+            <List style={{ display: 'flex' }}>
+              <ListItem key='hello'>
+                <ListItemButton sx={{ textAlign: 'center' }}>
+                  <ListItemText primary='hello' />
+                </ListItemButton>
+              </ListItem>
+              <ListItem key='hello'>
+                <ListItemButton sx={{ textAlign: 'center' }}>
+                  <ListItemText primary='hello' />
+                </ListItemButton>
+              </ListItem>
+            </List>
           </Box>
         </Toolbar>
       </AppBar>

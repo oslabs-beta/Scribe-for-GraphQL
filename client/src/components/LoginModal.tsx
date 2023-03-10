@@ -19,23 +19,21 @@ const PopupModal = (): JSX.Element => {
 
   const modalBody = (
     <Box sx={{ bgcolor: 'background.paper', width: 300 }}>
-      <Login/>
+      <Login />
     </Box>
   );
 
   return (
     <div>
-      <Button variant='text' onClick={handleOpen} sx={{color:'white'}}>
+      <Button variant='text' onClick={handleOpen} sx={{ color: 'white' }}>
         Login
       </Button>
       <Modal
-        sx={{display: 'flex',
-            justifyContent: 'center',
-            alignItems:'center'}}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
+        aria-labelledby='modal-title'
+        aria-describedby='modal-description'
       >
         {modalBody}
       </Modal>

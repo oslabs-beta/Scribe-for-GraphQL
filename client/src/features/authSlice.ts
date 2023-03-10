@@ -26,7 +26,7 @@ const initialState = {
   message: '',
 };
 
-export const login = createAsyncThunk<User, loginFormSchemaType >(
+export const login = createAsyncThunk<User, loginFormSchemaType>(
   'auth/login',
   async (userData: loginFormSchemaType, { rejectWithValue }) => {
     try {
@@ -50,20 +50,21 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state) => {
-      state.isLoading = true;
-    })
-    .addCase(login.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isError =true;
-      state.message = action.payload as string;
-    })
-    .addCase(login.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.user = action.payload;
-    })
-  }
+    builder
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      });
+  },
 });
 
 //type of action: PayloadAction<string>

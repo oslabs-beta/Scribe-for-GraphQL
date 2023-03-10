@@ -18,16 +18,17 @@ const loginFormSchema = z.object({
 export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 type Props = {};
-const Login = (props: Props) => {
-
-  const {user, isLoading, isError, isSuccess, message} = useSelector((state:RootState) => state.auth)
+       const Login = (props: Props) => {
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   useEffect(() => {
-   if (user) navigate('/test')
-  },[user])
+    if (user) navigate('/test');
+  }, [user]);
 
   const {
     register,
@@ -40,32 +41,32 @@ const Login = (props: Props) => {
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
   ) => {
-
-    console.log('CLICKED LOGIN')
-    const data = dispatch(login(formData))
+    console.log('CLICKED LOGIN');
+    const data = dispatch(login(formData));
 
     //useEffect not working correctly with modal
     if ((await data).payload === 'invalid login credentials') {
-
       const errMessage = (await data).payload;
-      
+
       const Toast = Swal.mixin({
-              toast: true,
-              position: 'top',
-              showConfirmButton: false,
-              timer: 2000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-              }
-            })
-            
-            Toast.fire({
-              icon: 'error',
-              title: errMessage
-            })
-    } else  {navigate('/test')}
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: 'error',
+        title: errMessage,
+      });
+    } else {
+      navigate('/test');
+    }
 
     dispatch(reset());
   };
