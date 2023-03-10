@@ -17,6 +17,7 @@ const Test = (props: Props) => {
     try {
       console.log('clicked generateTest');
       const test = await generateTypeTest(input);
+
       console.log('test ', test);
       if (test.message) {
         const Toast = Swal.mixin({
@@ -35,6 +36,7 @@ const Test = (props: Props) => {
           icon: 'error',
           title: test.message,
         });
+
         return;
       }
       setOutputTest(test);

@@ -1,7 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
-import { getTypeName } from '../utils/getTypeName';
-import { validateSchema } from '../utils/validateSchema';
-import { buildSchema, Source, parse } from 'graphql';
+
+import { NextFunction, Request, Response } from "express";
+import { getTypeName } from "../utils/getTypeName";
+import { validateSchema } from "../utils/validateSchema";
+import { buildSchema, Source, parse } from "graphql";
+
 
 export const generateTypeTest = async (
   req: Request,
@@ -14,18 +16,20 @@ export const generateTypeTest = async (
 
     validateSchema(schema);
     if (!validateSchema) {
-      throw new Error('Schema is invalid GraphQL Schema');
+      throw new Error("Schema is invalid GraphQL Schema");
     }
     const typeName = getTypeName(schema);
     if (!typeName) {
-      throw new Error('Schema is invalid GraphQL Schema');
+      throw new Error("Schema is invalid GraphQL Schema");
     }
     // Free Bird
     const schemaBuilt = buildSchema(schema);
     //Free Bird
 
     const nestedTypes = (field: any) => {
-      let resultType = '';
+
+      let resultType = "";
+      
       let currentNode = field.loc.startToken;
 
       //@ts-ignore
@@ -34,10 +38,10 @@ export const generateTypeTest = async (
       let end = field.loc.end;
 
       for (let i = field.loc.start; i <= end; i) {
-        if (currentNode.kind === '}' || currentNode.kind === ':')
+        if (currentNode.kind === "}" || currentNode.kind === ":")
           return resultType;
         let iterate = currentNode.end - currentNode.start;
-        if (currentNode.kind === 'Name') {
+        if (currentNode.kind === "Name") {
           resultType += currentNode.value;
         } else {
           resultType += currentNode.kind;
@@ -45,7 +49,8 @@ export const generateTypeTest = async (
         currentNode = currentNode.next;
         i += iterate;
       }
-      console.log('RESULTS:', resultType);
+
+      console.log("RESULTS:", resultType);
       return resultType;
     };
 
@@ -64,7 +69,7 @@ export const generateTypeTest = async (
       // console.log('TESTING', nestedTypes(ast.definitions[1].fields[2].type));
 
       const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
-        if (def.kind === 'ObjectTypeDefinition') {
+        if (def.kind === "ObjectTypeDefinition") {
           //@ts-ignore
           const fields = def.fields.map((field) => ({
             name: field.name.value,
@@ -78,13 +83,16 @@ export const generateTypeTest = async (
         }
         return acc;
       }, {});
-      console.log('typeDefs', typeDefs);
+
+      console.log("typeDefs", typeDefs);
+
       const tests = Object.entries(typeDefs).map(([typeName, fields]) => {
         return `
             test('${typeName} should have the correct types', () => {
               const type = schema.getType('${typeName}');
               expect(type).toBeDefined();
-              ${/*@ts-ignore*/ ''}
+
+              ${/*@ts-ignore*/ ""}
               ${fields
                 .map((field: any) => {
                   if (Array.isArray(field.type)) {
@@ -95,7 +103,7 @@ export const generateTypeTest = async (
                 `;
                   }
                 })
-                .join('')}
+                .join("")}
               })`;
       });
       const boilerplate = `//> npm install graphql-tools
@@ -109,7 +117,7 @@ export const generateTypeTest = async (
       // console.log(tests)
       tests.unshift(boilerplate);
       tests.push(endboiler);
-      console.log('tests after:', tests.toString());
+      console.log("tests after:", tests.toString());
       return tests.toString();
     }
 
