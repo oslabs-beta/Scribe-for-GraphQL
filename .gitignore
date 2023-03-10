@@ -4,9 +4,11 @@ dist
 notes.txt
 package-lock.json
 
+
 #Prisma
 prisma/client
 prisma/migrations
+
 
 #Prisma
 prisma/client

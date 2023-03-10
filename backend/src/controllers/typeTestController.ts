@@ -1,7 +1,9 @@
+
 import { NextFunction, Request, Response } from "express";
 import { getTypeName } from "../utils/getTypeName";
 import { validateSchema } from "../utils/validateSchema";
 import { buildSchema, Source, parse } from "graphql";
+
 
 export const generateTypeTest = async (
   req: Request,
@@ -25,7 +27,9 @@ export const generateTypeTest = async (
     //Free Bird
 
     const nestedTypes = (field: any) => {
+
       let resultType = "";
+      
       let currentNode = field.loc.startToken;
 
       //@ts-ignore
@@ -45,6 +49,7 @@ export const generateTypeTest = async (
         currentNode = currentNode.next;
         i += iterate;
       }
+
       console.log("RESULTS:", resultType);
       return resultType;
     };
@@ -78,12 +83,15 @@ export const generateTypeTest = async (
         }
         return acc;
       }, {});
+
       console.log("typeDefs", typeDefs);
+
       const tests = Object.entries(typeDefs).map(([typeName, fields]) => {
         return `
             test('${typeName} should have the correct types', () => {
               const type = schema.getType('${typeName}');
               expect(type).toBeDefined();
+
               ${/*@ts-ignore*/ ""}
               ${fields
                 .map((field: any) => {
