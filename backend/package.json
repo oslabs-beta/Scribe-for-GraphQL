@@ -13,6 +13,11 @@
     "prepare": "cd .. && husky install backend/.husky"
   },
   "prisma": "./src/prisma/schema.prisma",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx pretty-quick --staged"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
