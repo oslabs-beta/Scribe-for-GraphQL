@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import { prisma } from '..';
 import { validateRegister } from '../utils/validateRegister';
-import '../utils/types'
+import '../utils/types';
 
 export const register = async (
   req: Request,
@@ -22,7 +22,6 @@ export const register = async (
       confirmPassword
     );
 
-
     if (validated.errorMessage) {
       res.status(400);
       throw new Error(validated.errorMessage);
@@ -34,7 +33,7 @@ export const register = async (
         OR: [{ email }, { username }],
       },
     });
-    console.log('user: ', user)
+    console.log('user: ', user);
     if (user) {
       res.status(400);
       throw new Error('user already exists');
@@ -75,27 +74,24 @@ export const login = async (
       res.status(400);
       throw new Error('please enter all required fields');
     }
-    
+
     const user = await prisma.user.findFirst({
-      where:{
-        OR: [
-          {email: usernameOrEmail},
-          {username: usernameOrEmail}
-        ]
-      }
+      where: {
+        OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+      },
     });
 
-    if(user &&(await bcrypt.compare(password, user.password))) {
-      req.session.userId = user.id
+    if (user && (await bcrypt.compare(password, user.password))) {
+      req.session.userId = user.id;
       res.status(200).json({
         username: user.username,
         email: user.email,
         firstName: user.first_name,
-        lastName: user.last_name
-      })
+        lastName: user.last_name,
+      });
     } else {
       res.status(400);
-      throw new Error('invalid login credentials')
+      throw new Error('invalid login credentials');
     }
   } catch (err) {
     return next(err);
