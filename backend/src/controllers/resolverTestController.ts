@@ -6,17 +6,14 @@ import { buildSchema, Source, parse } from 'graphql';
 import { addMocksToSchema } from '@graphql-tools/mock';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 
-
 export const generateResolverTests = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-    const { schema, resolvers } = req.body; 
-    try {
-
-    console.log('resolvers', resolvers)
-
+  const { schema, resolvers } = req.body;
+  try {
+    console.log('resolvers', resolvers);
 
     const ResolverFrontBoiler = `describe('Resolvers return the correct values', () => {
         const schema = makeExecutableSchema({ typeDefs, resolvers})
@@ -43,16 +40,14 @@ export const generateResolverTests = async (
           schema,
           mocks,
           preserveResolvers
-        })`    
+        })`;
     const ResolverEndBoiler = `
-    })`    
-    res.status(200).json(resolvers)
-    } catch (error) {
-        return next(error);
-    }
-
-}
-
+    })`;
+    res.status(200).json(resolvers);
+  } catch (error) {
+    return next(error);
+  }
+};
 
 /*
 
