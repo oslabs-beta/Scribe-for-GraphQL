@@ -2,6 +2,7 @@
 node_modules
 dist
 notes.txt
+package-lock.json
 
 #Prisma
 prisma/client

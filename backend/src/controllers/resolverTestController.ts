@@ -59,7 +59,6 @@ export const generateResolverTests = async (
 const testResolver = async (resolver: Function, args: any, context: Object, expected: Object) => {
             const output = await resolver(null, args, context)
             expect(output).toEqual(expected);
-
         }
 
         test('RESOLVERNAME returns the correct information', async () => {
