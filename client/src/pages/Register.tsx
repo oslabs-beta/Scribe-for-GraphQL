@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TextField, Button, Box, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../app/store';
+import { useNavigate } from 'react-router';
+import { register as registerUser, reset } from '../features/authSlice';
+import { AppDispatch } from '../app/store';
 
 const registerFormSchema = z
   .object({
@@ -24,7 +31,24 @@ export type registerFormSchemaType = z.infer<typeof registerFormSchema>;
 
 // type Props = {};
 const Register = (props: {}) => {
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state: RootState) => state.auth
+  );
   const [hidePassword, setHidePassword] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isError) {
+      window.alert(message);
+    }
+
+    if (user || isSuccess) {
+      navigate('/test');
+    }
+
+    dispatch(reset);
+  }, [isError, isSuccess, message, user, dispatch, navigate]);
 
   const {
     register,
@@ -35,63 +59,74 @@ const Register = (props: {}) => {
   });
 
   const handleRegister: SubmitHandler<registerFormSchemaType> = async (
-    userInput
+    formData
   ) => {
-    try {
-      // invoke registerUser. if successful, redirect to home
-      console.log('hi');
-    } catch (err) {
-      //grab error from
-      console.log('bye');
-    }
+    dispatch(registerUser(formData));
   };
+
   return (
     <>
-      <div className='register'>Register</div>
       <form onSubmit={handleSubmit(handleRegister)}>
-        <input
-          type='text'
-          placeholder='First Name'
-          disabled={isSubmitting}
-          {...register('firstName')}
-        />
-        <p className='error-message'>{errors.firstName?.message}</p>
-        <input
-          type='text'
-          placeholder='Last Name'
-          disabled={isSubmitting}
-          {...register('lastName')}
-        />
-        <p className='error-message'>{errors.lastName?.message}</p>
-        <input
-          type='text'
-          placeholder='Username'
-          disabled={isSubmitting}
-          {...register('username')}
-        />
-        <p className='error-message'>{errors.username?.message}</p>
-        <input
-          type='text'
-          placeholder='Email'
-          disabled={isSubmitting}
-          {...register('email')}
-        />
-        <p className='error-message'>{errors.email?.message}</p>
-        <input
-          type={hidePassword ? 'password' : 'text'}
-          placeholder='Password'
-          disabled={isSubmitting}
-          {...register('password')}
-        />
-        <p className='error-message'>{errors.password?.message}</p>
-        <input
-          type='password'
-          placeholder='Confirm password'
-          disabled={isSubmitting}
-          {...register('confirmPassword')}
-        />
-        <p className='error-message'>{errors.confirmPassword?.message}</p>
-        <button type='submit'>Register</button>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 3,
+          }}
+        >
+          <Typography component='h1' variant='h5'>
+            Register
+          </Typography>
+          <TextField
+            label='First Name'
+            disabled={isSubmitting}
+            {...register('firstName')}
+            error={!!errors.firstName}
+            helperText={errors.firstName?.message}
+          />
+          <TextField
+            label='Last Name'
+            disabled={isSubmitting}
+            {...register('lastName')}
+            error={!!errors.lastName}
+            helperText={errors.lastName?.message}
+          />
+          <TextField
+            label='Username'
+            disabled={isSubmitting}
+            {...register('username')}
+            error={!!errors.username}
+            helperText={errors.username?.message}
+          />
+          <TextField
+            label='Email'
+            disabled={isSubmitting}
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+          <TextField
+            label='Password'
+            type={hidePassword ? 'password' : 'text'}
+            disabled={isSubmitting}
+            {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+          <TextField
+            label='Confirm Password'
+            type='password'
+            disabled={isSubmitting}
+            {...register('confirmPassword')}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
+          />
+          <Button type='submit' variant='contained' disabled={isSubmitting}>
+            Register
+          </Button>
+        </Box>
       </form>
     </>
   );
