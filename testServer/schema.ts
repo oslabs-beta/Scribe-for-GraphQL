@@ -3,6 +3,7 @@ declare var module: NodeModule;
 const graphql = require("graphql");
 const { gql } = require("apollo-server");
 const { makeExecutableSchema } = require("graphql-tools");
+// const { validate } = require("graphql/validation");
 // const fetch = require('node-fetch')
 const {
   GraphQLObjectType,
@@ -18,29 +19,29 @@ const typeDefs = gql`
   type Book {
     id: ID
     title: String
-    author: Author
+    author: Author!
     genre: String
   }
 
   type Author {
     id: ID
     name: String
-    books: [Book]
+    books: [Book!]
   }
 
   type User {
     id: ID
-    name: String
+    name: String!
     email: String
     age: Int
-    favoriteBook: Book
+    favoriteBook: Book!
   }
 
   type Query {
     allBooks: [Book]
     book(id: ID): Book
     allAuthors: [Author]
-    author(id: ID): Author
+    author(id: ID): Author!
     allUsers: [User]
     user(id: ID): User
   }
@@ -66,15 +67,7 @@ const typeDefs = gql`
   }
 `;
 
-const resolvers = {
-  Query: {
-    allBooks: () => books,
-    book: (parent, { id }) => books.find((book) => book.id === id),
-    allAuthors: () => authors,
-    author: (parent, { id }) => authors.find((author) => author.id === id),
-    allUsers: () => users,
-    user: (parent, { id }) => users.find((user) => user.id === id),
-  },
+const resolvers: Object = {
   Mutation: {
     createBook: (parent, { title, authorId, genre }) => {
       const book = { id: String(books.length + 1), title, authorId, genre };
@@ -175,8 +168,8 @@ const users = [
 
 /* ROOT QUERY */
 const schema = makeExecutableSchema({
-  typeDefs: typeDefs,
-  resolvers: resolvers,
+  typeDefs,
+  resolvers,
 });
 
 module.exports = schema;

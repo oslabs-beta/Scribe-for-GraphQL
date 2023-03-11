@@ -1,9 +1,7 @@
-
-import { NextFunction, Request, Response } from "express";
-import { getTypeName } from "../utils/getTypeName";
-import { validateSchema } from "../utils/validateSchema";
-import { buildSchema, Source, parse } from "graphql";
-
+import { NextFunction, Request, Response } from 'express';
+import { getTypeName } from '../utils/getTypeName';
+import { validateSchema } from '../utils/validateSchema';
+import { buildSchema, Source, parse } from 'graphql';
 
 export const generateTypeTest = async (
   req: Request,
@@ -16,20 +14,19 @@ export const generateTypeTest = async (
 
     validateSchema(schema);
     if (!validateSchema) {
-      throw new Error("Schema is invalid GraphQL Schema");
+      throw new Error('Schema is invalid GraphQL Schema');
     }
     const typeName = getTypeName(schema);
     if (!typeName) {
-      throw new Error("Schema is invalid GraphQL Schema");
+      throw new Error('Schema is invalid GraphQL Schema');
     }
     // Free Bird
     const schemaBuilt = buildSchema(schema);
     //Free Bird
 
     const nestedTypes = (field: any) => {
+      let resultType = '';
 
-      let resultType = "";
-      
       let currentNode = field.loc.startToken;
 
       //@ts-ignore
@@ -38,19 +35,21 @@ export const generateTypeTest = async (
       let end = field.loc.end;
 
       for (let i = field.loc.start; i <= end; i) {
-        if (currentNode.kind === "}" || currentNode.kind === ":")
+        if (currentNode.kind === '}' || currentNode.kind === ':')
           return resultType;
+
         let iterate = currentNode.end - currentNode.start;
-        if (currentNode.kind === "Name") {
+        if (currentNode.kind === 'Name') {
           resultType += currentNode.value;
         } else {
           resultType += currentNode.kind;
         }
+        if (currentNode.start + 1 === end) return resultType;
         currentNode = currentNode.next;
         i += iterate;
       }
 
-      console.log("RESULTS:", resultType);
+      console.log('RESULTS:', resultType);
       return resultType;
     };
 
@@ -61,21 +60,21 @@ export const generateTypeTest = async (
       //@ts-ignore
       // console.log('startToken LOC, field 1', ast.definitions[0].fields[1].type)
       //@ts-ignore
-      // console.log('startToken LOC, field 2', ast.definitions[1].fields[2].type)
+      console.log('startToken LOC, field 2', ast.definitions[1].fields[2].type);
 
       //@ts-ignore
-      // console.log('start token next next', ast.definitions[1].fields[1].type.loc.startToken.next.next)
+      // console.log('start token next next', ast.definitions[1].fields[1].type.loc.startToken)
       //@ts-ignore
-      // console.log('TESTING', nestedTypes(ast.definitions[1].fields[2].type));
+      console.log('TESTING', nestedTypes(ast.definitions[1].fields[2].type));
 
       const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
-        if (def.kind === "ObjectTypeDefinition") {
+        if (def.kind === 'ObjectTypeDefinition') {
           //@ts-ignore
           const fields = def.fields.map((field) => ({
             name: field.name.value,
             //@ts-ignore
             type: field.type.type?.kind
-              ? nestedTypes(field.type.type)
+              ? nestedTypes(field.type)
               : field.type.name.value,
           }));
           //@ts-ignore
@@ -84,7 +83,7 @@ export const generateTypeTest = async (
         return acc;
       }, {});
 
-      console.log("typeDefs", typeDefs);
+      console.log('typeDefs', typeDefs);
 
       const tests = Object.entries(typeDefs).map(([typeName, fields]) => {
         return `
@@ -92,18 +91,22 @@ export const generateTypeTest = async (
               const type = schema.getType('${typeName}');
               expect(type).toBeDefined();
 
-              ${/*@ts-ignore*/ ""}
+              ${/*@ts-ignore*/ ''}
               ${fields
                 .map((field: any) => {
-                  if (Array.isArray(field.type)) {
-                    return `expect(JSON.stringify(type.getFields().${field.name}.type)).toBe(JSON.stringify("[${field.type}]"));
+                  if (
+                    Array.isArray(field.type) ||
+                    field.type.includes('!') ||
+                    field.type.includes('[')
+                  ) {
+                    return `expect(JSON.stringify(type.getFields().${field.name}.type)).toBe(JSON.stringify("${field.type}"));
                     `;
                   } else {
                     return `expect(type.getFields().${field.name}.type.name).toBe('${field.type}');
                 `;
                   }
                 })
-                .join("")}
+                .join('')}
               })`;
       });
       const boilerplate = `//> npm install graphql-tools @jest/globals jest babel-jest
@@ -119,7 +122,7 @@ export const generateTypeTest = async (
       // console.log(tests)
       tests.unshift(boilerplate);
       tests.push(endboiler);
-      console.log("tests after:", tests.toString());
+      console.log('tests after:', tests.toString());
       return tests.toString();
     }
 
