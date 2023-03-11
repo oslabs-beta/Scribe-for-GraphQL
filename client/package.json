@@ -33,6 +33,7 @@
     "react-router": "^6.8.1",
     "react-router-dom": "^6.8.1",
     "styled-components": "^5.3.6",
+    "sweetalert2": "^11.7.3",
     "zod": "^3.20.6"
   },
   "devDependencies": {

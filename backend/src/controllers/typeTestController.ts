@@ -106,7 +106,9 @@ export const generateTypeTest = async (
                 .join("")}
               })`;
       });
-      const boilerplate = `//> npm install graphql-tools
+      const boilerplate = `//> npm install graphql-tools @jest/globals jest babel-jest
+      //> for typescript tests, npm install ts-jest @types/jest
+      import {describe, expect, test} from '@jest/globals';
       const { makeExecutableSchema, addMocksToSchema } = require('graphql-tools');
       const typeDefs = require(/* schema file */)
       
