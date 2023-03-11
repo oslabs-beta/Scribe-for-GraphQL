@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { loginFormSchemaType } from '../pages/Login';
-import { loginUser } from '../services/authService';
+import { registerFormSchemaType } from '../pages/Register';
+import { loginUser, registerUser } from '../services/authService';
 
 //@ts-ignore
 const user = JSON.parse(localStorage.getItem('user'));
@@ -38,6 +39,18 @@ export const login = createAsyncThunk<User, loginFormSchemaType>(
   }
 );
 
+export const register = createAsyncThunk<User, registerFormSchemaType>(
+  'auth/register',
+  async (userData: registerFormSchemaType, { rejectWithValue }) => {
+    try {
+      return await registerUser(userData);
+    } catch (err: any) {
+      const message = err.response?.data.message || err.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -60,6 +73,19 @@ export const authSlice = createSlice({
         state.message = action.payload as string;
       })
       .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(register.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
