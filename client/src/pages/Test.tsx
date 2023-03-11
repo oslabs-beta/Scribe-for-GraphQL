@@ -56,7 +56,7 @@ const Test = (props: Props) => {
           id='userInput'
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
-          label='user input'
+          label='User Schema'
           variant='filled'
           multiline
           minRows={20}
@@ -71,7 +71,7 @@ const Test = (props: Props) => {
           id='testOutput'
           value={outputTest}
           onChange={(e) => setOutputTest(e.target.value)}
-          label='test'
+          label='Schema Type Tests'
           variant='filled'
           multiline
           minRows={20}
