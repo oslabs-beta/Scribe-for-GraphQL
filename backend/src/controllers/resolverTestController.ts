@@ -6,12 +6,11 @@ export const generateResolverTests = async (
   next: NextFunction
 ) => {
   const { schema, resolvers } = req.body;
+  const reqResolverJSON = {
+    resolvers:
+      'Query: { allBooks: () => books, book: (parent, { id }) => books.find(book => book.id === id), allAuthors: () => authors, author: (parent, { id }) => authors.find(author => author.id === id), allUsers: () => users, user: (parent, { id }) => users.find(user => user.id === id),}, Mutation: { createBook: (parent, { title, authorId, genre }) => { const book = { id: String(books.length + 1), title, authorId, genre }; books.push(book); return book; }, updateBook: (parent, { id, title, authorId, genre }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const book = { ...books[bookIndex], title, authorId, genre }; books[bookIndex] = book; return book;}, deleteBook: (parent, { id }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const deletedBook = books.splice(bookIndex, 1)[0]; return deletedBook;}, createUser: (parent, { name, email, age, favoriteBookId }) => { const user = { id: String(users.length + 1), name, email, age, favoriteBookId }; users.push(user); return user;}, updateUser: (parent, { id, name, email, age, favoriteBookId }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const user = { ...users[userIndex], name, email, age, favoriteBookId }; users[userIndex] = user; return user;}, deleteUser: (parent, { id }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const deletedUser = users.splice(userIndex, 1)[0]; return deletedUser;},}, Book: { author: (parent) => authors.find(author => author.id === parent.authorId),},Author: { books: (parent) => books.filter(book => book.authorId === parent.id),},User: { favoriteBook: (parent) => {if (!parent.favoriteBookId) return null; return books.find(book => book.id === parent.favoriteBookId);},},',
+  };
   try {
-    const reqResolverJSON = {
-      resolvers:
-        'Query: { allBooks: () => books, book: (parent, { id }) => books.find(book => book.id === id), allAuthors: () => authors, author: (parent, { id }) => authors.find(author => author.id === id), allUsers: () => users, user: (parent, { id }) => users.find(user => user.id === id),}, Mutation: { createBook: (parent, { title, authorId, genre }) => { const book = { id: String(books.length + 1), title, authorId, genre }; books.push(book); return book; }, updateBook: (parent, { id, title, authorId, genre }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const book = { ...books[bookIndex], title, authorId, genre }; books[bookIndex] = book; return book;}, deleteBook: (parent, { id }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const deletedBook = books.splice(bookIndex, 1)[0]; return deletedBook;}, createUser: (parent, { name, email, age, favoriteBookId }) => { const user = { id: String(users.length + 1), name, email, age, favoriteBookId }; users.push(user); return user;}, updateUser: (parent, { id, name, email, age, favoriteBookId }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const user = { ...users[userIndex], name, email, age, favoriteBookId }; users[userIndex] = user; return user;}, deleteUser: (parent, { id }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const deletedUser = users.splice(userIndex, 1)[0]; return deletedUser;},}, Book: { author: (parent) => authors.find(author => author.id === parent.authorId),},Author: { books: (parent) => books.filter(book => book.authorId === parent.id),},User: { favoriteBook: (parent) => {if (!parent.favoriteBookId) return null; return books.find(book => book.id === parent.favoriteBookId);},},',
-    };
-
     const reqResolver = { resolvers: JSON.parse(reqResolverJSON.resolvers) };
 
     let onlyQueries: Object[] = []; //-> {Query: { arrow function: return , arrow function return , arrow function return, arrow function return}}
@@ -91,24 +90,24 @@ export const generateResolverTests = async (
       const typeDefs = require(/* schema file */)
       const resolvers = require(/* schema file */)
       import * as casual from "casual"
-      
+
       describe('Queries, mutations, and other resolvers return the correct values', () => {
         const schema = makeExecutableSchema({ typeDefs, resolvers})
-        const mocks = { 
+        const mocks = {
           String: () => casual.sentence,
           Int: () => casual.integer(1,100),
           Float: () => 22.7,
           Boolean: () => casual.boolean,
           /*
           If you'd like more specific mocks for any of your fields, add them below, using this as an example:
-          
-          User: () => ({ 
-            id: casual.uuid, 
-            name: casual.name, 
-            email: casual.email, 
+
+          User: () => ({
+            id: casual.uuid,
+            name: casual.name,
+            email: casual.email,
             age: casual.integer(18,100),
           }),
-      
+
           Please refer to the npm package 'casual' for random javascript generator calls.
           */
         }
