@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../app/store';
 import { login, reset } from '../features/authSlice';
+import RegisterModal from '../components/RegisterModal';
 import Swal from 'sweetalert2';
 
 const loginFormSchema = z.object({
@@ -17,8 +18,7 @@ const loginFormSchema = z.object({
 
 export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
-type Props = {};
-const Login = (props: Props) => {
+const Login = () => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state: RootState) => state.auth
   );
@@ -44,7 +44,7 @@ const Login = (props: Props) => {
     console.log('CLICKED LOGIN');
     const data = dispatch(login(formData));
 
-    //useEffect not working correctly with modal
+    //useEffect not working correctly with modal -->MOVE BACK TO USEEFFECT
     if ((await data).payload === 'invalid login credentials') {
       const errMessage = (await data).payload;
 
@@ -59,7 +59,7 @@ const Login = (props: Props) => {
           toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
-
+      //@ts-ignore
       Toast.fire({
         icon: 'error',
         title: errMessage,
@@ -115,8 +115,9 @@ const Login = (props: Props) => {
             sx={{ mt: 3, mb: 2 }}
             disabled={isSubmitting}
           >
-            Login
+            Sign in
           </Button>
+          <RegisterModal />
         </Box>
       </Box>
     </Container>

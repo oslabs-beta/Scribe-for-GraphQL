@@ -30,7 +30,7 @@ const registerFormSchema = z
 export type registerFormSchemaType = z.infer<typeof registerFormSchema>;
 
 // type Props = {};
-const Register = (props: {}) => {
+const Register = () => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state: RootState) => state.auth
   );
@@ -61,7 +61,7 @@ const Register = (props: {}) => {
   const handleRegister: SubmitHandler<registerFormSchemaType> = async (
     formData
   ) => {
-    dispatch(registerUser(formData));
+    const data = dispatch(registerUser(formData));
   };
 
   return (

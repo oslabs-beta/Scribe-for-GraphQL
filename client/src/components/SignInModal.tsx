@@ -26,7 +26,7 @@ const PopupModal = (): JSX.Element => {
   return (
     <div>
       <Button variant='text' onClick={handleOpen} sx={{ color: 'white' }}>
-        Login
+        Sign In
       </Button>
       <Modal
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}

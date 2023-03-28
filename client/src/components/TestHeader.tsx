@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { RootState } from '../app/store';
 import { useSelector } from 'react-redux';
-import Login from './LoginModal';
+import Login from './SignInModal';
 
 interface Props {
   /**
