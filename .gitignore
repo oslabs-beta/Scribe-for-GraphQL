@@ -22,3 +22,5 @@ prisma/migrations
 dump.rdb
 
 package-lock.json
+.DS_Store
+backend/package-lock.json

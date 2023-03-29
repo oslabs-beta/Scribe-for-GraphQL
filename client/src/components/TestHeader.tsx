@@ -68,7 +68,7 @@ export default function TextHeader(props: Props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component='nav'>
+      <AppBar component='nav' sx={{ backgroundColor: '#5D5179' }}>
         <Toolbar>
           <IconButton
             color='inherit'

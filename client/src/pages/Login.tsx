@@ -59,7 +59,7 @@ const Login = (props: Props) => {
           toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
-
+      //@ts-ignore
       Toast.fire({
         icon: 'error',
         title: errMessage,

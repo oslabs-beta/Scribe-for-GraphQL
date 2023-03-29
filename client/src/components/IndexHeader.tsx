@@ -63,7 +63,7 @@ export default function IndexHeader(props: Props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component='nav'>
+      <AppBar component='nav' sx={{ backgroundColor: '#5D5179' }}>
         <Toolbar>
           <IconButton
             color='inherit'
@@ -81,6 +81,11 @@ export default function IndexHeader(props: Props) {
           >
             Scribe
           </Typography>
+          <Link to='/signin' style={{ textDecoration: 'none' }}>
+            <Button variant='text' sx={{ color: 'white' }}>
+              Sign In
+            </Button>
+          </Link>
           <LoginModal />
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (

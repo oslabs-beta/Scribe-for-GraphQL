@@ -10,9 +10,6 @@ const Homepage = (props: Props) => {
     <div>
       <IndexHeader />
       Homepage
-      <Button variant='contained' style={{ textTransform: 'lowercase' }}>
-        button{' '}
-      </Button>
     </div>
   );
 };
