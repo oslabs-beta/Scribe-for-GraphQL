@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+
+#SliderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-image: url('/src/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}

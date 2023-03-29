@@ -1,3 +1,7 @@
+@import './test.scss';
+@import './signin.scss';
+
+html,
 /* STYLE RESET */
 /* // https://piccalil.li/blog/a-modern-css-reset */
 /* Box sizing rules */
@@ -25,7 +29,6 @@ html:focus-within {
   scroll-behavior: smooth;
 }
 
-html,
 body {
   height: 100%;
 }
@@ -35,6 +38,10 @@ body {
   /* min-height: 100vh; */
   text-rendering: optimizeSpeed;
   line-height: 1.5;
+  background-image: url('/src/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
 }
 
 /* A elements that don't have a class get default styles */
@@ -73,15 +80,25 @@ select {
     scroll-behavior: auto !important;
   }
 }
-/* end of reset
-#userInput {
-  font-family: 'Source Code Pro', monospace;
+
+.noSelect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }
 
-#testOutput {
-  font-family: 'Source Code Pro', monospace;
+.noDrag {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .swal2-container {
   z-index: 20000 !important;
-} */
+}
