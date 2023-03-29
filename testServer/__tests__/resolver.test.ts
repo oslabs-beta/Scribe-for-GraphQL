@@ -30,34 +30,28 @@ const mockedSchema = addMocksToSchema({
   preserveResolvers,
 });
 
-describe("Resolvers", () => {
-  Object.keys(resolvers).forEach((type) => {
-    describe(type, () => {
-      Object.keys(resolvers[type]).forEach((fieldName) => {
-        const resolver = resolvers[type][fieldName];
-        test(`Resolver ${type}.${fieldName} should resolve`, async () => {
-          // Generate mock arguments for the resolver
-          const args = {};
-          if (resolver.length > 1) {
-            const argNames = resolver
-              .toString()
-              .match(/\((.*?)\)/)[1]
-              .split(",")
-              .map((arg) => arg.trim());
-            argNames.forEach((argName) => {
-              args[argName] = casual.word;
-            });
-          }
+const testResolver = async (resolverFunction, args, context, expected) => {
+  const output = await resolverFunction(null, args, context);
+  expect(output).toEqual(expected);
+};
 
-          // Call the resolver function with the mock arguments
-          const result = await resolver(null, args, { schema: mockedSchema });
+describe("Mutations return the correct values", () => {
+  test("createBook adds a new book to the list", async () => {
+    const createBook = resolvers.createBook;
+    const args = {
+      title: casual.title,
+      authorId: casual.uuid,
+      genre: casual.word,
+    };
+    const context = {}; // If you have a context, define it here
 
-          // Expect the resolver to return a value
-          expect(result).toBeDefined();
-        });
-      });
-    });
+    const newBook = await createBook(null, args, context);
+    expect(newBook.title).toEqual(args.title);
+    expect(newBook.authorId).toEqual(args.authorId);
+    expect(newBook.genre).toEqual(args.genre);
   });
+
+  // USER: Add more tests for different scenarios (e.g., error handling, edge cases)
 });
 
 // describe("Queries return the correct values", () => {
