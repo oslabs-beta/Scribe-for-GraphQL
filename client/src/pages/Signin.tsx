@@ -8,7 +8,6 @@ import { RootState, AppDispatch } from '../app/store';
 import { login, register, reset } from '../features/authSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Swal from 'sweetalert2';
-import { registerUser } from '../services/authService';
 
 const loginFormSchema = z.object({
   email: z.string().min(1, 'email required'),
@@ -49,7 +48,7 @@ const signinAndRegister = () => {
       navigate('/test');
     }
 
-    dispatch(reset);
+    dispatch(reset());
   }, [isError, isSuccess, message, user, dispatch, navigate]);
 
   const [signIn, toggle] = useState<boolean>(true);
@@ -74,66 +73,66 @@ const signinAndRegister = () => {
   const handleRegister: SubmitHandler<registerFormSchemaType> = async (
     formData
   ) => {
-    const data = dispatch(register(formData));
+    dispatch(register(formData));
 
     //useEffect not working correctly with modal
-    if ((await data).payload === 'invalid login credentials') {
-      const errMessage = (await data).payload;
+    // if ((await data).payload === 'invalid login credentials') {
+    //   const errMessage = (await data).payload;
 
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        },
-      });
-      //@ts-ignore
-      Toast.fire({
-        icon: 'error',
-        title: errMessage,
-      });
-    } else {
-      navigate('/test');
-    }
+    //   const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top',
+    //     showConfirmButton: false,
+    //     timer: 2000,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //       toast.addEventListener('mouseenter', Swal.stopTimer);
+    //       toast.addEventListener('mouseleave', Swal.resumeTimer);
+    //     },
+    //   });
+    //   //@ts-ignore
+    //   Toast.fire({
+    //     icon: 'error',
+    //     title: errMessage,
+    //   });
+    // } else {
+    //   navigate('/test');
+    // }
 
-    dispatch(reset());
+    // dispatch(reset());
   };
 
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
   ) => {
     console.log('CLICKED LOGIN');
-    const data = dispatch(login(formData));
+    dispatch(login(formData));
 
-    //useEffect not working correctly with modal
-    if ((await data).payload === 'invalid login credentials') {
-      const errMessage = (await data).payload;
+    // //useEffect not working correctly with modal
+    // if ((await data).payload === 'invalid login credentials') {
+    //   const errMessage = (await data).payload;
 
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        },
-      });
-      //@ts-ignore
-      Toast.fire({
-        icon: 'error',
-        title: errMessage,
-      });
-    } else {
-      navigate('/test');
-    }
+    //   const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top',
+    //     showConfirmButton: false,
+    //     timer: 2000,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //       toast.addEventListener('mouseenter', Swal.stopTimer);
+    //       toast.addEventListener('mouseleave', Swal.resumeTimer);
+    //     },
+    //   });
+    //   //@ts-ignore
+    //   Toast.fire({
+    //     icon: 'error',
+    //     title: errMessage,
+    //   });
+    // } else {
+    //   navigate('/test');
+    // }
 
-    dispatch(reset());
+    // dispatch(reset());
   };
 
   return (
@@ -149,28 +148,28 @@ const signinAndRegister = () => {
                 {...registerRegister('name')}
                 disabled={registerSubmitting}
               />
-              <p>{registerErrors.name?.message}</p>
+              <p className='errorMessage'>{registerErrors.name?.message}</p>
               <Components.Input
                 type='email'
                 placeholder='Email'
                 {...registerRegister('email')}
                 disabled={registerSubmitting}
               />
-              <p>{registerErrors.email?.message}</p>
+              <p className='errorMessage'>{registerErrors.email?.message}</p>
               <Components.Input
                 type='password'
                 placeholder='Password'
                 {...registerRegister('password')}
                 disabled={registerSubmitting}
               />
-              <p>{registerErrors.password?.message}</p>
+              <p className='errorMessage'>{registerErrors.password?.message}</p>
               <Components.Input
                 type='password'
                 placeholder='Confirm Password'
                 {...registerRegister('confirmPassword')}
                 disabled={registerSubmitting}
               />
-              <p>{registerErrors.confirmPassword?.message}</p>
+              <p className='errorMessage'>{registerErrors.password?.message}</p>
               <Components.Button type='submit'>Sign Up</Components.Button>
             </Components.Form>
           </Components.SignUpContainer>
@@ -184,14 +183,14 @@ const signinAndRegister = () => {
                 {...loginRegister('email')}
                 disabled={loginSubmitting}
               />
-              <p>{loginErrors.email?.message}</p>
+              <p className='errorMessage'>{loginErrors.email?.message}</p>
               <Components.Input
                 type='password'
                 placeholder='password'
                 {...loginRegister('password')}
                 disabled={loginSubmitting}
               />
-              <p>{loginErrors.password?.message}</p>
+              <p className='errorMessage'>{loginErrors.password?.message}</p>
               <Components.Anchor href='#'>
                 Forgot your password?
               </Components.Anchor>
