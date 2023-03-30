@@ -1,5 +1,5 @@
-import { loginFormSchemaType } from '../pages/Login';
-import { registerFormSchemaType } from '../pages/Register';
+import { loginFormSchemaType } from '../pages/Signin';
+import { registerFormSchemaType } from '../pages/Signin';
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
 

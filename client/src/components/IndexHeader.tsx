@@ -14,7 +14,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import LoginModal from './LoginModal';
 
 interface Props {
   /**
@@ -86,7 +85,7 @@ export default function IndexHeader(props: Props) {
               Sign In
             </Button>
           </Link>
-          <LoginModal />
+
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
@@ -113,7 +112,6 @@ export default function IndexHeader(props: Props) {
             },
           }}
         >
-          <LoginModal />
           {drawer}
         </Drawer>
       </Box>
