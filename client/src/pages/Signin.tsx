@@ -149,24 +149,28 @@ const signinAndRegister = () => {
                 {...registerRegister('name')}
                 disabled={registerSubmitting}
               />
+              <p>{registerErrors.name?.message}</p>
               <Components.Input
                 type='email'
                 placeholder='Email'
                 {...registerRegister('email')}
                 disabled={registerSubmitting}
               />
+              <p>{registerErrors.email?.message}</p>
               <Components.Input
                 type='password'
                 placeholder='Password'
                 {...registerRegister('password')}
                 disabled={registerSubmitting}
               />
+              <p>{registerErrors.password?.message}</p>
               <Components.Input
                 type='password'
                 placeholder='Confirm Password'
                 {...registerRegister('confirmPassword')}
                 disabled={registerSubmitting}
               />
+              <p>{registerErrors.confirmPassword?.message}</p>
               <Components.Button type='submit'>Sign Up</Components.Button>
             </Components.Form>
           </Components.SignUpContainer>
@@ -180,12 +184,14 @@ const signinAndRegister = () => {
                 {...loginRegister('email')}
                 disabled={loginSubmitting}
               />
+              <p>{loginErrors.email?.message}</p>
               <Components.Input
                 type='password'
                 placeholder='password'
                 {...loginRegister('password')}
                 disabled={loginSubmitting}
               />
+              <p>{loginErrors.password?.message}</p>
               <Components.Anchor href='#'>
                 Forgot your password?
               </Components.Anchor>
