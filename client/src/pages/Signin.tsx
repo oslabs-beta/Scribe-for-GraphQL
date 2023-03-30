@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { RootState, AppDispatch } from '../app/store';
-import { login, reset } from '../features/authSlice';
+import { login, register, reset } from '../features/authSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Swal from 'sweetalert2';
 import { registerUser } from '../services/authService';
@@ -56,26 +56,52 @@ const signinAndRegister = () => {
   const [hidePassword, setHidePassword] = useState(true);
 
   const {
-    register,
+    register: registerRegister,
     handleSubmit: registerSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors: registerErrors, isSubmitting: registerSubmitting },
   } = useForm<registerFormSchemaType>({
     resolver: zodResolver(registerFormSchema),
+  });
+
+  const {
+    register: loginRegister,
+    handleSubmit: loginSubmit,
+    formState: { errors: loginErrors, isSubmitting: loginSubmitting },
+  } = useForm<loginFormSchemaType>({
+    resolver: zodResolver(loginFormSchema),
   });
 
   const handleRegister: SubmitHandler<registerFormSchemaType> = async (
     formData
   ) => {
-    dispatch(registerUser(formData));
-  };
+    const data = dispatch(register(formData));
 
-  const {
-    register,
-    handleSubmit: loginSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<loginFormSchemaType>({
-    resolver: zodResolver(loginFormSchema),
-  });
+    //useEffect not working correctly with modal
+    if ((await data).payload === 'invalid login credentials') {
+      const errMessage = (await data).payload;
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+      //@ts-ignore
+      Toast.fire({
+        icon: 'error',
+        title: errMessage,
+      });
+    } else {
+      navigate('/test');
+    }
+
+    dispatch(reset());
+  };
 
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
@@ -115,28 +141,55 @@ const signinAndRegister = () => {
       <div id='sliderContainer'>
         <Components.Container>
           <Components.SignUpContainer signinIn={signIn}>
-            <Components.Form>
+            <Components.Form onSubmit={registerSubmit(handleRegister)}>
               <Components.Title>Create Account</Components.Title>
-              <Components.Input type='text' placeholder='Full Name' />
-              <Components.Input type='email' placeholder='Email' />
-              <Components.Input type='password' placeholder='Password' />
+              <Components.Input
+                type='text'
+                placeholder='Full Name'
+                {...registerRegister('name')}
+                disabled={registerSubmitting}
+              />
+              <Components.Input
+                type='email'
+                placeholder='Email'
+                {...registerRegister('email')}
+                disabled={registerSubmitting}
+              />
+              <Components.Input
+                type='password'
+                placeholder='Password'
+                {...registerRegister('password')}
+                disabled={registerSubmitting}
+              />
               <Components.Input
                 type='password'
                 placeholder='Confirm Password'
+                {...registerRegister('confirmPassword')}
+                disabled={registerSubmitting}
               />
-              <Components.Button>Sign Up</Components.Button>
+              <Components.Button type='submit'>Sign Up</Components.Button>
             </Components.Form>
           </Components.SignUpContainer>
 
           <Components.SignInContainer signinIn={signIn}>
-            <Components.Form>
+            <Components.Form onSubmit={loginSubmit(handleLogin)}>
               <Components.Title>Sign in</Components.Title>
-              <Components.Input type='email' placeholder='Email' />
-              <Components.Input type='password' placeholder='Password' />
+              <Components.Input
+                type='email'
+                placeholder='Email'
+                {...loginRegister('email')}
+                disabled={loginSubmitting}
+              />
+              <Components.Input
+                type='password'
+                placeholder='password'
+                {...loginRegister('password')}
+                disabled={loginSubmitting}
+              />
               <Components.Anchor href='#'>
                 Forgot your password?
               </Components.Anchor>
-              <Components.Button>Sign In</Components.Button>
+              <Components.Button type='submit'>Sign In</Components.Button>
             </Components.Form>
           </Components.SignInContainer>
 

@@ -1,16 +1,14 @@
 import { createSlice, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
-import { loginFormSchemaType } from '../pages/Login';
-import { registerFormSchemaType } from '../pages/Register';
+import { loginFormSchemaType } from '../pages/Signin';
+import { registerFormSchemaType } from '../pages/Signin';
 import { loginUser, registerUser } from '../services/authService';
 
 //@ts-ignore
 const user = JSON.parse(localStorage.getItem('user'));
 
 interface User {
-  username: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 interface authState {
   user: User;
