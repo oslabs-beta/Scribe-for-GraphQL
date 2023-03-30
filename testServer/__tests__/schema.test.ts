@@ -1,8 +1,8 @@
 //> npm install graphql-tools @jest/globals jest babel-jest
 //> for typescript tests, npm install ts-jest @types/jest
 import { describe, expect, test } from "@jest/globals";
-const { makeExecutableSchema, addMocksToSchema } = require("graphql-tools");
-const typeDefs = require("../schema");
+const { makeExecutableSchema } = require("graphql-tools");
+const typeDefs = require("../schema1/schema");
 
 describe("Schema Types Are Correct", () => {
   const schema = makeExecutableSchema({ typeDefs });

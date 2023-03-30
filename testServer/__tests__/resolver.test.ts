@@ -1,54 +1,24 @@
 import { describe, expect, test } from "@jest/globals";
-const { makeExecutableSchema, addMocksToSchema } = require("graphql-tools");
-const typeDefs = require("../schema");
-const resolvers = require("../schema");
+const typeDef = require("../schema2/schema");
+const resolver = require("../schema2/resolver");
 import * as casual from "casual";
-
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-const mocks = {
-  String: () => casual.sentence,
-  Int: () => casual.integer(1, 100),
-  Float: () => 22.7,
-  Boolean: () => casual.boolean,
-  /*
-    If you'd like more specific mocks for any of your fields, add them below, using this as an example:
-
-    User: () => ({
-      id: casual.uuid,
-      name: casual.name,
-      email: casual.email,
-      age: casual.integer(18,100),
-    }),
-
-    Please refer to the npm package 'casual' for random javascript generator calls.
-    */
-};
-const preserveResolvers = true;
-const mockedSchema = addMocksToSchema({
-  schema,
-  mocks,
-  preserveResolvers,
-});
 
 const testResolver = async (resolverFunction, args, context, expected) => {
   const output = await resolverFunction(null, args, context);
   expect(output).toEqual(expected);
 };
 
-describe("Mutations return the correct values", () => {
-  test("createBook adds a new book to the list", async () => {
-    const createBook = resolvers.createBook;
+describe("Resolvers should return the correct values", () => {
+  test("Resolver should return the correct value", async () => {
     const args = {
       title: casual.title,
       authorId: casual.uuid,
       genre: casual.word,
     };
     const context = {}; // If you have a context, define it here
+    const expected = {};
 
-    const newBook = await createBook(null, args, context);
-    expect(newBook.title).toEqual(args.title);
-    expect(newBook.authorId).toEqual(args.authorId);
-    expect(newBook.genre).toEqual(args.genre);
+    const output = await testResolver(resolver.Post, args, context, expected);
   });
 
   // USER: Add more tests for different scenarios (e.g., error handling, edge cases)
