@@ -10,6 +10,7 @@ import { COOKIE_NAME, __prod__ } from './utils/constants';
 import { CLIENT_URL } from './utils/constants';
 import { PrismaClient } from '@prisma/client';
 import authRouter from './routes/authRoutes';
+import userRouter from './routes/userRoutes';
 
 config({ path: '../.env' });
 const PORT = process.env.PORT || 8080;
@@ -54,6 +55,7 @@ const main = async () => {
 
   app.use('/typeTest', typeTestRouter);
   app.use('/auth', authRouter);
+  app.use('/users', userRouter);
 
   app.use((_, res) => res.status(404).send('page not found'));
   app.use(globalErrorHandler);

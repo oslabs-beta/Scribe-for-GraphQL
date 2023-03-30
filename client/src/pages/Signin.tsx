@@ -10,7 +10,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Swal from 'sweetalert2';
 
 const loginFormSchema = z.object({
-  email: z.string().min(1, 'email required'),
+  email: z
+    .string()
+    .min(1, 'email required')
+    .email('Please enter a valid email'),
   password: z.string().min(1, 'Please enter your password'),
 });
 export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
@@ -41,7 +44,22 @@ const signinAndRegister = () => {
 
   useEffect(() => {
     if (isError) {
-      window.alert(message);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+      //@ts-ignore
+      Toast.fire({
+        icon: 'error',
+        title: message,
+      });
     }
 
     if (user || isSuccess) {
@@ -71,68 +89,16 @@ const signinAndRegister = () => {
   });
 
   const handleRegister: SubmitHandler<registerFormSchemaType> = async (
-    formData
+    formData: registerFormSchemaType
   ) => {
+    console.log('REGISTER CLICKED');
     dispatch(register(formData));
-
-    //useEffect not working correctly with modal
-    // if ((await data).payload === 'invalid login credentials') {
-    //   const errMessage = (await data).payload;
-
-    //   const Toast = Swal.mixin({
-    //     toast: true,
-    //     position: 'top',
-    //     showConfirmButton: false,
-    //     timer: 2000,
-    //     timerProgressBar: true,
-    //     didOpen: (toast) => {
-    //       toast.addEventListener('mouseenter', Swal.stopTimer);
-    //       toast.addEventListener('mouseleave', Swal.resumeTimer);
-    //     },
-    //   });
-    //   //@ts-ignore
-    //   Toast.fire({
-    //     icon: 'error',
-    //     title: errMessage,
-    //   });
-    // } else {
-    //   navigate('/test');
-    // }
-
-    // dispatch(reset());
   };
 
   const handleLogin: SubmitHandler<loginFormSchemaType> = async (
     formData: loginFormSchemaType
   ) => {
-    console.log('CLICKED LOGIN');
     dispatch(login(formData));
-
-    // //useEffect not working correctly with modal
-    // if ((await data).payload === 'invalid login credentials') {
-    //   const errMessage = (await data).payload;
-
-    //   const Toast = Swal.mixin({
-    //     toast: true,
-    //     position: 'top',
-    //     showConfirmButton: false,
-    //     timer: 2000,
-    //     timerProgressBar: true,
-    //     didOpen: (toast) => {
-    //       toast.addEventListener('mouseenter', Swal.stopTimer);
-    //       toast.addEventListener('mouseleave', Swal.resumeTimer);
-    //     },
-    //   });
-    //   //@ts-ignore
-    //   Toast.fire({
-    //     icon: 'error',
-    //     title: errMessage,
-    //   });
-    // } else {
-    //   navigate('/test');
-    // }
-
-    // dispatch(reset());
   };
 
   return (
@@ -140,7 +106,10 @@ const signinAndRegister = () => {
       <div id='sliderContainer'>
         <Components.Container>
           <Components.SignUpContainer signinIn={signIn}>
-            <Components.Form onSubmit={registerSubmit(handleRegister)}>
+            <Components.Form
+              onSubmit={registerSubmit(handleRegister)}
+              noValidate
+            >
               <Components.Title>Create Account</Components.Title>
               <Components.Input
                 type='text'
@@ -175,7 +144,7 @@ const signinAndRegister = () => {
           </Components.SignUpContainer>
 
           <Components.SignInContainer signinIn={signIn}>
-            <Components.Form onSubmit={loginSubmit(handleLogin)}>
+            <Components.Form onSubmit={loginSubmit(handleLogin)} noValidate>
               <Components.Title>Sign in</Components.Title>
               <Components.Input
                 type='email'

@@ -38,7 +38,7 @@ export const register = async (
         password: await bcrypt.hash(password, 12),
       },
     });
-    console.log('newUser: ', newUser);
+    console.log('newUser: ', newUser.id);
     //save session
     req.session.userId = newUser.id;
     //send response back
