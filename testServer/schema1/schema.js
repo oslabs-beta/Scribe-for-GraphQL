@@ -1,5 +1,3 @@
-declare var require: NodeRequire;
-declare var module: NodeModule;
 const graphql = require("graphql");
 const { gql } = require("apollo-server");
 const { makeExecutableSchema } = require("graphql-tools");

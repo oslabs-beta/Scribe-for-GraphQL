@@ -1,4 +1,4 @@
-const resolvers: Object = {
+const resolvers = {
   Mutation: {
     createBook: (parent, { title, authorId, genre }) => {
       const book = { id: String(books.length + 1), title, authorId, genre };
