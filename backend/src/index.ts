@@ -20,8 +20,8 @@ export const prisma = new PrismaClient({
 });
 
 const main = async () => {
-  // const RedisStore = connectRedis(session);
-  // const redis = new Redis();
+  const RedisStore = connectRedis(session);
+  const redis = new Redis();
 
   const app = express();
   app.use(express.json());
@@ -33,25 +33,25 @@ const main = async () => {
     })
   );
 
-  //SESSIONS ROUTE
-  // app.use(
-  //   session({
-  //     name: COOKIE_NAME,
-  //     // store: new RedisStore({
-  //     //   client: redis,
-  //     //   disableTouch: true,
-  //     // }),
-  //     saveUninitialized: false,
-  //     resave: false,
-  //     secret: process.env.SESSION_SECRET ?? '',
-  //     cookie: {
-  //       maxAge: 1000 * 60 * 60 * 24 * 365,
-  //       httpOnly: true,
-  //       sameSite: 'lax',
-  //       secure: __prod__,
-  //     },
-  //   })
-  // );
+  // SESSIONS ROUTE
+  app.use(
+    session({
+      name: COOKIE_NAME,
+      store: new RedisStore({
+        client: redis,
+        disableTouch: true,
+      }),
+      saveUninitialized: false,
+      resave: false,
+      secret: process.env.SESSION_SECRET ?? '',
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: __prod__,
+      },
+    })
+  );
 
   app.use('/typeTest', typeTestRouter);
   app.use('/auth', authRouter);
