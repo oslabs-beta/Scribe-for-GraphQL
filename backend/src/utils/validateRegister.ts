@@ -1,7 +1,5 @@
 export const validateRegister = (
-  firstName: string,
-  lastName: string,
-  username: string,
+  name: string,
   email: string,
   password: string,
   confirmPassword: string
@@ -9,20 +7,11 @@ export const validateRegister = (
   let errorMessage = null;
 
   switch (true) {
-    case !firstName ||
-      !lastName ||
-      !email ||
-      !username ||
-      !password ||
-      !confirmPassword:
+    case !name || !email || !password || !confirmPassword:
       errorMessage = 'please enter all required fields';
       break;
 
     //set more specific username rules here
-    case username.includes('@'):
-      errorMessage = 'username cannot include @symbol';
-      break;
-
     case !email.includes('@'):
       errorMessage = 'please enter valid an email';
       break;

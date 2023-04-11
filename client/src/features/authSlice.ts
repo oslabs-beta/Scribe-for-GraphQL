@@ -1,16 +1,14 @@
 import { createSlice, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
-import { loginFormSchemaType } from '../pages/Login';
-import { registerFormSchemaType } from '../pages/Register';
+import { loginFormSchemaType } from '../pages/Signin';
+import { registerFormSchemaType } from '../pages/Signin';
 import { loginUser, registerUser } from '../services/authService';
 
 //@ts-ignore
 const user = JSON.parse(localStorage.getItem('user'));
 
 interface User {
-  username: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 interface authState {
   user: User;
@@ -55,11 +53,11 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: ({ isError, isSuccess, isLoading, message }) => {
-      isError = false;
-      isSuccess = false;
-      isLoading = false;
-      message = '';
+    reset: (state) => {
+      state.isError = false;
+      state.isSuccess = false;
+      state.isLoading = false;
+      state.message = '';
     },
   },
   extraReducers: (builder) => {

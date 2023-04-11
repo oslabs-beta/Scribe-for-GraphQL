@@ -10,17 +10,9 @@ export const register = async (
   next: NextFunction
 ) => {
   //get response from req body
-  const { firstName, lastName, username, email, password, confirmPassword } =
-    req.body;
+  const { name, email, password, confirmPassword } = req.body;
   try {
-    const validated = validateRegister(
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      confirmPassword
-    );
+    const validated = validateRegister(name, email, password, confirmPassword);
 
     if (validated.errorMessage) {
       res.status(400);
@@ -30,7 +22,7 @@ export const register = async (
     //make sure they dont exist in db
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email }, { username }],
+        email,
       },
     });
     console.log('user: ', user);
@@ -41,21 +33,17 @@ export const register = async (
     //if they dont make new thing
     const newUser = await prisma.user.create({
       data: {
-        first_name: firstName,
-        last_name: lastName,
-        username,
+        name,
         email,
         password: await bcrypt.hash(password, 12),
       },
     });
-    console.log('newUser: ', newUser);
+    console.log('newUser: ', newUser.id);
     //save session
     req.session.userId = newUser.id;
     //send response back
     res.status(201).json({
-      firstName,
-      lastName,
-      username,
+      name,
       email,
     });
   } catch (err) {
@@ -68,26 +56,24 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { usernameOrEmail, password } = req.body;
+  const { email, password } = req.body;
   try {
-    if (!usernameOrEmail || !password) {
+    if (!email || !password) {
       res.status(400);
       throw new Error('please enter all required fields');
     }
 
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+        email,
       },
     });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       req.session.userId = user.id;
       res.status(200).json({
-        username: user.username,
+        name: user.name,
         email: user.email,
-        firstName: user.first_name,
-        lastName: user.last_name,
       });
     } else {
       res.status(400);
