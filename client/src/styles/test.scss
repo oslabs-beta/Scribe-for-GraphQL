@@ -1,17 +1,4 @@
-#userInput {
-  font-family: 'Source Code Pro', monospace;
-}
-
-#testOutput {
-  font-family: 'Source Code Pro', monospace;
-}
-
-.background {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url('/src/images/background.jpg');
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
+.editor-container {
+  margin: 5px;
+  flex-basis: auto;
 }
