@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { generateTypeTest } from '../services/testService';
 import Swal from 'sweetalert2';
+import { Editor } from '@monaco-editor/react';
 
 type Props = {};
 
@@ -52,36 +53,8 @@ const Test = (props: Props) => {
     <>
       <TestHeader />
       <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-        <TextField
-          id='userInput'
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          label='User Schema'
-          variant='filled'
-          multiline
-          minRows={20}
-          maxRows={20}
-          sx={{
-            width: 0.49,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}
-        />
-        <TextField
-          id='testOutput'
-          value={outputTest}
-          onChange={(e) => setOutputTest(e.target.value)}
-          label='Schema Type Tests'
-          variant='filled'
-          multiline
-          minRows={20}
-          maxRows={20}
-          sx={{
-            width: 0.49,
-            backgroundColor: 'white',
-            borderRadius: 5,
-          }}
-        />
+        <Editor height='500px' width='500px' theme='vs-dark' />
+        <Editor height='500px' width='500px' theme='vs-dark' />
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: '1rem' }}>

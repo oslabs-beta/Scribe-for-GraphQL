@@ -43,6 +43,7 @@ body {
   background-size: cover;
   background-position: center;
   min-height: 100vh;
+  z-index: 0;
 }
 
 /* A elements that don't have a class get default styles */
