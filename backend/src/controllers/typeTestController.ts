@@ -37,12 +37,14 @@ export const generateTypeTest = async (
       for (let i = field.loc.start; i <= end; i) {
         if (currentNode.kind === '}' || currentNode.kind === ':')
           return resultType;
+
         let iterate = currentNode.end - currentNode.start;
         if (currentNode.kind === 'Name') {
           resultType += currentNode.value;
         } else {
           resultType += currentNode.kind;
         }
+        if (currentNode.start + 1 === end) return resultType;
         currentNode = currentNode.next;
         i += iterate;
       }
@@ -58,12 +60,12 @@ export const generateTypeTest = async (
       //@ts-ignore
       // console.log('startToken LOC, field 1', ast.definitions[0].fields[1].type)
       //@ts-ignore
-      // console.log('startToken LOC, field 2', ast.definitions[1].fields[2].type)
+      console.log('startToken LOC, field 2', ast.definitions[1].fields[2].type);
 
       //@ts-ignore
-      // console.log('start token next next', ast.definitions[1].fields[1].type.loc.startToken.next.next)
+      // console.log('start token next next', ast.definitions[1].fields[1].type.loc.startToken)
       //@ts-ignore
-      // console.log('TESTING', nestedTypes(ast.definitions[1].fields[2].type));
+      console.log('TESTING', nestedTypes(ast.definitions[1].fields[2].type));
 
       const typeDefs = ast.definitions.reduce((acc: any, def: any) => {
         if (def.kind === 'ObjectTypeDefinition') {
@@ -72,7 +74,7 @@ export const generateTypeTest = async (
             name: field.name.value,
             //@ts-ignore
             type: field.type.type?.kind
-              ? nestedTypes(field.type.type)
+              ? nestedTypes(field.type)
               : field.type.name.value,
           }));
           //@ts-ignore
@@ -85,39 +87,41 @@ export const generateTypeTest = async (
 
       const tests = Object.entries(typeDefs).map(([typeName, fields]) => {
         return `
-            test('${typeName} should have the correct types', () => {
-              const type = schema.getType('${typeName}');
-              expect(type).toBeDefined();
-
-              ${/*@ts-ignore*/ ''}
+      test('${typeName} should have the correct types', () => {
+        const type = schema.getType('${typeName}');
+        expect(type).toBeDefined();${/*@ts-ignore*/ ''}
               ${fields
                 .map((field: any) => {
-                  if (Array.isArray(field.type)) {
-                    return `expect(JSON.stringify(type.getFields().${field.name}.type)).toBe(JSON.stringify("[${field.type}]"));
-                    `;
+                  if (
+                    Array.isArray(field.type) ||
+                    field.type.includes('!') ||
+                    field.type.includes('[')
+                  ) {
+                    return `
+        expect(JSON.stringify(type.getFields().${field.name}.type)).toBe(JSON.stringify("${field.type}"));`;
                   } else {
-                    return `expect(type.getFields().${field.name}.type.name).toBe('${field.type}');
-                `;
+                    return `
+        expect(type.getFields().${field.name}.type.name).toBe('${field.type}');`;
                   }
                 })
                 .join('')}
-              })`;
+      })`;
       });
       const boilerplate = `//> npm install graphql-tools @jest/globals jest babel-jest
-      //> for typescript tests, npm install ts-jest @types/jest
-      import {describe, expect, test} from '@jest/globals';
-      const { makeExecutableSchema, addMocksToSchema } = require('graphql-tools');
-      const typeDefs = require(/* schema file */)
+//> for typescript tests, npm install ts-jest @types/jest 
+import {describe, expect, test} from '@jest/globals';
+const { makeExecutableSchema, addMocksToSchema } = require('graphql-tools');
+const typeDefs = require(/* schema file */)
       
-      describe('Schema Types Are Correct', () => {
-        const schema = makeExecutableSchema({ typeDefs });`;
+describe('Schema Types Are Correct', () => {
+  const schema = makeExecutableSchema({ typeDefs });`;
       const endboiler = `
-      });`;
+  });`;
       // console.log(tests)
       tests.unshift(boilerplate);
       tests.push(endboiler);
       console.log('tests after:', tests.toString());
-      return tests.toString();
+      return tests.join('').toString();
     }
 
     return res.status(200).json(generateTypeTests(schema));
