@@ -4,6 +4,21 @@ import { prisma } from '..';
 import { validateRegister } from '../utils/validateRegister';
 import '../utils/types';
 
+export const authenticateRoute = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.session.userId) {
+      res.status(400);
+      throw new Error('You must log in to continue');
+    } else return next();
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export const register = async (
   req: Request,
   res: Response,
