@@ -14,6 +14,7 @@ const Test = (props: Props) => {
   const [userInput, setUserInput] = useState<string>('');
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
+  
   const editorRef = useRef(null);
 
   function convertToJSON(inputString: any) {
@@ -39,7 +40,7 @@ const Test = (props: Props) => {
 
     return JSON.stringify(outputObj, null, 2);
   }
-
+  
   ///////////
   useEffect(() => {
     const handleResize = () => {
