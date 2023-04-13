@@ -14,21 +14,42 @@ const Test = (props: Props) => {
   const [userInput, setUserInput] = useState<string>('');
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  // const [flexDirection, setFlexDirection] = useState('column');
+  
   const editorRef = useRef(null);
 
+  function convertToJSON(inputString: any) {
+    const outputObj: any = {};
+    const lines = inputString.split('\n');
+    let currentObj: any = null;
+
+    lines.forEach((line: any) => {
+      if (line.includes('{')) {
+        // Start of a new object
+        const name = line.split(':')[0].trim();
+        currentObj = {};
+        outputObj[name] = currentObj;
+      } else if (line.includes('}')) {
+        // End of the current object
+        currentObj = null;
+      } else if (currentObj) {
+        // Inside an object
+        const [name, value] = line.split(':');
+        currentObj[name.trim()] = value.trim();
+      }
+    });
+
+    return JSON.stringify(outputObj, null, 2);
+  }
+  
   ///////////
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 900) {
         setEditorWidth('45%');
-        // setFlexDirection('row');
       } else if (window.innerWidth > 600) {
         setEditorWidth('70%');
-        // setFlexDirection('row');
       } else {
         setEditorWidth('100%');
-        // setFlexDirection('column');
       }
     };
 
@@ -43,6 +64,7 @@ const Test = (props: Props) => {
   const generateTest = async (input: any) => {
     try {
       console.log('clicked generateTest');
+      console.log('INPUT: ', input);
       const test = await generateTypeTest(input);
 
       console.log('test ', test);
@@ -83,7 +105,9 @@ const Test = (props: Props) => {
   };
   const getEditorValue = () => {
     //@ts-ignore
-    generateTest(editorRef.current.getValue());
+    console.log('monoco value: ', convertToJSON(editorRef.current.getValue()));
+    // eval(`(${editorRef.current.getValue()})`)
+    generateTest(convertToJSON(editorRef.current.getValue()));
   };
 
   return (
@@ -99,19 +123,20 @@ const Test = (props: Props) => {
             window.innerWidth > 900 || window.innerWidth > 600
               ? 'row'
               : 'column',
+          overflow: 'scroll',
         }}
       >
-        {/* <div className='dropdown-menu'>
-          <select className='left-dropdown' onChange={handleLeftDropDown}>
-            <option className='dropdown-option' value='schema'>
-              Schema
-            </option>
-            <option className='dropdown-option' value='resolvers'>
-              Resolvers
-            </option>
-          </select>
-        </div> */}
         <div className='editor-container' style={{ width: editorWidth }}>
+          <div className='dropdown-menu'>
+            <select className='left-dropdown' onChange={handleLeftDropDown}>
+              <option className='dropdown-option' value='schema'>
+                Schema
+              </option>
+              <option className='dropdown-option' value='resolvers'>
+                Resolvers
+              </option>
+            </select>
+          </div>
           <Editor
             height='500px'
             width='100%'
@@ -124,26 +149,27 @@ const Test = (props: Props) => {
             }}
           />
         </div>
-        {/* <div className='dropdown-menu'>
-          <select className='left-dropdown' onChange={handleRightDropDown}>
-            <option className='dropdown-option' value='type-tests'>
-              Type-Tests
-            </option>
-            <option className='dropdown-option' value='unit-tests'>
-              Resolver Unit tests
-            </option>
-            <option className='dropdown-option' value='integration-tests'>
-              Integration Tests
-            </option>
-          </select>
-        </div> */}
         <div className='editor-container' style={{ width: editorWidth }}>
+          <div className='dropdown-menu'>
+            <select className='left-dropdown' onChange={handleRightDropDown}>
+              <option className='dropdown-option' value='type-tests'>
+                Type-Tests
+              </option>
+              <option className='dropdown-option' value='unit-tests'>
+                Resolver Unit tests
+              </option>
+              <option className='dropdown-option' value='integration-tests'>
+                Integration Tests
+              </option>
+            </select>
+          </div>
           <Editor
             height='500px'
             width='100%'
             flex-basis='100%'
             theme='vs-dark'
             language='javascript'
+            value={outputTest}
             options={{
               wordWrap: 'on',
             }}
@@ -152,7 +178,10 @@ const Test = (props: Props) => {
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: '1rem' }}>
-        <Button variant='outlined' onClick={() => generateTest(userInput)}>
+        <Button
+          variant='outlined'
+          onClick={() => generateTest(editorRef.current.getValue())}
+        >
           Generate
         </Button>
         <Button variant='outlined' onClick={() => getEditorValue()}>

@@ -19,10 +19,10 @@ export const prisma = new PrismaClient({
   log: ['query'], //shows SQL in console log
 });
 
-const main = async () => {
-  const RedisStore = connectRedis(session);
-  const redis = new Redis();
+const RedisStore = connectRedis(session);
+const redis = new Redis();
 
+const main = async () => {
   const app = express();
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
