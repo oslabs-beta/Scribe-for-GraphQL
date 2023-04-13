@@ -20,6 +20,7 @@ export const prisma = new PrismaClient({
 });
 
 const RedisStore = connectRedis(session);
+
 export const redis = new Redis();
 
 const main = async () => {
