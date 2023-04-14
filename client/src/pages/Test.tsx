@@ -14,7 +14,7 @@ const Test = (props: Props) => {
   const [userInput, setUserInput] = useState<string>('');
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  
+
   const editorRef = useRef(null);
 
   function convertToJSON(inputString: any) {
@@ -40,7 +40,7 @@ const Test = (props: Props) => {
 
     return JSON.stringify(outputObj, null, 2);
   }
-  
+
   ///////////
   useEffect(() => {
     const handleResize = () => {
@@ -100,7 +100,7 @@ const Test = (props: Props) => {
   const handleLeftDropDown = () => {};
   const handleRightDropDown = () => {};
 
-  const handleEditorDidMount = (editor: any) => {
+  const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
   };
   const getEditorValue = () => {
@@ -178,15 +178,24 @@ const Test = (props: Props) => {
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: '1rem' }}>
-        <Button
+        {/* <Button
           variant='outlined'
+          //@ts-ignore
           onClick={() => generateTest(editorRef.current.getValue())}
         >
           Generate
         </Button>
         <Button variant='outlined' onClick={() => getEditorValue()}>
           Save
-        </Button>
+        </Button> */}
+
+        <button
+          className='test-button'
+          onClick={() => generateTest(editorRef.current.getValue())}
+        >
+          Generate
+        </button>
+        <button className='test-button'>Save</button>
       </Box>
     </>
   );
