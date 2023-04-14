@@ -12,3 +12,9 @@ export const generateTypeTest = async (userInput: string) => {
   );
   return data;
 };
+
+export const fetchTests = async () => {
+  const { data } = await axios.get(API_URL + 'users/tests', {
+    withCredentials: true,
+  });
+};
