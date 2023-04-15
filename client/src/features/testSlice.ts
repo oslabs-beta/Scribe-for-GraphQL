@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchTests } from '../services/testService';
+import { fetchTests, saveTests as save } from '../services/testService';
 
 interface Test {
   user_id: number;
@@ -8,7 +8,7 @@ interface Test {
 }
 
 interface testState {
-  tests: Test[] | [];
+  tests: Test[] | any[];
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -30,6 +30,19 @@ export const getTests = createAsyncThunk(
       return await fetchTests();
     } catch (err: any) {
       const message = err.response?.data.message || err.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const saveTests = createAsyncThunk(
+  'tests/save',
+  async (testData, { rejectWithValue }) => {
+    try {
+      save(testData);
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || err.message || err.toString();
       return rejectWithValue(message);
     }
   }
@@ -61,7 +74,18 @@ export const testSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.tests = action.payload;
+      })
+      .addCase(saveTests.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(saveTests.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
       });
+    // .addCase(saveTests.fulfilled, (state, action) => {
+    //   state.tests.push(action.payload)
+    // })
   },
 });
 

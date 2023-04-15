@@ -1,19 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
-import TestHeader from '../components/TestHeader';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { generateTypeTest } from '../services/testService';
+import { generateTypeTest, saveTests } from '../services/testService';
 import Swal from 'sweetalert2';
 import { Editor } from '@monaco-editor/react';
+import TestNavBar from '../components/TestNavBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../app/store';
 
 type Props = {};
 
 const Test = (props: Props) => {
-  const [userInput, setUserInput] = useState<string>('');
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
+  const [rightSelectedOption, setRightSelectedOption] = useState('');
+  const [leftSelectedOption, setLeftSelectedOption] = useState('');
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const editorRef = useRef(null);
 
@@ -94,11 +102,21 @@ const Test = (props: Props) => {
       window.alert(message);
     }
   };
+  const handleLeftDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLeftSelectedOption(event.target.value);
+  };
+  const handleRightDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setRightSelectedOption(event.target.value);
+  };
 
-  const saveTest = () => {};
-
-  const handleLeftDropDown = () => {};
-  const handleRightDropDown = () => {};
+  // const saveTest = () => {
+  //   dispatch(
+  //     saveTests({
+  //       test: outputTest, // value of second editor
+  //       testType: RightselectedOption, //whatever option the user has selected in the drop down
+  //     })
+  //   );
+  // };
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
@@ -107,17 +125,21 @@ const Test = (props: Props) => {
     //@ts-ignore
     console.log('monoco value: ', convertToJSON(editorRef.current.getValue()));
     // eval(`(${editorRef.current.getValue()})`)
+    //@ts-ignore
     generateTest(convertToJSON(editorRef.current.getValue()));
   };
 
+  const handleSave = () => {};
+
   return (
     <>
-      <TestHeader />
+      <TestNavBar />
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-evenly',
           flexWrap: 'wrap',
+          marginTop: '8rem',
           /*flexDirection*/
           flexDirection:
             window.innerWidth > 900 || window.innerWidth > 600
@@ -128,7 +150,11 @@ const Test = (props: Props) => {
       >
         <div className='editor-container' style={{ width: editorWidth }}>
           <div className='dropdown-menu'>
-            <select className='left-dropdown' onChange={handleLeftDropDown}>
+            <select
+              className='left-dropdown'
+              value={leftSelectedOption}
+              onChange={handleLeftDropDown}
+            >
               <option className='dropdown-option' value='schema'>
                 Schema
               </option>
@@ -151,7 +177,11 @@ const Test = (props: Props) => {
         </div>
         <div className='editor-container' style={{ width: editorWidth }}>
           <div className='dropdown-menu'>
-            <select className='left-dropdown' onChange={handleRightDropDown}>
+            <select
+              className='left-dropdown'
+              value={rightSelectedOption}
+              onChange={handleRightDropDown}
+            >
               <option className='dropdown-option' value='type-tests'>
                 Type-Tests
               </option>
@@ -176,8 +206,13 @@ const Test = (props: Props) => {
           />
         </div>
       </Box>
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: '1rem' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          mt: '1rem',
+        }}
+      >
         {/* <Button
           variant='outlined'
           //@ts-ignore
@@ -191,6 +226,7 @@ const Test = (props: Props) => {
 
         <button
           className='test-button'
+          //@ts-ignore
           onClick={() => generateTest(editorRef.current.getValue())}
         >
           Generate
