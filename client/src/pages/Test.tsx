@@ -60,7 +60,7 @@ const Test = (props: Props) => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  ////////////
+
   const generateTest = async (input: any) => {
     try {
       console.log('clicked generateTest');

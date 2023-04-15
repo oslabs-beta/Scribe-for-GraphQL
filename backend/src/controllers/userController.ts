@@ -31,6 +31,7 @@ export const getSavedTests = async (
         user: {
           select: {
             id: true,
+            //@ts-ignore
             name: true,
           },
         },
@@ -63,6 +64,7 @@ export const saveTest = async (
     const savedTest = await prisma.test.create({
       data: {
         generated_test: test,
+        //@ts-ignore
         test_type: testType,
         user: {
           connect: {

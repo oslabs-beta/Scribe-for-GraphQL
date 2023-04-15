@@ -8,21 +8,23 @@ export const generateTypeTest = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { schema } = req.body;
+  let { schema } = req.body;
   try {
     /*VALIDATING AND BUILDLING OUR SCHEMA */
+    schema = schema.concat('\n typeDefs;');
+    console.log('input', schema);
+    console.log('eval', eval(schema));
+    const evalSchema = eval(schema);
 
-    validateSchema(schema);
+    validateSchema(evalSchema);
     if (!validateSchema) {
       throw new Error('Schema is invalid GraphQL Schema');
     }
-    const typeName = getTypeName(schema);
+    const typeName = getTypeName(evalSchema);
     if (!typeName) {
       throw new Error('Schema is invalid GraphQL Schema');
     }
-    // Free Bird
-    const schemaBuilt = buildSchema(schema);
-    //Free Bird
+    const schemaBuilt = buildSchema(evalSchema);
 
     const nestedTypes = (field: any) => {
       let resultType = '';
@@ -55,7 +57,7 @@ export const generateTypeTest = async (
 
     // Free Bird,
     function generateTypeTests(schema: string) {
-      const ast = parse(schema); //converts to AST
+      const ast = parse(evalSchema); //converts to AST
       // console.log('ast', ast.definitions) // TYPES
       //@ts-ignore
       // console.log('startToken LOC, field 1', ast.definitions[0].fields[1].type)

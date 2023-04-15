@@ -14,7 +14,7 @@ const {
   GraphQLBoolean,
 } = graphql;
 
-const typeDefs = gql`
+const typeDefs = `
   type Book {
     id: ID
     title: String

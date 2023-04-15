@@ -48,6 +48,7 @@ export const register = async (
     //if they dont make new thing
     const newUser = await prisma.user.create({
       data: {
+        //@ts-ignore
         name,
         email,
         password: await bcrypt.hash(password, 12),
@@ -87,6 +88,7 @@ export const login = async (
     if (user && (await bcrypt.compare(password, user.password))) {
       req.session.userId = user.id;
       res.status(200).json({
+        //@ts-ignore
         name: user.name,
         email: user.email,
       });
