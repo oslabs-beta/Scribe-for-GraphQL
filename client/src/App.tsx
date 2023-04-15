@@ -3,7 +3,7 @@ import Homepage from './pages';
 import Test from './pages/Test';
 import NotFound from './pages/NotFound';
 import Signin from './pages/Signin';
-
+import SavedTests from './pages/SavedTests';
 import './styles/index.scss';
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
           <Route path='/signin' element={<Signin />} />
           <Route path='/test' element={<Test />} />
           <Route path='/*' element={<NotFound />} />
+          <Route path='/tests' element={<SavedTests />} />
         </Routes>
       </BrowserRouter>
     </>

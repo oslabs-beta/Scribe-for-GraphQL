@@ -17,4 +17,21 @@ export const fetchTests = async () => {
   const { data } = await axios.get(API_URL + 'users/tests', {
     withCredentials: true,
   });
+
+  return data;
+};
+
+export const saveTests = async (testData: any) => {
+  const { data } = await axios.post(
+    API_URL + 'users/tests',
+    {
+      test: testData.test,
+      testType: testData.testType,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+
+  return data;
 };

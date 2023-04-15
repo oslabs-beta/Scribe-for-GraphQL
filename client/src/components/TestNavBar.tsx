@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-const NavBar = () => {
+const TestNavBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -26,7 +26,7 @@ const NavBar = () => {
           <div className='nav left'>
             <span className='gradient skew'>
               <h1 className='logo un-skew'>
-                <a href=''>Graph-Scribe</a>
+                <a href='#home'>Graph-Scribe</a>
                 <AutoGraphIcon style={{ marginLeft: '1.5rem' }} />
                 <span style={{ fontSize: '8px' }}>future logo here</span>
               </h1>
@@ -46,27 +46,27 @@ const NavBar = () => {
               </span>
             </Link>
             <Link
-              to='/about'
+              to='/tests'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
               onClick={closeMobileMenu}
             >
               <span className='nav-link-span'>
-                <span className='u-nav'>About</span>
+                <span className='u-nav'>Tests</span>
               </span>
             </Link>
-            <Link
+            {/* <Link
               to='/contact'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
               onClick={closeMobileMenu}
             >
               <span className='nav-link-span'>
-                <span className='u-nav'>Contact</span>
+                <span className='u-nav'>Tests</span>
               </span>
-            </Link>
+            </Link> */}
           </div>
         </nav>
       </header>
     </>
   );
 };
-export default NavBar;
+export default TestNavBar;
