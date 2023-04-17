@@ -29,8 +29,8 @@ model Test {
   id             Int    @id @default(autoincrement())
   user_id        Int
   generated_test String @db.VarChar(50000)
-  user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   test_type      String @db.VarChar(25)
+  user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("tests")
 }

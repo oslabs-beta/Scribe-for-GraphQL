@@ -61,6 +61,10 @@ export const saveTest = async (
   const { test, testType } = req.body;
 
   try {
+    if (!test || !testType) {
+      res.status(400);
+      throw new Error('Must include a test and a test type to save');
+    }
     const savedTest = await prisma.test.create({
       data: {
         generated_test: test,
