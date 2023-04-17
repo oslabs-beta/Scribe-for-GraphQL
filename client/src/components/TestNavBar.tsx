@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../app/store';
+import { logout } from '../features/authSlice';
 const TestNavBar = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+  console.log('user: ', user);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -17,6 +23,13 @@ const TestNavBar = () => {
     if (window.innerWidth > 800) {
       closeMobileMenu();
     }
+  };
+
+  const handleAuthClick = async () => {
+    if (user) {
+      await dispatch(logout());
+    }
+    closeMobileMenu();
   };
 
   return (
@@ -37,12 +50,12 @@ const TestNavBar = () => {
           </div>
           <div className='nav right'>
             <Link
-              to='/signin'
+              to={user ? '/' : '/signin'}
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
-              onClick={closeMobileMenu}
+              onClick={handleAuthClick}
             >
               <span className='nav-link-span'>
-                <span className='u-nav'>Sign In </span>
+                <span className='u-nav'>Sign {user ? 'Out' : 'In'}</span>
               </span>
             </Link>
             <Link
@@ -54,15 +67,15 @@ const TestNavBar = () => {
                 <span className='u-nav'>Tests</span>
               </span>
             </Link>
-            {/* <Link
-              to='/contact'
+            <Link
+              to='/'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
               onClick={closeMobileMenu}
             >
               <span className='nav-link-span'>
-                <span className='u-nav'>Tests</span>
+                <span className='u-nav'>Home</span>
               </span>
-            </Link> */}
+            </Link>
           </div>
         </nav>
       </header>

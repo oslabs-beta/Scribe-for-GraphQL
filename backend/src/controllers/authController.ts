@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { prisma } from '..';
 import { validateRegister } from '../utils/validateRegister';
 import '../utils/types';
+import { COOKIE_NAME } from '../utils/constants';
 
 export const authenticateRoute = (
   req: Request,
@@ -99,4 +100,17 @@ export const login = async (
   } catch (err) {
     return next(err);
   }
+};
+
+export const logout = (req: Request, res: Response) => {
+  return new Promise((resolve) => {
+    req.session.destroy((err) => {
+      res.clearCookie(COOKIE_NAME);
+      if (err) {
+        resolve(false);
+        return;
+      }
+      return true;
+    });
+  });
 };

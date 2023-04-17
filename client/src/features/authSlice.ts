@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { loginFormSchemaType } from '../pages/Signin';
 import { registerFormSchemaType } from '../pages/Signin';
-import { loginUser, registerUser } from '../services/authService';
+import { loginUser, logoutUser, registerUser } from '../services/authService';
 
 //@ts-ignore
 const user = JSON.parse(localStorage.getItem('user'));
 
-interface User {
+export interface User {
   email: string;
   name: string;
 }
@@ -30,6 +30,19 @@ export const login = createAsyncThunk<User, loginFormSchemaType>(
   async (userData: loginFormSchemaType, { rejectWithValue }) => {
     try {
       return await loginUser(userData);
+    } catch (err: any) {
+      const message = err.response?.data.message || err.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      localStorage.removeItem('user');
+      return await logoutUser();
     } catch (err: any) {
       const message = err.response?.data.message || err.toString();
       return rejectWithValue(message);
@@ -87,6 +100,17 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
       });
   },
 });
