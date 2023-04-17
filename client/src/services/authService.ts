@@ -28,7 +28,8 @@ export const loginUser = async (
   return data;
 };
 
-export const logoutUser = async (): Promise<boolean> => {
+export const logoutUser = async () => {
+  localStorage.removeItem('user');
   const { data } = await axios.post(API_URL + 'auth/logout', null, {
     withCredentials: true,
   });

@@ -102,15 +102,24 @@ export const login = async (
   }
 };
 
-export const logout = (req: Request, res: Response) => {
-  return new Promise((resolve) => {
+export const logout = async (req: Request, res: Response) => {
+  return new Promise<boolean>((resolve, reject) => {
+    //destroy the session(server) and clear the cookie(client)
     req.session.destroy((err) => {
       res.clearCookie(COOKIE_NAME);
       if (err) {
-        resolve(false);
+        console.error(err);
+        reject(err);
         return;
       }
-      return true;
+      resolve(true);
     });
-  });
+  })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: 'Error occurred while logging out.' });
+    });
 };

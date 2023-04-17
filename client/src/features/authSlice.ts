@@ -11,7 +11,7 @@ export interface User {
   name: string;
 }
 interface authState {
-  user: User;
+  user: User | null;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;
@@ -41,7 +41,6 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      localStorage.removeItem('user');
       return await logoutUser();
     } catch (err: any) {
       const message = err.response?.data.message || err.toString();
@@ -109,7 +108,8 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload as string;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state: authState) => {
+        state.isLoading = false;
         state.user = null;
       });
   },

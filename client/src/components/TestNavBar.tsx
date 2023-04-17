@@ -67,7 +67,7 @@ const TestNavBar = () => {
                 <span className='u-nav'>Tests</span>
               </span>
             </Link>
-            <Link
+            {/* <Link
               to='/'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
               onClick={closeMobileMenu}
@@ -75,7 +75,7 @@ const TestNavBar = () => {
               <span className='nav-link-span'>
                 <span className='u-nav'>Home</span>
               </span>
-            </Link>
+            </Link> */}
           </div>
         </nav>
       </header>
