@@ -3,7 +3,11 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { generateTypeTest, saveTests } from '../services/testService';
+import {
+  generateTypeTest,
+  generateUnitTest,
+  saveTests,
+} from '../services/testService';
 import Swal from 'sweetalert2';
 import { Editor } from '@monaco-editor/react';
 import TestNavBar from '../components/TestNavBar';
@@ -25,30 +29,6 @@ const Test = (props: Props) => {
 
   const editorRef = useRef(null);
 
-  function convertToJSON(inputString: any) {
-    const outputObj: any = {};
-    const lines = inputString.split('\n');
-    let currentObj: any = null;
-
-    lines.forEach((line: any) => {
-      if (line.includes('{')) {
-        // Start of a new object
-        const name = line.split(':')[0].trim();
-        currentObj = {};
-        outputObj[name] = currentObj;
-      } else if (line.includes('}')) {
-        // End of the current object
-        currentObj = null;
-      } else if (currentObj) {
-        // Inside an object
-        const [name, value] = line.split(':');
-        currentObj[name.trim()] = value.trim();
-      }
-    });
-
-    return JSON.stringify(outputObj, null, 2);
-  }
-
   ///////////
   useEffect(() => {
     const handleResize = () => {
@@ -69,11 +49,28 @@ const Test = (props: Props) => {
     };
   }, []);
 
-  const generateTest = async (input: any) => {
+  const generateTest = async (input: string) => {
     try {
       console.log('clicked generateTest');
       console.log('INPUT: ', input);
-      const test = await generateTypeTest(input);
+
+      let test;
+
+      switch (rightSelectedOption) {
+        case 'type-tests':
+          test = await generateTypeTest(input);
+          break;
+        case 'unit-tests':
+          test = await generateUnitTest(input); //make unit test function
+          break;
+        case 'integration-tests':
+          test = 'hahahahah'; //make integration test func
+          break;
+
+        default:
+          test = await generateTypeTest(input);
+      }
+      // const test = await generateTypeTest(input);
 
       console.log('test ', test);
       if (test.message) {
@@ -123,10 +120,10 @@ const Test = (props: Props) => {
   };
   const getEditorValue = () => {
     //@ts-ignore
-    console.log('monoco value: ', convertToJSON(editorRef.current.getValue()));
+    // console.log('monoco value: ', convertToJSON(editorRef.current.getValue()));
     // eval(`(${editorRef.current.getValue()})`)
     //@ts-ignore
-    generateTest(convertToJSON(editorRef.current.getValue()));
+    generateTest(editorRef.current.getValue());
   };
 
   const handleSave = () => {};
