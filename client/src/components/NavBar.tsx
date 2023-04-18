@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../app/store';
+import { logout } from '../features/authSlice';
 const NavBar = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -17,6 +22,13 @@ const NavBar = () => {
     if (window.innerWidth > 800) {
       closeMobileMenu();
     }
+  };
+
+  const handleAuthClick = () => {
+    if (user) {
+      dispatch(logout());
+    }
+    closeMobileMenu();
   };
 
   return (
@@ -39,10 +51,10 @@ const NavBar = () => {
             <Link
               to='/signin'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
-              onClick={closeMobileMenu}
+              onClick={handleAuthClick}
             >
               <span className='nav-link-span'>
-                <span className='u-nav'>Sign In </span>
+                <span className='u-nav'>Sign {user ? 'Out' : 'In'} </span>
               </span>
             </Link>
             <Link
@@ -61,6 +73,15 @@ const NavBar = () => {
             >
               <span className='nav-link-span'>
                 <span className='u-nav'>Contact</span>
+              </span>
+            </Link>
+            <Link
+              to='/test'
+              className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
+              onClick={closeMobileMenu}
+            >
+              <span className='nav-link-span'>
+                <span className='u-nav'>Get Started</span>
               </span>
             </Link>
           </div>

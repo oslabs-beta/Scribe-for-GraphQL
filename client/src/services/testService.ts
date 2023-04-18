@@ -13,11 +13,19 @@ export const generateTypeTest = async (userInput: string) => {
   return data;
 };
 
+export const generateUnitTest = async (userInput: string) => {
+  const { data } = await axios.post(
+    API_URL + 'resolverTest',
+    { resolvers: userInput },
+    { withCredentials: true }
+  );
+  return data;
+};
+
 export const fetchTests = async () => {
   const { data } = await axios.get(API_URL + 'users/tests', {
     withCredentials: true,
   });
-
   return data;
 };
 

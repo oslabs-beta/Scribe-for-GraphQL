@@ -11,6 +11,7 @@ import { CLIENT_URL } from './utils/constants';
 import { PrismaClient } from '@prisma/client';
 import authRouter from './routes/authRoutes';
 import userRouter from './routes/userRoutes';
+import resolverTestRouter from './routes/resolverTestRoute';
 
 config({ path: '../.env' });
 const PORT = process.env.PORT || 8080;
@@ -55,6 +56,7 @@ const main = async () => {
   );
 
   app.use('/typeTest', typeTestRouter);
+  app.use('/resolverTest', resolverTestRouter);
   app.use('/auth', authRouter);
   app.use('/users', userRouter);
 

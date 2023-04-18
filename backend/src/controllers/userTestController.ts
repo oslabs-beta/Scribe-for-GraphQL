@@ -1,18 +1,5 @@
-import { NextFunction, Response, Request } from 'express';
-import { redis, prisma } from '..';
-
-export const getAllUsers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const users = await prisma.user.findMany({});
-    res.status(200).json(users);
-  } catch (err) {
-    return next(err);
-  }
-};
+import { Request, Response, NextFunction } from 'express';
+import { prisma, redis } from '..';
 
 export const getSavedTests = async (
   req: Request,
@@ -31,7 +18,6 @@ export const getSavedTests = async (
         user: {
           select: {
             id: true,
-            //@ts-ignore
             name: true,
           },
         },
@@ -41,12 +27,11 @@ export const getSavedTests = async (
       },
     });
 
-    // if (!tests) {
-    //   res.status(400);
-    //   throw new Error('No tests saved');
-    // }
+    if (!tests) {
+      res.status(400);
+      throw new Error('No tests saved');
+    }
 
-    redis.set(`tests-${req.session.userId}`, JSON.stringify(tests), 'EX', 3600);
     res.status(200).json(tests);
   } catch (err) {
     return next(err);
@@ -61,14 +46,9 @@ export const saveTest = async (
   const { test, testType } = req.body;
 
   try {
-    if (!test || !testType) {
-      res.status(400);
-      throw new Error('Must include a test and a test type to save');
-    }
     const savedTest = await prisma.test.create({
       data: {
         generated_test: test,
-        //@ts-ignore
         test_type: testType,
         user: {
           connect: {
@@ -83,7 +63,7 @@ export const saveTest = async (
       const cachedTests = JSON.parse(cachedTestsString);
       cachedTests.unshift(savedTest);
       await redis.set(
-        `tests-${req.session.userId}`,
+        `feed-${req.session.userId}`,
         JSON.stringify(cachedTests),
         'EX',
         3600
@@ -95,3 +75,8 @@ export const saveTest = async (
     return next(err);
   }
 };
+export const getTests = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};

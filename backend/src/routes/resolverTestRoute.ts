@@ -1,9 +1,8 @@
 import express from 'express';
-import { generateTypeTest } from '../controllers/typeTestController';
 import { generateResolverTests } from '../controllers/resolverTestController';
 const router = express.Router();
 
-router.route('/').post(generateTypeTest);
+router.route('/').post(generateResolverTests);
 
 // router.post('/', generateTypeTest, (_, res) => {
 //   return res.status(200).json(res.locals.typeTests);

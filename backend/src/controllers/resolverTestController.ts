@@ -1,18 +1,22 @@
-
-import { NextFunction, Request, Response } from "express";
-
+import { NextFunction, Request, Response } from 'express';
 
 export const generateResolverTests = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { schema, resolvers } = req.body;
+  let { schema, resolvers } = req.body;
   try {
+    console.log(req.body);
+    // resolvers = JSON.stringify(schema)
+    console.log('stringify', resolvers);
+    resolvers = schema.concat('\n resolvers;'); //need frontend to send resolvers instead of schema
+    resolvers = eval(resolvers);
+    console.log('eval', resolvers.Query.allBooks);
 
     const reqResolverJSON = {
       resolvers:
-        "Query: { allBooks: () => books, book: (parent, { id }) => books.find(book => book.id === id), allAuthors: () => authors, author: (parent, { id }) => authors.find(author => author.id === id), allUsers: () => users, user: (parent, { id }) => users.find(user => user.id === id),}, Mutation: { createBook: (parent, { title, authorId, genre }) => { const book = { id: String(books.length + 1), title, authorId, genre }; books.push(book); return book; }, updateBook: (parent, { id, title, authorId, genre }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const book = { ...books[bookIndex], title, authorId, genre }; books[bookIndex] = book; return book;}, deleteBook: (parent, { id }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const deletedBook = books.splice(bookIndex, 1)[0]; return deletedBook;}, createUser: (parent, { name, email, age, favoriteBookId }) => { const user = { id: String(users.length + 1), name, email, age, favoriteBookId }; users.push(user); return user;}, updateUser: (parent, { id, name, email, age, favoriteBookId }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const user = { ...users[userIndex], name, email, age, favoriteBookId }; users[userIndex] = user; return user;}, deleteUser: (parent, { id }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const deletedUser = users.splice(userIndex, 1)[0]; return deletedUser;},}, Book: { author: (parent) => authors.find(author => author.id === parent.authorId),},Author: { books: (parent) => books.filter(book => book.authorId === parent.id),},User: { favoriteBook: (parent) => {if (!parent.favoriteBookId) return null; return books.find(book => book.id === parent.favoriteBookId);},},",
+        'Query: { allBooks: () => books, book: (parent, { id }) => books.find(book => book.id === id), allAuthors: () => authors, author: (parent, { id }) => authors.find(author => author.id === id), allUsers: () => users, user: (parent, { id }) => users.find(user => user.id === id),}, Mutation: { createBook: (parent, { title, authorId, genre }) => { const book = { id: String(books.length + 1), title, authorId, genre }; books.push(book); return book; }, updateBook: (parent, { id, title, authorId, genre }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const book = { ...books[bookIndex], title, authorId, genre }; books[bookIndex] = book; return book;}, deleteBook: (parent, { id }) => { const bookIndex = books.findIndex(book => book.id === id); if (bookIndex === -1) throw new Error(`No book with id ${id}`); const deletedBook = books.splice(bookIndex, 1)[0]; return deletedBook;}, createUser: (parent, { name, email, age, favoriteBookId }) => { const user = { id: String(users.length + 1), name, email, age, favoriteBookId }; users.push(user); return user;}, updateUser: (parent, { id, name, email, age, favoriteBookId }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const user = { ...users[userIndex], name, email, age, favoriteBookId }; users[userIndex] = user; return user;}, deleteUser: (parent, { id }) => { const userIndex = users.findIndex(user => user.id === id); if (userIndex === -1) throw new Error(`No user with id ${id}`); const deletedUser = users.splice(userIndex, 1)[0]; return deletedUser;},}, Book: { author: (parent) => authors.find(author => author.id === parent.authorId),},Author: { books: (parent) => books.filter(book => book.authorId === parent.id),},User: { favoriteBook: (parent) => {if (!parent.favoriteBookId) return null; return books.find(book => book.id === parent.favoriteBookId);},},',
     };
 
     const reqResolver = { resolvers: JSON.parse(reqResolverJSON.resolvers) };
@@ -25,11 +29,11 @@ export const generateResolverTests = async (
 
     const sorter = () => {
       for (let key of reqResolver.resolvers) {
-        if (key === "Query") {
+        if (key === 'Query') {
           for (let funcName of key) {
             onlyQueries.push({ funcName: key[funcName] });
           }
-        } else if (key === "Mutation") {
+        } else if (key === 'Mutation') {
           for (let funcName of key) {
             onlyMutations.push({ funcName: key[funcName] });
           }

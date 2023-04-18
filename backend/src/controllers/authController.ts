@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { prisma } from '..';
 import { validateRegister } from '../utils/validateRegister';
 import '../utils/types';
+import { COOKIE_NAME } from '../utils/constants';
 
 export const authenticateRoute = (
   req: Request,
@@ -48,6 +49,7 @@ export const register = async (
     //if they dont make new thing
     const newUser = await prisma.user.create({
       data: {
+        //@ts-ignore
         name,
         email,
         password: await bcrypt.hash(password, 12),
@@ -87,6 +89,7 @@ export const login = async (
     if (user && (await bcrypt.compare(password, user.password))) {
       req.session.userId = user.id;
       res.status(200).json({
+        //@ts-ignore
         name: user.name,
         email: user.email,
       });
@@ -97,4 +100,26 @@ export const login = async (
   } catch (err) {
     return next(err);
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  return new Promise<boolean>((resolve, reject) => {
+    //destroy the session(server) and clear the cookie(client)
+    req.session.destroy((err) => {
+      res.clearCookie(COOKIE_NAME);
+      if (err) {
+        console.error(err);
+        reject(err);
+        return;
+      }
+      resolve(true);
+    });
+  })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: 'Error occurred while logging out.' });
+    });
 };
