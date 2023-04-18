@@ -120,6 +120,7 @@ const Test = (props: Props) => {
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;
   };
+
   const handleEditorDidMountRight = (editor: any, monaco: any) => {
     outputRef.current = editor;
   };
