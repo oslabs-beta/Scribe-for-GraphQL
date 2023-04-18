@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { prisma } from '..';
 import { validateRegister } from '../utils/validateRegister';
 import '../utils/types';
+import { COOKIE_NAME } from '../utils/constants';
 
 export const authenticateRoute = (
   req: Request,
@@ -99,4 +100,26 @@ export const login = async (
   } catch (err) {
     return next(err);
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  return new Promise<boolean>((resolve, reject) => {
+    //destroy the session(server) and clear the cookie(client)
+    req.session.destroy((err) => {
+      res.clearCookie(COOKIE_NAME);
+      if (err) {
+        console.error(err);
+        reject(err);
+        return;
+      }
+      resolve(true);
+    });
+  })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: 'Error occurred while logging out.' });
+    });
 };
