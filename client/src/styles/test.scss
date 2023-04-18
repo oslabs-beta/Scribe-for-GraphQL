@@ -13,6 +13,8 @@ $color-neutral-dk: #444;
 }
 
 .dropdown-menu {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
 
   .left-dropdown {
@@ -28,7 +30,7 @@ $color-neutral-dk: #444;
 }
 
 .test-button {
-  background: linear-gradient(180deg, rgba(30, 30, 30, 1) 30%, #b696ad 100%);
+  background: linear-gradient(180deg, rgba(30, 30, 30, 1) 20%, #b696ad 100%);
   margin-bottom: 1rem;
   border-radius: 1rem;
   border-style: none;

@@ -13,14 +13,14 @@ import { Editor } from '@monaco-editor/react';
 import TestNavBar from '../components/TestNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
+import { fontSize } from '@mui/system';
 
 type Props = {};
 
 const Test = (props: Props) => {
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  const [rightSelectedOption, setRightSelectedOption] = useState('');
-  const [leftSelectedOption, setLeftSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -28,6 +28,7 @@ const Test = (props: Props) => {
   );
 
   const editorRef = useRef(null);
+  const outputRef = useRef(null);
 
   ///////////
   useEffect(() => {
@@ -56,7 +57,7 @@ const Test = (props: Props) => {
 
       let test;
 
-      switch (rightSelectedOption) {
+      switch (selectedOption) {
         case 'type-tests':
           test = await generateTypeTest(input);
           break;
@@ -99,11 +100,12 @@ const Test = (props: Props) => {
       window.alert(message);
     }
   };
-  const handleLeftDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLeftSelectedOption(event.target.value);
+  const handleDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
   };
-  const handleRightDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRightSelectedOption(event.target.value);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(outputTest);
   };
 
   // const saveTest = () => {
@@ -115,18 +117,12 @@ const Test = (props: Props) => {
   //   );
   // };
 
-  const handleEditorDidMount = (editor: any, monaco: any) => {
+  const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;
   };
-  const getEditorValue = () => {
-    //@ts-ignore
-    // console.log('monoco value: ', convertToJSON(editorRef.current.getValue()));
-    // eval(`(${editorRef.current.getValue()})`)
-    //@ts-ignore
-    generateTest(editorRef.current.getValue());
+  const handleEditorDidMountRight = (editor: any, monaco: any) => {
+    outputRef.current = editor;
   };
-
-  const handleSave = () => {};
 
   return (
     <>
@@ -146,25 +142,11 @@ const Test = (props: Props) => {
         }}
       >
         <div className='editor-container' style={{ width: editorWidth }}>
-          <div className='dropdown-menu'>
-            <select
-              className='left-dropdown'
-              value={leftSelectedOption}
-              onChange={handleLeftDropDown}
-            >
-              <option className='dropdown-option' value='schema'>
-                Schema
-              </option>
-              <option className='dropdown-option' value='resolvers'>
-                Resolvers
-              </option>
-            </select>
-          </div>
           <Editor
             height='500px'
             width='100%'
             flex-basis='100%'
-            onMount={handleEditorDidMount}
+            onMount={handleEditorDidMountLeft}
             theme='vs-dark'
             language='javascript'
             options={{
@@ -176,8 +158,8 @@ const Test = (props: Props) => {
           <div className='dropdown-menu'>
             <select
               className='left-dropdown'
-              value={rightSelectedOption}
-              onChange={handleRightDropDown}
+              value={selectedOption}
+              onChange={handleDropDown}
             >
               <option className='dropdown-option' value='type-tests'>
                 Type-Tests
@@ -189,14 +171,20 @@ const Test = (props: Props) => {
                 Integration Tests
               </option>
             </select>
+            <button>
+              <ContentCopyIcon sx={{ color: 'white' }} onClick={handleCopy} />
+            </button>
           </div>
           <Editor
             height='500px'
             width='100%'
             flex-basis='100%'
+            onMount={handleEditorDidMountRight}
             theme='vs-dark'
             language='javascript'
             value={outputTest}
+            //@ts-ignore
+            onChange={() => setOutputTest(outputRef.current.getValue())}
             options={{
               wordWrap: 'on',
             }}
