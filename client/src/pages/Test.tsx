@@ -14,6 +14,7 @@ import TestNavBar from '../components/TestNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
 import { fontSize } from '@mui/system';
+import { Typography } from '@mui/material';
 
 type Props = {};
 
@@ -119,9 +120,28 @@ const Test = (props: Props) => {
 
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;
+    monaco.editor.defineTheme('my-theme', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [],
+      colors: {
+        'editor.background': '#6c6185',
+        'editor.color': 'white',
+      },
+    });
   };
+
   const handleEditorDidMountRight = (editor: any, monaco: any) => {
     outputRef.current = editor;
+    monaco.editor.defineTheme('my-theme2', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [],
+      colors: {
+        'editor.background': '#6c6185',
+        'editor.color': 'white',
+      },
+    });
   };
 
   return (
@@ -142,15 +162,21 @@ const Test = (props: Props) => {
         }}
       >
         <div className='editor-container' style={{ width: editorWidth }}>
+          <Typography sx={{ color: 'white', mb: '16px', ml: '5px' }}>
+            Input
+          </Typography>
           <Editor
             height='500px'
             width='100%'
             flex-basis='100%'
             onMount={handleEditorDidMountLeft}
-            theme='vs-dark'
+            theme='my-theme'
             language='javascript'
             options={{
               wordWrap: 'on',
+              minimap: {
+                enabled: false,
+              },
             }}
           />
         </div>
@@ -180,13 +206,16 @@ const Test = (props: Props) => {
             width='100%'
             flex-basis='100%'
             onMount={handleEditorDidMountRight}
-            theme='vs-dark'
             language='javascript'
+            theme='my-theme2'
             value={outputTest}
             //@ts-ignore
             onChange={() => setOutputTest(outputRef.current.getValue())}
             options={{
               wordWrap: 'on',
+              minimap: {
+                enabled: false,
+              },
             }}
           />
         </div>

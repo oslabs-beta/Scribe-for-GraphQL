@@ -1,5 +1,5 @@
 $color-primary: #6c6185;
-$color-secondary: #ffcad4;
+$color-secondary: #dbb0c1;
 $color-neutral-lt: #fff;
 $color-neutral-med: #ddd;
 $color-neutral-dk: #444;
@@ -9,7 +9,7 @@ $color-neutral-dk: #444;
   flex-basis: auto;
   border-radius: 15px;
   padding: 8px;
-  background: linear-gradient(180deg, #b696ad 0%, rgba(30, 30, 30, 1) 7%);
+  background: linear-gradient(180deg, $color-secondary 0%, $color-primary 8%);
 }
 
 .dropdown-menu {
@@ -30,7 +30,11 @@ $color-neutral-dk: #444;
 }
 
 .test-button {
-  background: linear-gradient(180deg, rgba(30, 30, 30, 1) 20%, #b696ad 100%);
+  background: linear-gradient(
+    180deg,
+    $color-primary 50%,
+    $color-secondary 100%
+  );
   margin-bottom: 1rem;
   border-radius: 1rem;
   border-style: none;
