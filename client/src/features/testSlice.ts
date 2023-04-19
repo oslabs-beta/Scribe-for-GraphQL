@@ -40,6 +40,7 @@ export const saveTests = createAsyncThunk(
   'tests/save',
   async (testData, { rejectWithValue }) => {
     try {
+      console.log('incoming test data: ', testData);
       return await save(testData);
     } catch (err: any) {
       const message =

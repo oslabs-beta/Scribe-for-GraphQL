@@ -17,7 +17,7 @@ type Props = {};
 const Test = (props: Props) => {
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState('type-tests');
 
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -97,21 +97,25 @@ const Test = (props: Props) => {
       window.alert(message);
     }
   };
-  const handleDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(outputTest);
   };
 
   const saveTest = () => {
-    dispatch(
-      saveTests({
-        test: outputTest, // value of second editor
-        testType: selectedOption, //whatever option the user has selected in the drop down
-      })
-    );
+    //@ts-ignore
+    if (!outputRef.current.getValue())
+      window.alert('Unable to save empty test');
+    else {
+      console.log('selected option: ', selectedOption);
+      dispatch(
+        saveTests({
+          test: outputTest,
+          testType: selectedOption,
+        })
+      );
+      window.alert('saved test');
+    }
   };
 
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
@@ -157,7 +161,7 @@ const Test = (props: Props) => {
             <select
               className='left-dropdown'
               value={selectedOption}
-              onChange={handleDropDown}
+              onChange={(e) => setSelectedOption(e.target.value)}
             >
               <option className='dropdown-option' value='type-tests'>
                 Type-Tests
@@ -214,7 +218,9 @@ const Test = (props: Props) => {
         >
           Generate
         </button>
-        <button className='test-button'>Save</button>
+        <button className='test-button' onClick={saveTest}>
+          Save
+        </button>
       </Box>
     </>
   );
