@@ -3,17 +3,14 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {
-  generateTypeTest,
-  generateUnitTest,
-  saveTests,
-} from '../services/testService';
+import { generateTypeTest, generateUnitTest } from '../services/testService';
 import Swal from 'sweetalert2';
 import { Editor } from '@monaco-editor/react';
 import TestNavBar from '../components/TestNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
 import { fontSize } from '@mui/system';
+import { saveTests } from '../features/testSlice';
 
 type Props = {};
 
@@ -108,14 +105,14 @@ const Test = (props: Props) => {
     navigator.clipboard.writeText(outputTest);
   };
 
-  // const saveTest = () => {
-  //   dispatch(
-  //     saveTests({
-  //       test: outputTest, // value of second editor
-  //       testType: RightselectedOption, //whatever option the user has selected in the drop down
-  //     })
-  //   );
-  // };
+  const saveTest = () => {
+    dispatch(
+      saveTests({
+        test: outputTest, // value of second editor
+        testType: selectedOption, //whatever option the user has selected in the drop down
+      })
+    );
+  };
 
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;

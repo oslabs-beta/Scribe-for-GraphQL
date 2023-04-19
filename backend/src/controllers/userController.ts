@@ -78,6 +78,8 @@ export const saveTest = async (
       },
     });
 
+    console.log('SAVED TEST: ');
+
     const cachedTestsString = await redis.get(`tests-${req.session.userId}`);
     if (cachedTestsString) {
       const cachedTests = JSON.parse(cachedTestsString);
