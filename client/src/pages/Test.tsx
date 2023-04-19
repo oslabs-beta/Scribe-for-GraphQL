@@ -107,6 +107,23 @@ const Test = (props: Props) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(outputTest);
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'success',
+      title: 'Tests copied to clipboard',
+    });
   };
 
   // const saveTest = () => {
@@ -125,23 +142,16 @@ const Test = (props: Props) => {
       inherit: true,
       rules: [],
       colors: {
-        'editor.background': '#6c6185',
-        'editor.color': 'white',
+        'editor.background': '#49405e',
+        'panel.border': '#ffc600',
+        'terminal.background': '#122738',
       },
     });
+    monaco.editor.setTheme('my-theme');
   };
 
-  const handleEditorDidMountRight = (editor: any, monaco: any) => {
+  const handleEditorDidMountRight = (editor: any) => {
     outputRef.current = editor;
-    monaco.editor.defineTheme('my-theme2', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [],
-      colors: {
-        'editor.background': '#6c6185',
-        'editor.color': 'white',
-      },
-    });
   };
 
   return (
@@ -168,9 +178,7 @@ const Test = (props: Props) => {
           <Editor
             height='500px'
             width='100%'
-            flex-basis='100%'
             onMount={handleEditorDidMountLeft}
-            theme='my-theme'
             language='javascript'
             options={{
               wordWrap: 'on',
@@ -191,23 +199,25 @@ const Test = (props: Props) => {
                 Type-Tests
               </option>
               <option className='dropdown-option' value='unit-tests'>
-                Resolver Unit tests
+                Resolver Unit Tests
               </option>
               <option className='dropdown-option' value='integration-tests'>
                 Integration Tests
               </option>
             </select>
             <button>
-              <ContentCopyIcon sx={{ color: 'white' }} onClick={handleCopy} />
+              <ContentCopyIcon
+                id='copy-button'
+                sx={{ color: 'white' }}
+                onClick={handleCopy}
+              />
             </button>
           </div>
           <Editor
             height='500px'
             width='100%'
-            flex-basis='100%'
             onMount={handleEditorDidMountRight}
             language='javascript'
-            theme='my-theme2'
             value={outputTest}
             //@ts-ignore
             onChange={() => setOutputTest(outputRef.current.getValue())}

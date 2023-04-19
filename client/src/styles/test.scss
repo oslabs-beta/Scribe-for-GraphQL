@@ -9,7 +9,43 @@ $color-neutral-dk: #444;
   flex-basis: auto;
   border-radius: 15px;
   padding: 8px;
-  background: linear-gradient(180deg, $color-secondary 0%, $color-primary 8%);
+  background: linear-gradient(180deg, $color-secondary 0%, #49405e 8%);
+  -webkit-animation: swing-in-top-fwd 0.5s
+    cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@-webkit-keyframes swing-in-top-fwd {
+  0% {
+    -webkit-transform: rotateX(-100deg);
+    transform: rotateX(-100deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+@keyframes swing-in-top-fwd {
+  0% {
+    -webkit-transform: rotateX(-100deg);
+    transform: rotateX(-100deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 1;
+  }
 }
 
 .dropdown-menu {
@@ -33,7 +69,7 @@ $color-neutral-dk: #444;
   background: linear-gradient(
     180deg,
     $color-primary 50%,
-    $color-secondary 100%
+    $color-secondary 120%
   );
   margin-bottom: 1rem;
   border-radius: 1rem;
@@ -65,4 +101,16 @@ $color-neutral-dk: #444;
   .test-button {
     padding: 0 2.6rem;
   }
+}
+
+#copy-button:hover {
+  border: 2px white solid;
+  border-radius: 5px;
+}
+
+#copy-button:active {
+  transform: scale(0.98);
+  /* Scaling button to 0.98 to its original size */
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+  /* Lowering the shadow */
 }
