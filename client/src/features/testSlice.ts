@@ -16,6 +16,11 @@ interface testState {
   message: string | unknown;
 }
 
+interface saveTestInput {
+  test: string;
+  testType: string;
+}
+
 const initialState: testState = {
   tests: [],
   isError: false,
@@ -38,7 +43,7 @@ export const getTests = createAsyncThunk(
 
 export const saveTests = createAsyncThunk(
   'tests/save',
-  async (testData, { rejectWithValue }) => {
+  async (testData: saveTestInput, { rejectWithValue }) => {
     try {
       console.log('incoming test data: ', testData);
       return await save(testData);
