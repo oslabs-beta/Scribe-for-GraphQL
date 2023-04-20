@@ -14,17 +14,17 @@ describe("Schema Types Are Correct", () => {
     expect(type.getFields().title.type.name).toBe("String");
     expect(type.getFields().author.type.name).toBe("Author");
     expect(type.getFields().genre.type.name).toBe("String");
-  }),
-    test("Author should have the correct types", () => {
-      const type = schema.getType("Author");
-      expect(type).toBeDefined();
+  });
+  test("Author should have the correct types", () => {
+    const type = schema.getType("Author");
+    expect(type).toBeDefined();
 
-      expect(type.getFields().id.type.name).toBe("ID");
-      expect(type.getFields().name.type.name).toBe("String");
-      expect(JSON.stringify(type.getFields().books.type)).toBe(
-        JSON.stringify("[Book]")
-      );
-    });
+    expect(type.getFields().id.type.name).toBe("ID");
+    expect(type.getFields().name.type.name).toBe("String");
+    expect(JSON.stringify(type.getFields().books.type)).toBe(
+      JSON.stringify("[Book]")
+    );
+  });
   test("User should have the correct types", () => {
     const type = schema.getType("User");
     expect(type).toBeDefined();
@@ -51,5 +51,28 @@ describe("Schema Types Are Correct", () => {
       JSON.stringify("[User]")
     );
     expect(type.getFields().user.type.name).toBe("User");
+  });
+  test("Mutation should have the correct types", () => {
+    const type = schema.getType("Mutation");
+    expect(type).toBeDefined();
+
+    expect(JSON.stringify(type.getFields().createBook.type)).toBe(
+      JSON.stringify("Book!")
+    );
+    expect(JSON.stringify(type.getFields().updateBook.type)).toBe(
+      JSON.stringify("Book!")
+    );
+    expect(JSON.stringify(type.getFields().deleteBook.type)).toBe(
+      JSON.stringify("Book!")
+    );
+    expect(JSON.stringify(type.getFields().createUser.type)).toBe(
+      JSON.stringify("User!")
+    );
+    expect(JSON.stringify(type.getFields().updateUser.type)).toBe(
+      JSON.stringify("User!")
+    );
+    expect(JSON.stringify(type.getFields().deleteUser.type)).toBe(
+      JSON.stringify("User!")
+    );
   });
 });

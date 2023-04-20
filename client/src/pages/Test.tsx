@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -73,7 +72,6 @@ const Test = (props: Props) => {
           test = await generateTypeTest(input);
       }
       // const test = await generateTypeTest(input);
-
       console.log('test ', test);
       if (test.message) {
         const Toast = Swal.mixin({
@@ -101,6 +99,7 @@ const Test = (props: Props) => {
       window.alert(message);
     }
   };
+
   const handleDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
@@ -172,7 +171,9 @@ const Test = (props: Props) => {
         }}
       >
         <div className='editor-container' style={{ width: editorWidth }}>
-          <Typography sx={{ color: 'white', mb: '16px', ml: '5px' }}>
+          <Typography
+            sx={{ color: 'white', mb: '12px', ml: '5px', fontSize: 'large' }}
+          >
             Input
           </Typography>
           <Editor
