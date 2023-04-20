@@ -3,24 +3,21 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {
-  generateTypeTest,
-  generateUnitTest,
-  saveTests,
-} from '../services/testService';
+import { generateTypeTest, generateUnitTest } from '../services/testService';
 import Swal from 'sweetalert2';
 import { Editor } from '@monaco-editor/react';
 import TestNavBar from '../components/TestNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
 import { fontSize } from '@mui/system';
+import { saveTests } from '../features/testSlice';
 
 type Props = {};
 
 const Test = (props: Props) => {
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState('type-tests');
 
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -100,22 +97,26 @@ const Test = (props: Props) => {
       window.alert(message);
     }
   };
-  const handleDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(outputTest);
   };
 
-  // const saveTest = () => {
-  //   dispatch(
-  //     saveTests({
-  //       test: outputTest, // value of second editor
-  //       testType: RightselectedOption, //whatever option the user has selected in the drop down
-  //     })
-  //   );
-  // };
+  const saveTest = () => {
+    //@ts-ignore
+    if (!outputRef.current.getValue())
+      window.alert('Unable to save empty test');
+    else {
+      console.log('selected option: ', selectedOption);
+      dispatch(
+        saveTests({
+          test: outputTest,
+          testType: selectedOption,
+        })
+      );
+      window.alert('saved test');
+    }
+  };
 
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;
@@ -160,7 +161,7 @@ const Test = (props: Props) => {
             <select
               className='left-dropdown'
               value={selectedOption}
-              onChange={handleDropDown}
+              onChange={(e) => setSelectedOption(e.target.value)}
             >
               <option className='dropdown-option' value='type-tests'>
                 Type-Tests
@@ -217,7 +218,9 @@ const Test = (props: Props) => {
         >
           Generate
         </button>
-        <button className='test-button'>Save</button>
+        <button className='test-button' onClick={saveTest}>
+          Save
+        </button>
       </Box>
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { logout } from '../features/authSlice';
 const TestNavBar = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
-  console.log('user: ', user);
+  const route = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -59,12 +59,12 @@ const TestNavBar = () => {
               </span>
             </Link>
             <Link
-              to='/tests'
+              to={route.pathname === '/test' ? '/tests' : '/test'}
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
               onClick={closeMobileMenu}
             >
               <span className='nav-link-span'>
-                <span className='u-nav'>Tests</span>
+                {route.pathname === '/test' ? 'Tests' : 'Testing Page'}
               </span>
             </Link>
             {/* <Link
