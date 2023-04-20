@@ -49,7 +49,9 @@ export const generateResolverTests = async (
     };
 
     const generateTests = () => {
-      let tests: String[] = [];
+      let tests = {};
+      let finalQueryIntTests: any = [];
+      let finalMutationIntTests: any = [];
       sorter();
       console.log(onlyQueries, onlyMutations, onlyResolvers);
       const QueryIntegrationTestGenerator = (onlyQueries: Object[]) => {
@@ -84,7 +86,7 @@ describe("queries", () => {`;
             let name = fields.funcName;
             return `
   test("${name}_query returns the correct values", async () => {
-    const {query} = createTestServer({
+    const { query } = createTestServer({
         /*CONTEXT OBJECT - MOCK QUERY/RESOLVER CONTEXT REQUIREMENTS */
       });
     const res = await query({query: ${name}_query});
@@ -102,21 +104,67 @@ describe("queries", () => {`;
         let queryEndBoiler: string = ``;
         let queryMid: string = ``;
         console.log('TESTS', queryIntegrationTests);
-        tests.push(queryIntegrationTests.join('').toString());
+        finalQueryIntTests.push(queryIntegrationTests.join('').toString());
+        //@ts-ignore
+        tests['queryIntTests'] = finalQueryIntTests;
       };
 
       const MutationTestGenerator = (onlyMutations: Object[]) => {
         let mutationTests: string[] = [];
-        let mutationFrontBoiler: string = ``;
-        mutationTests.push(mutationFrontBoiler);
+        let mutationFrontBoiler: string = `//-> npm install
+//-> npm install
+const { expect } = require("@jest/globals");
+const gql = require("graphql-tag");
+const createTestServer = require(/*path to testServer*/);`;
+
+        let mutationDefinitions = Object.entries(onlyMutations)
+          .map(([typeName, fields]) => {
+            //@ts-ignore
+            //@ts-ignore
+            let name = fields.funcName;
+            console.log('hi', name);
+            //@ts-ignore
+            return `
+const ${name}_mutation = gql\`
+mutation {
+    ${name}(/*INPUT*/) {
+      /*DATA TO BE SENT BACK*/
+    }
+}
+\`
+        `;
+          })
+          .join('');
+        console.log('mutationDefinitions', mutationDefinitions);
+        let testFrontBoiler: string = `
+describe("mutations", () => {
+        `;
+        let integrationTests = Object.entries(onlyQueries)
+          .map(([typeName, fields]) => {
+            //@ts-ignore
+            let name = fields.funcName;
+            return `
+test("${name}_mutation mutates data correctly and returns the correct values", async () => {
+  const { mutate } = createTestServer({
+      /* CONTEXT OBJECT - MOCK MUTATION CONTEXT REQUIREMENTS HERE */
+    });
+  const res = await mutate({query: ${name}_mutation});
+  expect(res).toMatchSnapshot(); // -> first test run will always pass
+})`;
+          })
+          .join('');
+        let testEndBoiler: string = `
+})`;
         let mutationEndBoiler: string = ``;
-        /*
-
-        Test Generation Logic Here
-
-        */
+        mutationTests.push(mutationFrontBoiler);
+        mutationTests.push(mutationDefinitions);
+        mutationTests.push(testFrontBoiler);
+        mutationTests.push(integrationTests);
+        mutationTests.push(testEndBoiler);
         mutationTests.push(mutationEndBoiler);
-        tests.push(mutationTests.toString());
+        finalMutationIntTests.push(mutationTests.toString());
+        //@ts-ignore
+        tests['mutationIntTests'] = finalMutationIntTests;
       };
 
       const ResolverTestGenerator = (onlyResolvers: Object[]) => {
@@ -130,9 +178,10 @@ describe("queries", () => {`;
 
         */
         resolverTests.push(resolverEndBoiler);
-        tests.push(resolverTests.toString());
       };
       QueryIntegrationTestGenerator(onlyQueries);
+      MutationTestGenerator(onlyMutations);
+      console.log('TESTS OBJECT', tests);
       return tests.toString();
     };
 
