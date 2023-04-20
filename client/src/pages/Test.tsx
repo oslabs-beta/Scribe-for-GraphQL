@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -9,7 +8,7 @@ import { Editor } from '@monaco-editor/react';
 import TestNavBar from '../components/TestNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
-import { fontSize } from '@mui/system';
+import { Typography } from '@mui/material';
 import { saveTests } from '../features/testSlice';
 
 type Props = {};
@@ -17,7 +16,7 @@ type Props = {};
 const Test = (props: Props) => {
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  const [selectedOption, setSelectedOption] = useState('type-tests');
+  const [selectedOption, setSelectedOption] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -69,7 +68,6 @@ const Test = (props: Props) => {
           test = await generateTypeTest(input);
       }
       // const test = await generateTypeTest(input);
-
       console.log('test ', test);
       if (test.message) {
         const Toast = Swal.mixin({
@@ -100,13 +98,45 @@ const Test = (props: Props) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(outputTest);
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'success',
+      title: 'Tests copied to clipboard',
+    });
   };
 
   const saveTest = () => {
     //@ts-ignore
-    if (!outputRef.current.getValue())
-      window.alert('Unable to save empty test');
-    else {
+    if (!outputRef.current.getValue()) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: 'error',
+        title: 'Unable to save empty test',
+      });
+    } else {
       console.log('selected option: ', selectedOption);
       dispatch(
         saveTests({
@@ -114,15 +144,40 @@ const Test = (props: Props) => {
           testType: selectedOption,
         })
       );
-      window.alert('saved test');
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Tests Saved',
+      });
     }
   };
 
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;
+    monaco.editor.defineTheme('my-theme', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [],
+      colors: {
+        'editor.background': '#49405e',
+        'editor.lineHighlightBorder': '#B6B6B6',
+      },
+    });
+    monaco.editor.setTheme('my-theme');
   };
 
-  const handleEditorDidMountRight = (editor: any, monaco: any) => {
+  const handleEditorDidMountRight = (editor: any) => {
     outputRef.current = editor;
   };
 
@@ -144,15 +199,21 @@ const Test = (props: Props) => {
         }}
       >
         <div className='editor-container' style={{ width: editorWidth }}>
+          <Typography
+            sx={{ color: 'white', mb: '12px', ml: '5px', fontSize: 'large' }}
+          >
+            Input
+          </Typography>
           <Editor
             height='500px'
             width='100%'
-            flex-basis='100%'
             onMount={handleEditorDidMountLeft}
-            theme='vs-dark'
             language='javascript'
             options={{
               wordWrap: 'on',
+              minimap: {
+                enabled: false,
+              },
             }}
           />
         </div>
@@ -167,28 +228,33 @@ const Test = (props: Props) => {
                 Type-Tests
               </option>
               <option className='dropdown-option' value='unit-tests'>
-                Resolver Unit tests
+                Resolver Unit Tests
               </option>
               <option className='dropdown-option' value='integration-tests'>
                 Integration Tests
               </option>
             </select>
             <button>
-              <ContentCopyIcon sx={{ color: 'white' }} onClick={handleCopy} />
+              <ContentCopyIcon
+                id='copy-button'
+                sx={{ color: 'white' }}
+                onClick={handleCopy}
+              />
             </button>
           </div>
           <Editor
             height='500px'
             width='100%'
-            flex-basis='100%'
             onMount={handleEditorDidMountRight}
-            theme='vs-dark'
             language='javascript'
             value={outputTest}
             //@ts-ignore
             onChange={() => setOutputTest(outputRef.current.getValue())}
             options={{
               wordWrap: 'on',
+              minimap: {
+                enabled: false,
+              },
             }}
           />
         </div>

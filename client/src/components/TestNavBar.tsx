@@ -5,6 +5,8 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../app/store';
 import { logout } from '../features/authSlice';
+import logo from '../images/logo.png';
+
 const TestNavBar = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
@@ -39,9 +41,10 @@ const TestNavBar = () => {
           <div className='nav left'>
             <span className='gradient skew'>
               <h1 className='logo un-skew'>
-                <a href='#home'>Graph-Scribe</a>
-                <AutoGraphIcon style={{ marginLeft: '1.5rem' }} />
-                <span style={{ fontSize: '8px' }}>future logo here</span>
+                <div id='logo-container'>
+                  <Link to='/'>Graph-Scribe</Link>
+                  <img id='logo' src={logo} />
+                </div>
               </h1>
             </span>
             <button id='menu' className='btn-nav' onClick={toggleMobileMenu}>
