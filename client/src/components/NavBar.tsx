@@ -44,8 +44,6 @@ const NavBar = () => {
                   <Link to='/'>Graph-Scribe</Link>
                   <img id='logo' src={logo} />
                 </div>
-
-                {/* <img id='logo' src={logo} /> */}
               </h1>
             </span>
             <button id='menu' className='btn-nav' onClick={toggleMobileMenu}>

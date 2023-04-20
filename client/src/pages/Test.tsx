@@ -2,18 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {
-  generateTypeTest,
-  generateUnitTest,
-  saveTests,
-} from '../services/testService';
+import { generateTypeTest, generateUnitTest } from '../services/testService';
 import Swal from 'sweetalert2';
 import { Editor } from '@monaco-editor/react';
 import TestNavBar from '../components/TestNavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
-import { fontSize } from '@mui/system';
 import { Typography } from '@mui/material';
+import { saveTests } from '../features/testSlice';
 
 type Props = {};
 
@@ -100,10 +96,6 @@ const Test = (props: Props) => {
     }
   };
 
-  const handleDropDown = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
-
   const handleCopy = () => {
     navigator.clipboard.writeText(outputTest);
 
@@ -125,14 +117,51 @@ const Test = (props: Props) => {
     });
   };
 
-  // const saveTest = () => {
-  //   dispatch(
-  //     saveTests({
-  //       test: outputTest, // value of second editor
-  //       testType: RightselectedOption, //whatever option the user has selected in the drop down
-  //     })
-  //   );
-  // };
+  const saveTest = () => {
+    //@ts-ignore
+    if (!outputRef.current.getValue()) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: 'error',
+        title: 'Unable to save empty test',
+      });
+    } else {
+      console.log('selected option: ', selectedOption);
+      dispatch(
+        saveTests({
+          test: outputTest,
+          testType: selectedOption,
+        })
+      );
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: 'success',
+        title: 'Tests Saved',
+      });
+    }
+  };
 
   const handleEditorDidMountLeft = (editor: any, monaco: any) => {
     editorRef.current = editor;
@@ -142,8 +171,7 @@ const Test = (props: Props) => {
       rules: [],
       colors: {
         'editor.background': '#49405e',
-        'panel.border': '#ffc600',
-        'terminal.background': '#122738',
+        'editor.lineHighlightBorder': '#B6B6B6',
       },
     });
     monaco.editor.setTheme('my-theme');
@@ -194,7 +222,7 @@ const Test = (props: Props) => {
             <select
               className='left-dropdown'
               value={selectedOption}
-              onChange={handleDropDown}
+              onChange={(e) => setSelectedOption(e.target.value)}
             >
               <option className='dropdown-option' value='type-tests'>
                 Type-Tests
@@ -256,7 +284,9 @@ const Test = (props: Props) => {
         >
           Generate
         </button>
-        <button className='test-button'>Save</button>
+        <button className='test-button' onClick={saveTest}>
+          Save
+        </button>
       </Box>
     </>
   );
