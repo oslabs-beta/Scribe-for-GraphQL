@@ -182,7 +182,9 @@ test("${name}_mutation mutates data correctly and returns the correct values", a
       QueryIntegrationTestGenerator(onlyQueries);
       MutationTestGenerator(onlyMutations);
       console.log('TESTS OBJECT', tests);
-      return tests.toString();
+      // return tests.toString();
+      //@ts-ignore
+      return tests['mutationIntTests'].toString();
     };
 
     return res.status(200).json(generateTests());
