@@ -6,13 +6,15 @@ $color-neutral-dk: #444;
 
 .editor-container {
   margin: 5px;
-  flex-basis: auto;
   border-radius: 15px;
   padding: 8px;
   background: linear-gradient(180deg, $color-secondary 0%, #49405e 8%);
   -webkit-animation: swing-in-top-fwd 0.5s
     cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
   animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  box-shadow: 10px 10px 40px -10px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 10px 10px 40px -10px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 40px -10px rgba(0, 0, 0, 0.75);
 }
 
 @-webkit-keyframes swing-in-top-fwd {
@@ -92,10 +94,15 @@ $color-neutral-dk: #444;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  box-shadow: 10px 10px 32px -9px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 10px 10px 32px -9px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 32px -9px rgba(0, 0, 0, 0.75);
 }
 
 .test-button:hover {
-  box-shadow: $color-primary 0 1px 30px;
+  -webkit-box-shadow: 0px 0px 46px 3px rgba(255, 202, 212, 1);
+  -moz-box-shadow: 0px 0px 46px 3px rgba(255, 202, 212, 1);
+  box-shadow: 0px 0px 46px 3px rgba(255, 202, 212, 1);
   transition-duration: 0.1s;
 }
 

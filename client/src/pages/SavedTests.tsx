@@ -1,3 +1,5 @@
+import { Editor } from '@monaco-editor/react';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../app/store';
@@ -22,6 +24,8 @@ const SavedTests = (props: Props) => {
 
   //type-tests
   let content;
+
+  let testing;
 
   if (testType === 'all-tests')
     content = (
@@ -52,7 +56,20 @@ const SavedTests = (props: Props) => {
           <option value='unit-tests'>Unit tests</option>
           <option value='integration-tests'>Integration tests</option>
         </select>
-        {content}
+        <Editor
+          height='500px'
+          width='50%'
+          language='javascript'
+          // value={tests[0].generated_test}
+          //@ts-ignore
+          options={{
+            wordWrap: 'on',
+            minimap: {
+              enabled: false,
+            },
+          }}
+        />
+        {/* {content} */}
       </div>
     </>
   );
