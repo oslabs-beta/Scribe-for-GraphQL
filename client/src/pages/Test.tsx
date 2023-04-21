@@ -171,7 +171,8 @@ const Test = (props: Props) => {
       rules: [],
       colors: {
         'editor.background': '#49405e',
-        'editor.lineHighlightBorder': '#B6B6B6',
+        'editor.lineHighlightBorder': '#44475A',
+        'editorCursor.foreground': '#ffffff',
       },
     });
     monaco.editor.setTheme('my-theme');
@@ -189,7 +190,9 @@ const Test = (props: Props) => {
           display: 'flex',
           justifyContent: 'space-evenly',
           flexWrap: 'wrap',
-          marginTop: '8rem',
+          gap: '4rem',
+          marginTop: '5rem',
+          padding: '2.5rem',
           /*flexDirection*/
           flexDirection:
             window.innerWidth > 900 || window.innerWidth > 600
@@ -263,7 +266,6 @@ const Test = (props: Props) => {
         sx={{
           display: 'flex',
           justifyContent: 'space-around',
-          mt: '1rem',
         }}
       >
         {/* <Button
