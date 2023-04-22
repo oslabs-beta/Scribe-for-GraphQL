@@ -1,3 +1,5 @@
+import { Editor } from '@monaco-editor/react';
+import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../app/store';
@@ -21,26 +23,21 @@ const SavedTests = (props: Props) => {
   }, []);
 
   //type-tests
-  let content;
+  let content: string = '';
 
-  if (testType === 'all-tests')
-    content = (
-      <div>
-        {tests.map((test: Test) => (
-          <div key={test.id}>{test.generated_test}</div>
-        ))}
-      </div>
-    );
-  else
-    content = (
-      <div>
-        {tests
-          .filter((test: Test) => test.test_type === testType)
-          .map((test: Test) => (
-            <div key={test.id}>{test.generated_test}</div>
-          ))}
-      </div>
-    );
+  let testing;
+
+  if (testType === 'all-tests') {
+    tests.forEach((test: Test) => {
+      content += `${test.generated_test}`;
+    });
+  } else {
+    tests
+      .filter((test) => test.generated_test === testType)
+      .forEach((test) => {
+        content += `${test.generated_test}`;
+      });
+  }
 
   return (
     <>
@@ -52,7 +49,19 @@ const SavedTests = (props: Props) => {
           <option value='unit-tests'>Unit tests</option>
           <option value='integration-tests'>Integration tests</option>
         </select>
-        {content}
+        <Editor
+          height='500px'
+          width='50%'
+          language='javascript'
+          value={content}
+          //@ts-ignore
+          options={{
+            wordWrap: 'on',
+            minimap: {
+              enabled: false,
+            },
+          }}
+        />
       </div>
     </>
   );
