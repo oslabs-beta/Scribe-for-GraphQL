@@ -12,6 +12,7 @@ const SavedTests = (props: Props) => {
   const { tests } = useSelector((state: RootState) => state.tests);
   const dispatch = useDispatch<AppDispatch>();
   const [testType, setTestType] = useState('all-tests');
+  const [content, setContent] = useState('');
   console.log('tests: ', tests);
 
   useEffect(() => {
@@ -22,29 +23,22 @@ const SavedTests = (props: Props) => {
     };
   }, []);
 
-  //type-tests
-  let content;
-
-  let testing;
-
-  if (testType === 'all-tests')
-    content = (
-      <div>
-        {tests.map((test: Test) => (
-          <div key={test.id}>{test.generated_test}</div>
-        ))}
-      </div>
-    );
-  else
-    content = (
-      <div>
-        {tests
-          .filter((test: Test) => test.test_type === testType)
-          .map((test: Test) => (
-            <div key={test.id}>{test.generated_test}</div>
-          ))}
-      </div>
-    );
+  useEffect(() => {
+    let newContent = '';
+    if (testType === 'all-tests') {
+      tests.forEach((test: Test) => {
+        newContent += `${test.generated_test}`;
+      });
+    } else {
+      tests
+        .filter((test) => test.test_type === testType)
+        .forEach((test) => {
+          console.log('FILTERED', test);
+          newContent += `${test.generated_test}`;
+        });
+    }
+    setContent(newContent);
+  }, [tests, testType]);
 
   return (
     <>
@@ -60,7 +54,7 @@ const SavedTests = (props: Props) => {
           height='500px'
           width='50%'
           language='javascript'
-          // value={tests[0].generated_test}
+          value={content}
           //@ts-ignore
           options={{
             wordWrap: 'on',
@@ -69,7 +63,6 @@ const SavedTests = (props: Props) => {
             },
           }}
         />
-        {/* {content} */}
       </div>
     </>
   );
