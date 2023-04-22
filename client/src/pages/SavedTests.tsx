@@ -12,6 +12,7 @@ const SavedTests = (props: Props) => {
   const { tests } = useSelector((state: RootState) => state.tests);
   const dispatch = useDispatch<AppDispatch>();
   const [testType, setTestType] = useState('all-tests');
+  const [content, setContent] = useState('');
   console.log('tests: ', tests);
 
   useEffect(() => {
@@ -22,22 +23,22 @@ const SavedTests = (props: Props) => {
     };
   }, []);
 
-  //type-tests
-  let content: string = '';
-
-  let testing;
-
-  if (testType === 'all-tests') {
-    tests.forEach((test: Test) => {
-      content += `${test.generated_test}`;
-    });
-  } else {
-    tests
-      .filter((test) => test.generated_test === testType)
-      .forEach((test) => {
-        content += `${test.generated_test}`;
+  useEffect(() => {
+    let newContent = '';
+    if (testType === 'all-tests') {
+      tests.forEach((test: Test) => {
+        newContent += `${test.generated_test}`;
       });
-  }
+    } else {
+      tests
+        .filter((test) => test.test_type === testType)
+        .forEach((test) => {
+          console.log('FILTERED', test);
+          newContent += `${test.generated_test}`;
+        });
+    }
+    setContent(newContent);
+  }, [tests, testType]);
 
   return (
     <>
