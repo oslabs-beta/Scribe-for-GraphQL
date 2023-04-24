@@ -16,7 +16,7 @@ type Props = {};
 const Test = (props: Props) => {
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState('type-tests');
 
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -208,7 +208,7 @@ const Test = (props: Props) => {
             Input
           </Typography>
           <Editor
-            height='650px'
+            height='620px'
             width='100%'
             onMount={handleEditorDidMountLeft}
             language='javascript'
@@ -246,7 +246,7 @@ const Test = (props: Props) => {
             </button>
           </div>
           <Editor
-            height='650px'
+            height='620px'
             width='100%'
             onMount={handleEditorDidMountRight}
             language='javascript'
