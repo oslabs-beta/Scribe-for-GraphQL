@@ -208,7 +208,7 @@ const Test = (props: Props) => {
             Input
           </Typography>
           <Editor
-            height='500px'
+            height='620px'
             width='100%'
             onMount={handleEditorDidMountLeft}
             language='javascript'
@@ -246,7 +246,7 @@ const Test = (props: Props) => {
             </button>
           </div>
           <Editor
-            height='500px'
+            height='620px'
             width='100%'
             onMount={handleEditorDidMountRight}
             language='javascript'

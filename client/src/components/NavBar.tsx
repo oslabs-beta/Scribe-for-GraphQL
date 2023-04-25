@@ -41,7 +41,7 @@ const NavBar = () => {
             <span className='gradient skew'>
               <h1 className='logo un-skew'>
                 <div id='logo-container'>
-                  <Link to='/'>Graph-Scribe</Link>
+                  <Link to='/'>Scribe</Link>
                   <img id='logo' src={logo} />
                 </div>
               </h1>
