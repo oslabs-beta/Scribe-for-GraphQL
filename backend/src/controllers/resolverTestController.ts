@@ -33,14 +33,12 @@ export const generateResolverTests = async (
         } else if (key === 'Mutation') {
           //@ts-ignore
           for (let funcName in resolvers[key]) {
-            // console.log('funcName', funcName)
             //@ts-ignore
             onlyMutations.push({ funcName: funcName });
           }
         } else {
           //@ts-ignore
           for (let funcName in resolvers[key]) {
-            // console.log('funcName', funcName)
             //@ts-ignore
             onlyResolvers.push({ funcName: funcName });
           }
@@ -64,7 +62,6 @@ const createTestServer = require(/*path to testServer*/);
         `;
         let queryDefinitions = Object.entries(onlyQueries)
           .map(([typeName, fields]) => {
-            //@ts-ignore
             //@ts-ignore
             let name = fields.funcName;
             console.log('hi', name);
@@ -101,8 +98,6 @@ describe("queries", () => {`;
         queryIntegrationTests.push(testFrontBoiler);
         queryIntegrationTests.push(integrationTests);
         queryIntegrationTests.push(testEndBoiler);
-        let queryEndBoiler: string = ``;
-        let queryMid: string = ``;
         console.log('TESTS', queryIntegrationTests);
         finalQueryIntTests.push(queryIntegrationTests.join('').toString());
         //@ts-ignore
@@ -120,6 +115,7 @@ const createTestServer = require(/*path to testServer*/);`;
         let mutationDefinitions = Object.entries(onlyMutations)
           .map(([typeName, fields]) => {
             //@ts-ignore
+            console.log(typeName, fields);
             //@ts-ignore
             let name = fields.funcName;
             console.log('hi', name);
