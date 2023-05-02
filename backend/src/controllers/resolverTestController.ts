@@ -8,16 +8,15 @@ export const generateResolverTests = async (
   let { schema, resolvers } = req.body;
   try {
     console.log(req.body);
-    // resolvers = JSON.stringify(schema)
     console.log('stringify', resolvers);
-    resolvers = resolvers.concat('\n resolvers;'); //need frontend to send resolvers instead of schema
+    resolvers = resolvers.concat('\n resolvers;');
     resolvers = eval(resolvers);
 
-    let onlyQueries: Object[] = []; //-> {Query: { arrow function: return , arrow function return , arrow function return, arrow function return}}
+    let onlyQueries: Object[] = [];
 
-    let onlyMutations: Object[] = []; //-> {Mutation: { arrow function: return , arrow function return , arrow function return, arrow function return}}
+    let onlyMutations: Object[] = [];
 
-    let onlyResolvers: Object[] = []; //-> {}
+    let onlyResolvers: Object[] = [];
 
     const sorter = () => {
       for (let key in resolvers) {
