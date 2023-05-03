@@ -67,12 +67,12 @@ const SavedTests = (props: Props) => {
   const list = tests.map((test) => (
     <li>
       <button
-        className='test-button'
+        className='saved-test-list'
         onClick={() => setContent(test.generated_test)}
       >
         {test.test_type}
       </button>
-      <button>X</button>
+      <button id='delete-btn'>-</button>
     </li>
   ));
 
@@ -123,8 +123,12 @@ const SavedTests = (props: Props) => {
           <option value='unit-tests'>Unit tests</option>
           <option value='integration-tests'>Integration tests</option>
         </select> */}
-        <ul id='test-list'>{list}</ul>
-        <div className='editor-container' style={{ width: '80%' }}>
+        <div id='test-list'>
+          <h1>Saved Tests</h1>
+          <ul>{list}</ul>
+        </div>
+
+        <div className='editor-container' style={{ width: '75%' }}>
           <div className='dropdown-menu'>
             {' '}
             <Typography
