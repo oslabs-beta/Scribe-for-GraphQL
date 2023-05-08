@@ -157,25 +157,48 @@ test("${name}_mutation mutates data correctly and returns the correct values", a
         mutationTests.push(integrationTests);
         mutationTests.push(testEndBoiler);
         mutationTests.push(mutationEndBoiler);
-        finalMutationIntTests.push(mutationTests.toString());
+        finalMutationIntTests.push(mutationTests.join('').toString());
         //@ts-ignore
         tests['mutationIntTests'] = finalMutationIntTests;
       };
 
       const ResolverTestGenerator = (onlyResolvers: Object[]) => {
         let resolverTests: string[] = [];
-        let resolverFrontBoiler: string = ``;
-        resolverTests.push(resolverFrontBoiler);
-        let resolverEndBoiler: string = ``;
+        let resolverFrontBoiler: string = `//-> npm install
+const { expect } = require("@jest/globals")
+const resolvers = require(/*path to resolvers*/)
+
+describe ('resolvers return the correct values', ()=> {`;
+
+        let resolverEndBoiler: string = `})`;
+
+        let resolverUnits = Object.entries(onlyResolvers)
+          .map(([typeName, fields]) => {
+            //@ts-ignore
+            let name = fields.funcName;
+            return `
+test('Resolver '${name}' works as intended, () => {
+  const result = resolvers.${name}(/*resolver mock parameters*/)
+            
+  expect(result).toEqual(/*expected result*/)
+        })`;
+          })
+          .join('');
+
         /*
 
         Test Generation Logic Here
 
         */
+        resolverTests.push(resolverFrontBoiler);
+        resolverTests.push(resolverUnits);
         resolverTests.push(resolverEndBoiler);
+        //@ts-ignore
+        tests['resolverUnitTests'] = resolverTests;
       };
       QueryIntegrationTestGenerator(onlyQueries);
       MutationTestGenerator(onlyMutations);
+      ResolverTestGenerator(onlyResolvers);
       console.log('TESTS OBJECT', tests);
       //@ts-ignore
       return tests['mutationIntTests'].toString();
