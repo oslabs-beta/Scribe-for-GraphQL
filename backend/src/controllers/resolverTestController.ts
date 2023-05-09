@@ -100,7 +100,7 @@ describe("queries", () => {`;
         console.log('TESTS', queryIntegrationTests);
         finalQueryIntTests.push(queryIntegrationTests.join('').toString());
         //@ts-ignore
-        tests['queryIntTests'] = finalQueryIntTests;
+        tests['queryIntTests'] = finalQueryIntTests.toString();
       };
 
       const MutationTestGenerator = (onlyMutations: Object[]) => {
@@ -137,13 +137,13 @@ describe("mutations", () => {
             //@ts-ignore
             let name = fields.funcName;
             return `
-test("${name}_mutation mutates data correctly and returns the correct values", async () => {
-  const { mutate } = createTestServer({
-      /* CONTEXT OBJECT - MOCK MUTATION CONTEXT REQUIREMENTS HERE */
-    });
-  const res = await mutate({query: ${name}_mutation});
-  expect(res).toMatchSnapshot(); // -> first test run will always pass
-})`;
+  test("${name}_mutation mutates data correctly and returns the correct values", async () => {
+    const { mutate } = createTestServer({
+        /* CONTEXT OBJECT - MOCK MUTATION CONTEXT REQUIREMENTS HERE */
+      });
+    const res = await mutate({query: ${name}_mutation});
+    expect(res).toMatchSnapshot(); // -> first test run will always pass
+  })`;
           })
           .join('');
         let testEndBoiler: string = `
@@ -157,7 +157,7 @@ test("${name}_mutation mutates data correctly and returns the correct values", a
         mutationTests.push(mutationEndBoiler);
         finalMutationIntTests.push(mutationTests.join('').toString());
         //@ts-ignore
-        tests['mutationIntTests'] = finalMutationIntTests;
+        tests['mutationIntTests'] = finalMutationIntTests.toString('');
       };
 
       const ResolverTestGenerator = (onlyResolvers: Object[]) => {
@@ -197,7 +197,7 @@ describe ('resolvers return the correct values', ()=> {`;
       MutationTestGenerator(onlyMutations); // -> dropdown: Mutation Mock Integration Tests | mutationIntTests
       ResolverTestGenerator(onlyResolvers); // -> dropdown: Resolver Unit Tests | resolverUnitTests
       //@ts-ignore
-      return tests;
+      return tests; //{'queryIntTests': [], 'mutationIntTests': [], 'resolverUnitTests': []}
     };
 
     return res.status(200).json(generateTests());
