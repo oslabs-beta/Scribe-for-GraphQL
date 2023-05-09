@@ -197,7 +197,7 @@ describe ('resolvers return the correct values', ()=> {`;
       MutationTestGenerator(onlyMutations); // -> dropdown: Mutation Mock Integration Tests | mutationIntTests
       ResolverTestGenerator(onlyResolvers); // -> dropdown: Resolver Unit Tests | resolverUnitTests
       //@ts-ignore
-      return tests['resolverUnitTests'].toString();
+      return tests;
     };
 
     return res.status(200).json(generateTests());
