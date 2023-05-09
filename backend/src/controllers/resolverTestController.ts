@@ -8,16 +8,15 @@ export const generateResolverTests = async (
   let { schema, resolvers } = req.body;
   try {
     console.log(req.body);
-    // resolvers = JSON.stringify(schema)
     console.log('stringify', resolvers);
-    resolvers = resolvers.concat('\n resolvers;'); //need frontend to send resolvers instead of schema
+    resolvers = resolvers.concat('\n resolvers;');
     resolvers = eval(resolvers);
 
-    let onlyQueries: Object[] = []; //-> {Query: { arrow function: return , arrow function return , arrow function return, arrow function return}}
+    let onlyQueries: Object[] = [];
 
-    let onlyMutations: Object[] = []; //-> {Mutation: { arrow function: return , arrow function return , arrow function return, arrow function return}}
+    let onlyMutations: Object[] = [];
 
-    let onlyResolvers: Object[] = []; //-> {}
+    let onlyResolvers: Object[] = [];
 
     const sorter = () => {
       for (let key in resolvers) {
@@ -33,14 +32,12 @@ export const generateResolverTests = async (
         } else if (key === 'Mutation') {
           //@ts-ignore
           for (let funcName in resolvers[key]) {
-            // console.log('funcName', funcName)
             //@ts-ignore
             onlyMutations.push({ funcName: funcName });
           }
         } else {
           //@ts-ignore
           for (let funcName in resolvers[key]) {
-            // console.log('funcName', funcName)
             //@ts-ignore
             onlyResolvers.push({ funcName: funcName });
           }
@@ -64,7 +61,6 @@ const createTestServer = require(/*path to testServer*/);
         `;
         let queryDefinitions = Object.entries(onlyQueries)
           .map(([typeName, fields]) => {
-            //@ts-ignore
             //@ts-ignore
             let name = fields.funcName;
             console.log('hi', name);
@@ -101,8 +97,6 @@ describe("queries", () => {`;
         queryIntegrationTests.push(testFrontBoiler);
         queryIntegrationTests.push(integrationTests);
         queryIntegrationTests.push(testEndBoiler);
-        let queryEndBoiler: string = ``;
-        let queryMid: string = ``;
         console.log('TESTS', queryIntegrationTests);
         finalQueryIntTests.push(queryIntegrationTests.join('').toString());
         //@ts-ignore
@@ -120,6 +114,7 @@ const createTestServer = require(/*path to testServer*/);`;
         let mutationDefinitions = Object.entries(onlyMutations)
           .map(([typeName, fields]) => {
             //@ts-ignore
+            console.log(typeName, fields);
             //@ts-ignore
             let name = fields.funcName;
             console.log('hi', name);
@@ -162,27 +157,49 @@ test("${name}_mutation mutates data correctly and returns the correct values", a
         mutationTests.push(integrationTests);
         mutationTests.push(testEndBoiler);
         mutationTests.push(mutationEndBoiler);
-        finalMutationIntTests.push(mutationTests.toString());
+        finalMutationIntTests.push(mutationTests.join('').toString());
         //@ts-ignore
         tests['mutationIntTests'] = finalMutationIntTests;
       };
 
       const ResolverTestGenerator = (onlyResolvers: Object[]) => {
         let resolverTests: string[] = [];
-        let resolverFrontBoiler: string = ``;
-        resolverTests.push(resolverFrontBoiler);
-        let resolverEndBoiler: string = ``;
+        let resolverFrontBoiler: string = `//-> npm install
+const { expect } = require("@jest/globals")
+const resolvers = require(/*path to resolvers*/)
+
+describe ('resolvers return the correct values', ()=> {`;
+
+        let resolverEndBoiler: string = `})`;
+
+        let resolverUnits = Object.entries(onlyResolvers)
+          .map(([typeName, fields]) => {
+            //@ts-ignore
+            let name = fields.funcName;
+            return `
+test('Resolver '${name}' works as intended, () => {
+  const result = resolvers.${name}(/*resolver mock parameters*/)
+            
+  expect(result).toEqual(/*expected result*/)
+        })`;
+          })
+          .join('');
+
         /*
 
         Test Generation Logic Here
 
         */
+        resolverTests.push(resolverFrontBoiler);
+        resolverTests.push(resolverUnits);
         resolverTests.push(resolverEndBoiler);
+        //@ts-ignore
+        tests['resolverUnitTests'] = resolverTests;
       };
       QueryIntegrationTestGenerator(onlyQueries);
       MutationTestGenerator(onlyMutations);
+      ResolverTestGenerator(onlyResolvers);
       console.log('TESTS OBJECT', tests);
-      // return tests.toString();
       //@ts-ignore
       return tests['mutationIntTests'].toString();
     };
