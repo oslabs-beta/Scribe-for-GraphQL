@@ -191,10 +191,9 @@ test('Resolver '${name}' works as intended, () => {
         //@ts-ignore
         tests['resolverUnitTests'] = resolverTests;
       };
-      QueryIntegrationTestGenerator(onlyQueries);
-      MutationTestGenerator(onlyMutations);
-      ResolverTestGenerator(onlyResolvers);
-      console.log('TESTS OBJECT', tests);
+      QueryIntegrationTestGenerator(onlyQueries); // -> dropdown: Query Mock Integration Tests | queryIntTests
+      MutationTestGenerator(onlyMutations); // -> dropdown: Mutation Mock Integration Tests | mutationIntTests
+      ResolverTestGenerator(onlyResolvers); // -> dropdown: Resolver Unit Tests | resolverUnitTests
       //@ts-ignore
       return tests;
     };
