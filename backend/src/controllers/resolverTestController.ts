@@ -39,7 +39,7 @@ export const generateResolverTests = async (
           //@ts-ignore
           for (let funcName in resolvers[key]) {
             //@ts-ignore
-            onlyResolvers.push({ funcName: funcName });
+            onlyResolvers.push({ funcName: [funcName, key] });
           }
         }
       }
@@ -117,7 +117,6 @@ const createTestServer = require(/*path to testServer*/);`;
             console.log(typeName, fields);
             //@ts-ignore
             let name = fields.funcName;
-            console.log('hi', name);
             //@ts-ignore
             return `
 const ${name}_mutation = gql\`
@@ -130,7 +129,6 @@ mutation {
         `;
           })
           .join('');
-        console.log('mutationDefinitions', mutationDefinitions);
         let testFrontBoiler: string = `
 describe("mutations", () => {
         `;
@@ -170,32 +168,36 @@ const resolvers = require(/*path to resolvers*/)
 
 describe ('resolvers return the correct values', ()=> {`;
 
-        let resolverEndBoiler: string = `})`;
+        let resolverEndBoiler: string = `
+})`;
 
         let resolverUnits = Object.entries(onlyResolvers)
           .map(([typeName, fields]) => {
             //@ts-ignore
-            let name = fields.funcName;
+            let name = fields.funcName[0];
+            //@ts-ignore
+            let pre = fields.funcName[1];
             return `
-test('Resolver '${name}' works as intended, () => {
-  const result = resolvers.${name}(/*resolver mock parameters*/)
+  test('Resolver ${pre}.${name} works as intended', () => {
+    const result = resolvers.${pre}.${name}(/*resolver mock parameters*/)
             
-  expect(result).toEqual(/*expected result*/)
-        })`;
+    expect(result).toEqual(/*expected result*/)
+  })`;
           })
           .join('');
 
         resolverTests.push(resolverFrontBoiler);
         resolverTests.push(resolverUnits);
         resolverTests.push(resolverEndBoiler);
+        console.log(resolverUnits);
         //@ts-ignore
-        tests['resolverUnitTests'] = resolverTests;
+        tests['resolverUnitTests'] = resolverTests.join('').toString();
       };
       QueryIntegrationTestGenerator(onlyQueries); // -> dropdown: Query Mock Integration Tests | queryIntTests
       MutationTestGenerator(onlyMutations); // -> dropdown: Mutation Mock Integration Tests | mutationIntTests
       ResolverTestGenerator(onlyResolvers); // -> dropdown: Resolver Unit Tests | resolverUnitTests
       //@ts-ignore
-      return tests;
+      return tests['resolverUnitTests'].toString();
     };
 
     return res.status(200).json(generateTests());
