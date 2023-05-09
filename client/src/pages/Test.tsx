@@ -118,23 +118,27 @@ const Test = (props: Props) => {
   };
 
   const saveTest = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
     //@ts-ignore
     if (!outputRef.current.getValue()) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        },
-      });
-
       Toast.fire({
         icon: 'error',
         title: 'Unable to save empty test',
+      });
+    } else if (!user) {
+      Toast.fire({
+        icon: 'error',
+        title: 'Please sign in to save tests',
       });
     } else {
       console.log('selected option: ', selectedOption);
