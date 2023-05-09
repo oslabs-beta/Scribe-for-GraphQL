@@ -185,11 +185,6 @@ test('Resolver '${name}' works as intended, () => {
           })
           .join('');
 
-        /*
-
-        Test Generation Logic Here
-
-        */
         resolverTests.push(resolverFrontBoiler);
         resolverTests.push(resolverUnits);
         resolverTests.push(resolverEndBoiler);
@@ -201,7 +196,7 @@ test('Resolver '${name}' works as intended, () => {
       ResolverTestGenerator(onlyResolvers);
       console.log('TESTS OBJECT', tests);
       //@ts-ignore
-      return tests['mutationIntTests'].toString();
+      return tests;
     };
 
     return res.status(200).json(generateTests());
