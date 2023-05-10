@@ -16,6 +16,7 @@ const SavedTests = (props: Props) => {
   const [testType, setTestType] = useState('all-tests');
   const [content, setContent] = useState('');
   const [editorWidth, setEditorWidth] = useState('100%');
+  const { user } = useSelector((state: RootState) => state.auth);
   console.log('tests: ', tests);
 
   const editorRef = useRef(null);
@@ -117,12 +118,12 @@ const SavedTests = (props: Props) => {
       <TestNavBar />
       <div id='saved-test-container'>
         {/* <div style={{ marginTop: '5rem' }}>
-        <select onChange={(e) => setTestType(e.target.value)}>
-          <option value='all-tests'>All Tests</option>
-          <option value='type-tests'>Type tests</option>
-          <option value='unit-tests'>Unit tests</option>
-          <option value='integration-tests'>Integration tests</option>
-        </select> */}
+<select onChange={(e) => setTestType(e.target.value)}>
+  <option value='all-tests'>All Tests</option>
+  <option value='type-tests'>Type tests</option>
+  <option value='unit-tests'>Unit tests</option>
+  <option value='integration-tests'>Integration tests</option>
+</select> */}
         <div id='test-list'>
           <h1>Saved Tests</h1>
           <ul>{list}</ul>

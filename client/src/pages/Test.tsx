@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
 import { Typography } from '@mui/material';
 import { saveTests } from '../features/testSlice';
+import { useNavigate } from 'react-router';
 
 type Props = {};
 
@@ -29,7 +30,7 @@ const Test = (props: Props) => {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state: RootState) => state.auth
   );
-
+  const navigate = useNavigate();
   const editorRef = useRef(null);
   const outputRef = useRef(null);
 
@@ -165,9 +166,16 @@ const Test = (props: Props) => {
         title: 'Unable to save empty test',
       });
     } else if (!user) {
-      Toast.fire({
-        icon: 'error',
-        title: 'Please sign in to save tests',
+      Swal.fire({
+        title: 'Hold Up',
+        text: 'please sign in to save and manage your tests!',
+        icon: 'warning',
+        confirmButtonColor: '#6c6185',
+        confirmButtonText: 'sign in',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/signin');
+        }
       });
     } else {
       console.log('selected option: ', selectedOption);

@@ -106,7 +106,6 @@ module.exports = createTestServer;`);
               <Typography
                 sx={{
                   color: 'white',
-                  mt: '2px',
                   mb: '10px',
                   ml: '5px',
                   fontSize: 'large',
