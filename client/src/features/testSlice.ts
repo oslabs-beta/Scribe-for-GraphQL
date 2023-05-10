@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchTests, saveTests as save } from '../services/testService';
+import {
+  fetchTests,
+  removeTest,
+  saveTests as save,
+} from '../services/testService';
 
 export interface Test {
   id: number;
@@ -55,6 +59,19 @@ export const saveTests = createAsyncThunk(
   }
 );
 
+export const deleteTest = createAsyncThunk(
+  'tests/delete',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      return await removeTest(id);
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || err.message || err.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
 export const testSlice = createSlice({
   name: 'tests',
   initialState,
@@ -92,6 +109,21 @@ export const testSlice = createSlice({
       })
       .addCase(saveTests.fulfilled, (state, action) => {
         state.tests.push(action.payload);
+      })
+      .addCase(deleteTest.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteTest.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+      })
+      .addCase(deleteTest.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.tests = state.tests.filter(
+          (el: Test) => el.id !== action.payload.id
+        );
       });
   },
 });
