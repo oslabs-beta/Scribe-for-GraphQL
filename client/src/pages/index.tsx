@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 type Props = {};
 
 const Homepage = (props: Props) => {
-  const npmPackage = 'npm install @apollo/client graphql';
+  const npmPackage = 'npm install @apollo/server graphql';
   const [boilerPlate, setBoilerPlate] =
     useState<string>(`const { ApolloServer } = require("apollo-server");
 const { createTestClient } = require("apollo-server-test");
@@ -97,7 +97,7 @@ module.exports = createTestServer;`);
       <div id='landing-two'>
         <div id='instruction-display'>
           <button id='npm' onClick={() => handleCopy(npmPackage)}>
-            <p>npm install @apollo/client graphql</p>
+            <p>{npmPackage}</p>
             <ContentCopyIcon sx={{ ml: '10px', mt: '1px' }} />
           </button>
           <div className='editor-container' style={{ width: '900px' }}>
