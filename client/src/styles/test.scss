@@ -5,6 +5,7 @@ $color-neutral-med: #ddd;
 $color-neutral-dk: #444;
 
 .editor-container {
+  border: 1px white solid;
   margin: 5px;
   border-radius: 15px;
   padding: 8px;
@@ -77,7 +78,8 @@ $color-neutral-dk: #444;
   );
   margin-bottom: 1rem;
   border-radius: 1rem;
-  border-style: none;
+  // border-style: none;
+  border: 1px white solid;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
