@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../app/store';
 import TestNavBar from '../components/TestNavBar';
-import { getTests, reset, Test } from '../features/testSlice';
+import { deleteTest, getTests, reset, Test } from '../features/testSlice';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Swal from 'sweetalert2';
 
@@ -16,7 +16,12 @@ const SavedTests = (props: Props) => {
   const [testType, setTestType] = useState('all-tests');
   const [content, setContent] = useState('');
   const [editorWidth, setEditorWidth] = useState('100%');
+  const { user } = useSelector((state: RootState) => state.auth);
   console.log('tests: ', tests);
+
+  const handleDelete = (id: any) => {
+    dispatch(deleteTest(id));
+  };
 
   const editorRef = useRef(null);
 
@@ -47,34 +52,36 @@ const SavedTests = (props: Props) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   let newContent = '';
-  //   if (testType === 'all-tests') {
-  //     tests.forEach((test: Test) => {
-  //       newContent += `${test.generated_test}`;
-  //     });
-  //   } else {
-  //     tests
-  //       .filter((test) => test.test_type === testType)
-  //       .forEach((test) => {
-  //         console.log('FILTERED', test);
-  //         newContent += `${test.generated_test}`;
-  //       });
-  //   }
-  //   setContent(newContent);
-  // }, [tests, testType]);
-
-  const list = tests.map((test) => (
-    <li>
-      <button
-        className='saved-test-list'
-        onClick={() => setContent(test.generated_test)}
-      >
-        {test.test_type}
-      </button>
-      <button id='delete-btn'>-</button>
-    </li>
-  ));
+  const list =
+    testType === 'all-tests'
+      ? tests.map((test, idx) => (
+          <li>
+            <button
+              className='saved-test-list'
+              onClick={() => setContent(test.generated_test)}
+            >
+              {test.test_type} {idx + 1}
+            </button>
+            <button id='delete-btn' onClick={() => handleDelete(test.id)}>
+              -
+            </button>
+          </li>
+        ))
+      : tests
+          .filter((test) => test.test_type === testType)
+          .map((test, idx) => (
+            <li>
+              <button
+                className='saved-test-list'
+                onClick={() => setContent(test.generated_test)}
+              >
+                {test.test_type} {idx + 1}
+              </button>
+              <button id='delete-btn' onClick={() => handleDelete(test.id)}>
+                -
+              </button>
+            </li>
+          ));
 
   const handleCopy = () => {
     navigator.clipboard.writeText(content);
@@ -116,15 +123,15 @@ const SavedTests = (props: Props) => {
     <>
       <TestNavBar />
       <div id='saved-test-container'>
-        {/* <div style={{ marginTop: '5rem' }}>
-        <select onChange={(e) => setTestType(e.target.value)}>
-          <option value='all-tests'>All Tests</option>
-          <option value='type-tests'>Type tests</option>
-          <option value='unit-tests'>Unit tests</option>
-          <option value='integration-tests'>Integration tests</option>
-        </select> */}
         <div id='test-list'>
-          <h1>Saved Tests</h1>
+          <div className='left-dropdown' style={{ marginTop: '2rem' }}>
+            <select onChange={(e) => setTestType(e.target.value)}>
+              <option value='all-tests'>All Tests</option>
+              <option value='type-tests'>Type tests</option>
+              <option value='unit-tests'>Unit tests</option>
+              <option value='integration-tests'>Integration tests</option>
+            </select>
+          </div>
           <ul>{list}</ul>
         </div>
 

@@ -43,3 +43,10 @@ export const saveTests = async (testData: any) => {
 
   return data;
 };
+
+export const removeTest = async (id: string) => {
+  const { data } = await axios.delete(API_URL + `users/tests/${id}`, {
+    withCredentials: true,
+  });
+  return data;
+};

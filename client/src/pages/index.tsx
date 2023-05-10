@@ -80,7 +80,7 @@ module.exports = createTestServer;`);
           <h1>Test writing made simple.</h1>
           <p>
             Boost development speed and confidence with automated Jest type-test
-            generation, schema validation, and smart ressolver mock intergration
+            generation, schema validation, and smart resolver mock intergration
             setups.
           </p>
         </div>
@@ -106,7 +106,6 @@ module.exports = createTestServer;`);
               <Typography
                 sx={{
                   color: 'white',
-                  mt: '2px',
                   mb: '10px',
                   ml: '5px',
                   fontSize: 'large',
