@@ -2,6 +2,7 @@
 @import './signin.scss';
 @import './navBar.scss';
 @import './savedTest.scss';
+@import './homePage.scss';
 
 html,
 /* STYLE RESET */
@@ -43,7 +44,9 @@ body {
   line-height: 1.5;
   background-image: url('/src/images/background.jpg');
   background-size: cover;
-  background-position: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
   min-height: 100vh;
   z-index: 0;
 }
