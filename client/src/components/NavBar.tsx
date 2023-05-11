@@ -70,9 +70,9 @@ const NavBar = () => {
               </span>
             </Link>
             <Link
-              to='/contact'
+              to='/'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
-              onClick={closeMobileMenu}
+              onClick={() => window.scrollTo(0, document.body.scrollHeight)}
             >
               <span className='nav-link-span'>
                 <span className='u-nav'>Contact</span>
