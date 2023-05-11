@@ -1,4 +1,4 @@
-**[Scribe for Graph QL](scribegraphql.com) **
+### **[Scribe for Graph QL](scribegraphql.com)** ### 
 
 **Boost test-driven development speed and confidence with automated Jest type-test generation, schema validation, and smart resolver mock integration setups.**
 
@@ -28,21 +28,21 @@ Scribe’s web application also generates complete test setup for mock integrati
 
 ### **Built With:**
 
-**TypeScript**
+TypeScript
 
-**React**
+React
 
-**Express**
+Express
 
-**Jest**
+Jest
 
-**Apollo GraphQL**
+Apollo GraphQL
 
-**Redis**
+Redis
 
-**Vite**
+Vite
 
-**Prisma**
+Prisma
 
 ### **Getting Started:**
 
@@ -141,10 +141,10 @@ Distributed under the MIT License. See LICENSE for more information.
 
 ### **Contributors:**
 
-    Jake Gray: [GitHub](https://github.com/soxg), [LinkedIn](https://www.linkedin.com/in/jake-d-gray/)
+  Jake Gray: [GitHub](https://github.com/soxg), [LinkedIn](https://www.linkedin.com/in/jake-d-gray/)
 
-    Jason Johnson: [GitHub](https://github.com/jaysenjonsin), [LinkedIn](https://www.linkedin.com/in/jasoncjohnson5/)
+  Jason Johnson: [GitHub](https://github.com/jaysenjonsin), [LinkedIn](https://www.linkedin.com/in/jasoncjohnson5/)
 
-    Mason Shelton: [GitHub](https://github.com/MasonS1012), [LinkedIn](https://www.linkedin.com/in/mason-shelton-9ab25521a/)
+  Mason Shelton: [GitHub](https://github.com/MasonS1012), [LinkedIn](https://www.linkedin.com/in/mason-shelton-9ab25521a/)
 
-    Pierce Yu: [GitHub](https://github.com/PierceYu), [LinkedIn](https://www.linkedin.com/in/pierce-yu/)
+  Pierce Yu: [GitHub](https://github.com/PierceYu), [LinkedIn](https://www.linkedin.com/in/pierce-yu/)
