@@ -1,4 +1,4 @@
-**[Scribe for Graph QL](scribegraphql.com) **
+####**[Scribe for Graph QL](scribegraphql.com) **####
 
 **Boost test-driven development speed and confidence with automated Jest type-test generation, schema validation, and smart resolver mock integration setups.**
 
