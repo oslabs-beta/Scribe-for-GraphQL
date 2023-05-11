@@ -77,12 +77,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
 
   p {
-    font-size: 2rem;
-    color: #6c6185;
-    font-weight: bold;
+    font-size: 2.5rem;
+    font-weight: 400;
+    background: linear-gradient(0deg, #6c6185 25%, #ffcad4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   .arrow {
     color: #6c6185;
@@ -171,6 +173,8 @@
 
   h1 {
     align-self: center;
+    margin-top: 3rem;
+    margin-bottom: -2.5rem;
     font-size: 4rem;
     font-weight: 400;
     background: linear-gradient(180deg, #6c6185 10%, #ffcad4 100%);
@@ -182,6 +186,7 @@
     font-weight: bold;
     margin-top: 5px;
     font-size: larger;
+    opacity: 50%;
   }
 
   #team-container {
@@ -214,6 +219,7 @@
       img {
         width: 30px;
         height: 30px;
+        opacity: 50%;
       }
     }
   }

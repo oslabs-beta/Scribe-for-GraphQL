@@ -54,8 +54,6 @@ $color-neutral-dk: #444;
 .dropdown-menu {
   display: flex;
   justify-content: space-between;
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 0.5rem;
 
   .left-dropdown {
@@ -64,9 +62,6 @@ $color-neutral-dk: #444;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     border-color: rgba(255, 255, 255, 0);
     background-color: rgba(2, 2, 2, 0);
-  }
-
-  option {
   }
 }
 

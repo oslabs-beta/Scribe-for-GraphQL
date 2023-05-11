@@ -124,8 +124,11 @@ const SavedTests = (props: Props) => {
       <TestNavBar />
       <div id='saved-test-container'>
         <div id='test-list'>
-          <div className='left-dropdown' style={{ marginTop: '2rem' }}>
-            <select onChange={(e) => setTestType(e.target.value)}>
+          <div className='dropdown-menu' style={{ marginTop: '2rem' }}>
+            <select
+              id='saved-test-options'
+              onChange={(e) => setTestType(e.target.value)}
+            >
               <option value='all-tests'>All Tests</option>
               <option value='type-tests'>Type tests</option>
               <option value='unit-tests'>Unit tests</option>
