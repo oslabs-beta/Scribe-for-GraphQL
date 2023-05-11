@@ -28,21 +28,21 @@ Scribe’s web application also generates complete test setup for mock integrati
 
 ### **Built With:**
 
-**TypeScript**
+TypeScript
 
-**React**
+React
 
-**Express**
+Express
 
-**Jest**
+Jest
 
-**Apollo GraphQL**
+Apollo GraphQL
 
-**Redis**
+Redis
 
-**Vite**
+Vite
 
-**Prisma**
+Prisma
 
 ### **Getting Started:**
 
