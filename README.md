@@ -4,21 +4,19 @@
 
 ### **Table of Contents**
 
-Description
+[Description](https://github.com/oslabs-beta/Scribe-for-GraphQL#Description)
 
-Built With
+[Built With](https://github.com/oslabs-beta/Scribe-for-GraphQL#Built-With)
 
-Getting Started
+[Getting Started](https://github.com/oslabs-beta/Scribe-for-GraphQL#Getting-Started)
 
-Requirements
+[Requirements](https://github.com/oslabs-beta/Scribe-for-GraphQL#Requirements)
 
-How to Contribute
+[How to Contribute](https://github.com/oslabs-beta/Scribe-for-GraphQL#How-to-Contribute)
 
-License
+[License](https://github.com/oslabs-beta/Scribe-for-GraphQL#License)
 
-Report A Bug
-
-Contributors
+[Contributors](https://github.com/oslabs-beta/Scribe-for-GraphQL#Contributors)
 
 ### **Description**:
 
@@ -140,10 +138,6 @@ The broader open source community relies on continuous contributions to empower 
 ### **License:**
 
 Distributed under the MIT License. See LICENSE for more information.
-
-### **Report A Bug:**
-
-Please refer to the ‘Issues’ tab above!
 
 ### **Contributors:**
 
