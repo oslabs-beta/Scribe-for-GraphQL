@@ -53,11 +53,10 @@ export const generateResolverTests = async (
       console.log(onlyQueries, onlyMutations, onlyResolvers);
       const QueryIntegrationTestGenerator = (onlyQueries: Object[]) => {
         let queryIntegrationTests: string[] = [];
-        let queryFrontBoiler: string = `//-> npm install
-//-> npm install
-const { expect } = require("@jest/globals");
-const gql = require("graphql-tag");
-const createTestServer = require(/*path to testServer*/);
+        let queryFrontBoiler: string = `//-> ensure packages are installed
+import { describe, test, expect } from '@jest/globals'
+import { gql } from 'apollo-server'
+import { createTestServer } from '/*path to testServer*/'
         `;
         let queryDefinitions = Object.entries(onlyQueries)
           .map(([typeName, fields]) => {
@@ -75,7 +74,7 @@ const ${name}_query = gql\`
         console.log('queryDefs', queryDefinitions);
 
         let testFrontBoiler: string = `
-describe("queries", () => {`;
+describe("queries work as intended", () => {`;
         let integrationTests = Object.entries(onlyQueries)
           .map(([typeName, fields]) => {
             //@ts-ignore
@@ -105,12 +104,11 @@ describe("queries", () => {`;
 
       const MutationTestGenerator = (onlyMutations: Object[]) => {
         let mutationTests: string[] = [];
-        let mutationFrontBoiler: string = `//-> npm install
-//-> npm install
-const { expect } = require("@jest/globals");
-const gql = require("graphql-tag");
-const createTestServer = require(/*path to testServer*/);`;
-
+        let mutationFrontBoiler: string = `//-> ensure packages are installed
+import { describe, expect, test } from '@jest/globals'
+import { gql } from 'apollo-server'
+import { createTestServer } from '*/path to testServer*/'
+`;
         let mutationDefinitions = Object.entries(onlyMutations)
           .map(([typeName, fields]) => {
             //@ts-ignore
@@ -130,7 +128,7 @@ mutation {
           })
           .join('');
         let testFrontBoiler: string = `
-describe("mutations", () => {
+describe("mutations work as intended", () => {
         `;
         let integrationTests = Object.entries(onlyQueries)
           .map(([typeName, fields]) => {
@@ -162,8 +160,8 @@ describe("mutations", () => {
 
       const ResolverTestGenerator = (onlyResolvers: Object[]) => {
         let resolverTests: string[] = [];
-        let resolverFrontBoiler: string = `//-> npm install
-const { expect } = require("@jest/globals")
+        let resolverFrontBoiler: string = `//-> ensure packages are installed
+import { describe, test, expect } from '@jest/globals'
 const resolvers = require(/*path to resolvers*/)
 
 describe ('resolvers return the correct values', ()=> {`;
