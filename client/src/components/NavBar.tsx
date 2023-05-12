@@ -60,15 +60,15 @@ const NavBar = () => {
                 <span className='u-nav'>Sign {user ? 'Out' : 'In'} </span>
               </span>
             </Link>
-            <Link
-              to='/about'
+            <a
+              href='https://medium.com/@scribegraphql/writing-jest-tests-for-graphql-scribe-graphql-387e414eea0c'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
               onClick={closeMobileMenu}
             >
               <span className='nav-link-span'>
                 <span className='u-nav'>About</span>
               </span>
-            </Link>
+            </a>
             <Link
               to='/'
               className={`nav-link ${isMobileMenuOpen ? 'slide-in' : ''}`}
