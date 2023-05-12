@@ -169,7 +169,7 @@
   margin-top: 5rem;
   flex-direction: column;
   align-items: stretch;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 80%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 50%);
 
   h1 {
     align-self: center;
@@ -204,8 +204,8 @@
     background: #ffffff;
     box-shadow: inset -20px -20px 60px #d9d9d9, inset 20px 20px 60px #ffffff;
     .profile {
-      width: 180px;
-      height: 180px;
+      width: 170px;
+      height: 170px;
       border-radius: 100px;
       border: 2px white solid;
     }
