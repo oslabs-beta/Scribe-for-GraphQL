@@ -1,3 +1,5 @@
+![scribe](https://github.com/oslabs-beta/Scribe-for-GraphQL/assets/94427592/15a9da40-0b33-4bf9-af10-0cff83401f8b)
+
 ### **[Scribe for Graph QL](scribegraphql.com)** ### 
 
 **Boost test-driven development speed and confidence with automated Jest type-test generation, schema validation, and smart resolver mock integration setups.**
