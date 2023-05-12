@@ -1,9 +1,9 @@
 const { ApolloServer } = require("apollo-server");
-const { createTestClient } = require("apollo-server-test");
+const { createTestClient } = require("apollo-server-testing");
 const typeDefs = require(/* path to schema */);
 const resolvers = require(/* path to resolvers */);
 
-const createTestServer = (cntext) => {
+export const createTestServer = (cntext) => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -14,7 +14,5 @@ const createTestServer = (cntext) => {
 
   return createTestClient(server);
 };
-
-module.exports = createTestServer;
 
 //INCLUDE IN INSTRUCTIONS

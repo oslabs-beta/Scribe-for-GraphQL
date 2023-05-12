@@ -10,19 +10,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../app/store';
 import { Typography } from '@mui/material';
 import { saveTests } from '../features/testSlice';
+import { useNavigate } from 'react-router';
 
 type Props = {};
+
+// type Resolvers = {
+//   queryIntTests?: string;
+//   mutationIntTests?: string;
+//   resolverUnitTests?: string;
+// }
 
 const Test = (props: Props) => {
   const [outputTest, setOutputTest] = useState<string>('');
   const [editorWidth, setEditorWidth] = useState('100%');
   const [selectedOption, setSelectedOption] = useState('type-tests');
+  // const [resolversTests, setResolversTests] = useState<Resolvers | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state: RootState) => state.auth
   );
-
+  const navigate = useNavigate();
   const editorRef = useRef(null);
   const outputRef = useRef(null);
 
@@ -49,26 +57,48 @@ const Test = (props: Props) => {
   const generateTest = async (input: string) => {
     try {
       console.log('clicked generateTest');
-      console.log('INPUT: ', input);
+      // console.log('INPUT: ', input);
+      //@ts-ignore
+      console.log('unit', await generateUnitTest(input));
 
       let test;
-
+      let response;
       switch (selectedOption) {
         case 'type-tests':
           test = await generateTypeTest(input);
           break;
         case 'unit-tests':
-          test = await generateUnitTest(input); //make unit test function
+          // if (resolversTests === null) {
+          //   let resolvers = await generateUnitTest(input);
+          //   setResolversTests(resolvers)
+          // }
+          // console.log(resolversTests);
+          response = await generateUnitTest(input);
+          test = response.resolverUnitTests; //make unit test function
           break;
-        case 'integration-tests':
-          test = 'hahahahah'; //make integration test func
+        case 'query-mock-integration-tests':
+          // if (resolversTests === null) {
+          //   let resolvers = await generateUnitTest(input);
+          //   setResolversTests(resolvers)
+          // }
+          // console.log(resolversTests)
+          response = await generateUnitTest(input);
+          test = response.queryIntTests; //make integration test func
           break;
-
+        case 'mutation-mock-integration-tests':
+          // if (resolversTests === null) {
+          //   let resolvers = await generateUnitTest(input);
+          //   setResolversTests(resolvers)
+          // }
+          response = await generateUnitTest(input);
+          test = response.mutationIntTests;
+          break;
         default:
+          console.log('default case hit');
           test = await generateTypeTest(input);
       }
       // const test = await generateTypeTest(input);
-      console.log('test ', test);
+      console.log('test test test ', test);
       if (test.message) {
         const Toast = Swal.mixin({
           toast: true,
@@ -118,23 +148,34 @@ const Test = (props: Props) => {
   };
 
   const saveTest = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
     //@ts-ignore
     if (!outputRef.current.getValue()) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        },
-      });
-
       Toast.fire({
         icon: 'error',
         title: 'Unable to save empty test',
+      });
+    } else if (!user) {
+      Swal.fire({
+        title: 'Hold Up',
+        text: 'please sign in to save and manage your tests!',
+        icon: 'warning',
+        confirmButtonColor: '#6c6185',
+        confirmButtonText: 'sign in',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/signin');
+        }
       });
     } else {
       console.log('selected option: ', selectedOption);
@@ -233,8 +274,17 @@ const Test = (props: Props) => {
               <option className='dropdown-option' value='unit-tests'>
                 Resolver Unit Tests
               </option>
-              <option className='dropdown-option' value='integration-tests'>
-                Integration Tests
+              <option
+                className='dropdown-option'
+                value='query-mock-integration-tests'
+              >
+                Query Mock Integration Tests
+              </option>
+              <option
+                className='dropdown-option'
+                value='mutation-mock-integration-tests'
+              >
+                Mutation Mock Integration Tests
               </option>
             </select>
             <button>

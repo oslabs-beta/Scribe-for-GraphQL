@@ -97,3 +97,21 @@ export const saveTest = async (
     return next(err);
   }
 };
+
+export const deleteTest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const test = await prisma.test.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    res.status(200).json(test);
+  } catch (err) {
+    return next(err);
+  }
+};

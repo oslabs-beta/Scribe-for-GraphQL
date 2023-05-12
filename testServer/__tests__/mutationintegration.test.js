@@ -1,8 +1,9 @@
 //-> npm install
 //-> npm install
-const { expect } = require("@jest/globals");
-const gql = require("graphql-tag");
-const createTestServer = require(/*path to testServer*/);
+// const { expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
+import { gql } from "apollo-server";
+import { createTestServer } from "./testServer";
 
 const MUTATION_NAME = gql`
 mutation {
@@ -21,7 +22,7 @@ describe("mutations", () => {
     const { mutate } = createTestServer({
       /* CONTEXT OBJECT - MOCK MUTATION CONTEXT REQUIREMENTS HERE */
     });
-    const res = await query({ query: QUERY_NAME });
+    const res = await mutate({ query: QUERY_NAME });
     expect(res).toMatchSnapshot();
   });
 

@@ -5,6 +5,7 @@ $color-neutral-med: #ddd;
 $color-neutral-dk: #444;
 
 .editor-container {
+  border: 1px white solid;
   margin: 5px;
   border-radius: 15px;
   padding: 8px;
@@ -53,8 +54,6 @@ $color-neutral-dk: #444;
 .dropdown-menu {
   display: flex;
   justify-content: space-between;
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 0.5rem;
 
   .left-dropdown {
@@ -64,9 +63,6 @@ $color-neutral-dk: #444;
     border-color: rgba(255, 255, 255, 0);
     background-color: rgba(2, 2, 2, 0);
   }
-
-  option {
-  }
 }
 
 .test-button {
@@ -75,9 +71,9 @@ $color-neutral-dk: #444;
     $color-primary 50%,
     $color-secondary 120%
   );
-  margin-bottom: 1rem;
   border-radius: 1rem;
-  border-style: none;
+  // border-style: none;
+  border: 1px white solid;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
