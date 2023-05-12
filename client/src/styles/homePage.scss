@@ -173,10 +173,15 @@
 
   h1 {
     align-self: center;
-    
     margin-top: 3rem;
     margin-bottom: -2.5rem;
-    
+    font-size: 4rem;
+    font-weight: 400;
+    background: linear-gradient(180deg, #6c6185 10%, #ffcad4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
   h2 {
     font-weight: bold;
     margin-top: 5px;
