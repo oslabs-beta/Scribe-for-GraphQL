@@ -85,6 +85,7 @@ export const createTestServer = (context) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <div className='landing-one'>
