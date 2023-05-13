@@ -8,8 +8,6 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Swal from 'sweetalert2';
 import Footer from '../components/Footer';
-import typedefsPNG from '../images/typedefs.png';
-import resolversPNG from '../images/resolvers.png';
 
 // const code = 'const a = 0;';
 
@@ -82,136 +80,144 @@ export const createTestServer = (context) => {
   return (
     <>
       <NavBar />
-      <div className='landing-one'>
-        <div id='landing-text-container'>
-          <h1>Test writing made simple.</h1>
-          <p>
-            Boost development speed and confidence with automated Jest type-test
-            generation, schema validation, and smart resolver mock intergration
-            setups.
-          </p>
-        </div>
-        <div>
-          <img id='gif' src={generateTestGIF} />
-        </div>
-      </div>
-      <div id='direct-sign'>
-        <p>Get Started</p>
-        <div className='arrow bounce'>
-          <ArrowDownwardIcon sx={{ fontSize: '3rem', mt: '1.5rem' }} />
-        </div>
-      </div>
-      <div className='landing-two'>
-        <div className='packages'>
-          <h2>Apollo Packages:</h2>
-          <button className='npm' onClick={() => handleCopy(apollo)}>
-            <p>{apollo}</p>
-            <ContentCopyIcon
-              sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
-            />
-          </button>
-          <h2 style={{ color: '#b696ad', marginTop: '1rem' }}>
-            *Choose from relevant Jest Packages
-          </h2>
-          <h2>JS Jest Packages:</h2>
-          <button className='npm' onClick={() => handleCopy(jestPackage)}>
-            <p>{jestPackage}</p>
-            <ContentCopyIcon
-              sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
-            />
-          </button>
-          <h2>TS Jest Packages via Babel:</h2>
-          <button className='npm' onClick={() => handleCopy(jestViaBabel)}>
-            <p>{jestViaBabel}</p>
-            <ContentCopyIcon
-              sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
-            />
-          </button>
-          <h2>TS Jest Packages via TS-Jest:</h2>
-          <button className='npm' onClick={() => handleCopy(jestViaTS)}>
-            <p>{jestViaTS}</p>
-            <ContentCopyIcon
-              sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
-            />
-          </button>
-        </div>
-        <div id='package-text-container'>
-          <h1>Install</h1>
-          <h1>Required</h1>
-          <h1>Packages</h1>
-        </div>
-      </div>
-      <div className='landing-one'>
-        <div id='instruction-text-container'>
-          <h1>Test Server Setup</h1>
-          <h2>
-            1. Add a test script to your ‘package.json’ file: E.g. “test”: “jest
-            --watchAll”
-          </h2>
-          <h2>2. Copy test server boilerplate</h2>
-
-          <h1>Requirements</h1>
-          <ul>
-            <li>
-              * For type-tests on the basis of schemas, we are expecting a
-              ‘typeDefs’ declaration, which consists in a valid Schema
-              Definition Language (SDL) string.
-            </li>
-            <li>
-              * For resolvers, we are expecting a ‘resolvers’ declaration, which
-              consists in a map of functions that populate data for individual
-              schema fields.
-            </li>
-          </ul>
-          <Link
-            onClick={() => window.scrollTo({ top: 0 })}
-            id='home-to-test'
-            to='/test'
-          >
-            Now we're ready to generate some tests!
-          </Link>
-        </div>
-        <div id='instruction-display'>
-          <div className='editor-container' style={{ width: '750px' }}>
-            <div className='dropdown-menu'>
-              {' '}
-              <Typography
-                sx={{
-                  color: 'white',
-                  mb: '10px',
-                  ml: '5px',
-                  fontSize: 'large',
-                }}
-              >
-                Test Server Boilerplate
-              </Typography>
-              <button>
-                <ContentCopyIcon
-                  id='copy-button'
-                  sx={{ color: 'white' }}
-                  onClick={() => handleCopy(boilerPlate)}
-                />
-              </button>
-            </div>
-            <Editor
-              height='440px'
-              width='720px'
-              onMount={handleEditorDidMount}
-              language='javascript'
-              value={boilerPlate}
-              //@ts-ignore
-              onChange={() => setBoilerPlate(editorRef.current.getValue())}
-              options={{
-                wordWrap: 'on',
-                minimap: {
-                  enabled: false,
-                },
-              }}
-            />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <div className='landing-one'>
+          <div id='landing-text-container'>
+            <h1>Test writing made simple.</h1>
+            <p>
+              Boost development speed and confidence with automated Jest
+              type-test generation, schema validation, and smart resolver mock
+              intergration setups.
+            </p>
+          </div>
+          <div>
+            <img id='gif' src={generateTestGIF} />
           </div>
         </div>
+        <div id='direct-sign'>
+          <p>Get Started</p>
+          <div className='arrow bounce'>
+            <ArrowDownwardIcon sx={{ fontSize: '3rem', mt: '1.5rem' }} />
+          </div>
+        </div>
+        <div className='landing-two'>
+          <div className='packages'>
+            <h2>Apollo Packages:</h2>
+            <button className='npm' onClick={() => handleCopy(apollo)}>
+              <p>{apollo}</p>
+              <ContentCopyIcon
+                sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
+              />
+            </button>
+            <h2 style={{ color: '#b696ad', marginTop: '1rem' }}>
+              *Choose from relevant Jest Packages
+            </h2>
+            <h2>JS Jest Packages:</h2>
+            <button className='npm' onClick={() => handleCopy(jestPackage)}>
+              <p>{jestPackage}</p>
+              <ContentCopyIcon
+                sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
+              />
+            </button>
+            <h2>TS Jest Packages via Babel:</h2>
+            <button className='npm' onClick={() => handleCopy(jestViaBabel)}>
+              <p>{jestViaBabel}</p>
+              <ContentCopyIcon
+                sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
+              />
+            </button>
+            <h2>TS Jest Packages via TS-Jest:</h2>
+            <button className='npm' onClick={() => handleCopy(jestViaTS)}>
+              <p>{jestViaTS}</p>
+              <ContentCopyIcon
+                sx={{ fontSize: 'larger', ml: '10px', mt: '3px' }}
+              />
+            </button>
+          </div>
+          <div id='package-text-container'>
+            <h1>Install</h1>
+            <h1>Required</h1>
+            <h1>Packages</h1>
+          </div>
+        </div>
+        <div className='landing-one'>
+          <div id='instruction-text-container'>
+            <h1>Test Server Setup</h1>
+            <h2>
+              1. Add a test script to your ‘package.json’ file: E.g. “test”:
+              “jest --watchAll”
+            </h2>
+            <h2>2. Copy test server boilerplate</h2>
+
+            <h1>Requirements</h1>
+            <ul>
+              <li>
+                * For type-tests on the basis of schemas, we are expecting a
+                ‘typeDefs’ declaration, which consists in a valid Schema
+                Definition Language (SDL) string.
+              </li>
+              <li>
+                * For resolvers, we are expecting a ‘resolvers’ declaration,
+                which consists in a map of functions that populate data for
+                individual schema fields.
+              </li>
+            </ul>
+            <Link
+              onClick={() => window.scrollTo({ top: 0 })}
+              id='home-to-test'
+              to='/test'
+            >
+              Now we're ready to generate some tests!
+            </Link>
+          </div>
+          <div id='instruction-display'>
+            <div className='editor-container' style={{ width: '750px' }}>
+              <div className='dropdown-menu'>
+                {' '}
+                <Typography
+                  sx={{
+                    color: 'white',
+                    mb: '10px',
+                    ml: '5px',
+                    fontSize: 'large',
+                  }}
+                >
+                  Test Server Boilerplate
+                </Typography>
+                <button>
+                  <ContentCopyIcon
+                    id='copy-button'
+                    sx={{ color: 'white' }}
+                    onClick={() => handleCopy(boilerPlate)}
+                  />
+                </button>
+              </div>
+              <Editor
+                height='440px'
+                width='720px'
+                onMount={handleEditorDidMount}
+                language='javascript'
+                value={boilerPlate}
+                //@ts-ignore
+                onChange={() => setBoilerPlate(editorRef.current.getValue())}
+                options={{
+                  wordWrap: 'on',
+                  minimap: {
+                    enabled: false,
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };
