@@ -12,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   padding: 3rem;
+  max-width: 100rem;
 
   #landing-text-container {
     width: 500px;
@@ -113,6 +114,7 @@
 }
 
 .landing-two {
+  max-width: 100rem;
   margin: 2rem 3rem;
   background: linear-gradient(
     90deg,
