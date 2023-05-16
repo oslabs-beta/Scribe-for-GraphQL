@@ -116,7 +116,7 @@ const resolvers = {
 
 Further documentation for schema declarations as typeDefs can be found [here](https://www.apollographql.com/docs/apollo-server/getting-started/#step-3-define-your-graphql-schema) and further documentation on resolver declarations can be found [here](https://www.apollographql.com/docs/apollo-server/data/resolvers).
 
-## **Test Generator Guild**
+## **Test Generator Guide**
 **Steps:**
 1. Input your GraphQL queries into the input code editor
 2. Choose the type of test you want to generate on the option selector on the right editor
