@@ -17,7 +17,7 @@
   #landing-text-container {
     width: 500px;
     height: 500px;
-
+    min-width: 500px;
     h1 {
       font-size: 5.5rem;
       font-weight: 400;
@@ -167,6 +167,8 @@
 }
 
 #footer {
+  width: 100%;
+  max-width: 100%;
   display: flex;
   margin-top: 5rem;
   flex-direction: column;
@@ -192,9 +194,11 @@
   }
 
   #team-container {
+    max-width: 100rem;
     margin: 4rem 0rem;
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
   }
   .member {
     border: 2px white solid;

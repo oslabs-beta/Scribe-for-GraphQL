@@ -43,7 +43,7 @@ To begin with, you’ll need to install a few npm packages (or from another pack
 
     npm install --save-dev @apollo/server apollo-server-testing
 
-*Choose from relevant Jest Packages*:
+_Choose from relevant Jest Packages_:
 
 **JS Jest Packages**:
 
@@ -117,7 +117,9 @@ const resolvers = {
 Further documentation for schema declarations as typeDefs can be found [here](https://www.apollographql.com/docs/apollo-server/getting-started/#step-3-define-your-graphql-schema) and further documentation on resolver declarations can be found [here](https://www.apollographql.com/docs/apollo-server/data/resolvers).
 
 ## **Test Generator Guide**
+
 **Steps:**
+
 1. Input your GraphQL queries into the input code editor
 2. Choose the type of test you want to generate on the option selector on the right editor
 3. Press generate
@@ -138,14 +140,14 @@ The broader open source community relies on continuous contributions to empower 
 
 ## **Contributors:**
 
-  Jake Gray: [GitHub](https://github.com/soxg), [LinkedIn](https://www.linkedin.com/in/jake-d-gray/)
+Jake Gray: [GitHub](https://github.com/soxg), [LinkedIn](https://www.linkedin.com/in/jake-d-gray/)
 
-  Jason Johnson: [GitHub](https://github.com/jaysenjonsin), [LinkedIn](https://www.linkedin.com/in/jasoncjohnson5/)
+Jason Johnson: [GitHub](https://github.com/jaysenjonsin), [LinkedIn](https://www.linkedin.com/in/jasoncjohnson5/)
 
-  Mason Shelton: [GitHub](https://github.com/MasonS1012), [LinkedIn](https://www.linkedin.com/in/mason-shelton-9ab25521a/)
+Mason Shelton: [GitHub](https://github.com/MasonS1012), [LinkedIn](https://www.linkedin.com/in/mason-shelton-9ab25521a/)
 
-  Pierce Yu: [GitHub](https://github.com/PierceYu), [LinkedIn](https://www.linkedin.com/in/pierce-yu/)
-  
- ## **License:**
+Pierce Yu: [GitHub](https://github.com/PierceYu), [LinkedIn](https://www.linkedin.com/in/pierce-yu/)
+
+## **License:**
 
 Distributed under the MIT License. See LICENSE for more information.
