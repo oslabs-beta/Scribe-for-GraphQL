@@ -1,24 +1,22 @@
-**[Scribe for Graph QL](scribegraphql.com) **
+<p align="center">
+  <a href="https://scribegraphql.com/">
+    <img src="/client/src/images/main-logo.png" width="300">
+  </a>
+</p>
 
 **Boost test-driven development speed and confidence with automated Jest type-test generation, schema validation, and smart resolver mock integration setups.**
 
-### **Table of Contents**
+## **Table of Contents**
 
-[Description](https://github.com/oslabs-beta/Scribe-for-GraphQL#Description)
+- [Description](https://github.com/oslabs-beta/Scribe-for-GraphQL#Description)
+- [Built With](https://github.com/oslabs-beta/Scribe-for-GraphQL#Built-With)
+- [Getting Started](https://github.com/oslabs-beta/Scribe-for-GraphQL#Getting-Started)
+- [Requirements](https://github.com/oslabs-beta/Scribe-for-GraphQL#Requirements)
+- [How to Contribute](https://github.com/oslabs-beta/Scribe-for-GraphQL#How-to-Contribute)
+- [Contributors](https://github.com/oslabs-beta/Scribe-for-GraphQL#Contributors)
+- [License](https://github.com/oslabs-beta/Scribe-for-GraphQL#License)
 
-[Built With](https://github.com/oslabs-beta/Scribe-for-GraphQL#Built-With)
-
-[Getting Started](https://github.com/oslabs-beta/Scribe-for-GraphQL#Getting-Started)
-
-[Requirements](https://github.com/oslabs-beta/Scribe-for-GraphQL#Requirements)
-
-[How to Contribute](https://github.com/oslabs-beta/Scribe-for-GraphQL#How-to-Contribute)
-
-[License](https://github.com/oslabs-beta/Scribe-for-GraphQL#License)
-
-[Contributors](https://github.com/oslabs-beta/Scribe-for-GraphQL#Contributors)
-
-### **Description**:
+## **Description**:
 
 Scribe was developed with the understanding that creating Jest tests can be a tedious, time-consuming process, which may deter developers. Creating Jest-tests for GraphQL schemas and resolvers can involve significant duplication and repetition in code, especially as code-bases grow in size. Scribe thus offers general purpose, standardized Jest tests and Jest test setups for GraphQL to give developers ease of mind.
 
@@ -26,25 +24,18 @@ Scribe’s web application offers complete type-check tests for user-inputted sc
 
 Scribe’s web application also generates complete test setup for mock integration tests for queries and mutations as well as resolver unit tests. When it comes to mock integration tests, we use Apollo GraphQL’s test server with built-in mocking functionality, which will mock random data according to type definitions in your schema. We give you everything you need to start your test-driven development once you’ve gotten through the preliminary creation of your schema and resolvers.
 
-### **Built With:**
+## **Built With:**
 
-**TypeScript**
+- TypeScript
+- React
+- Express
+- Jest
+- Apollo GraphQL
+- Redis
+- Vite
+- Prisma
 
-**React**
-
-**Express**
-
-**Jest**
-
-**Apollo GraphQL**
-
-**Redis**
-
-**Vite**
-
-**Prisma**
-
-### **Getting Started:**
+## **Getting Started:**
 
 To begin with, you’ll need to install a few npm packages (or from another package manager):
 
@@ -52,17 +43,17 @@ To begin with, you’ll need to install a few npm packages (or from another pack
 
     npm install --save-dev @apollo/server apollo-server-testing
 
-**Choose from relevant Jest Packages**:
+_Choose from relevant Jest Packages_:
 
-JS Jest Packages:
+**JS Jest Packages**:
 
     npm install --save-dev jest @jest/globals
 
-TS Jest Packages via Babel:
+**TS Jest Packages via Babel**:
 
     npm install --save-dev jest @jest/globals @babel/preset-typescript
 
-TS Jest Packages via TS-Jest:
+**TS Jest Packages via TS-Jest**:
 
     npm install --save-dev jest @jest/globals ts-jest \
 
@@ -70,7 +61,7 @@ Afterwards, add a test script to your ‘package.json’ file:
 
     E.g. “test”: “jest --watchAll”
 
-### **Requirements:**
+## **Requirements:**
 
 You’ll need this Apollo testServer file for query and mutation mock integration tests, which will mock random data for your tests according to type definitions in your schema:
 
@@ -125,7 +116,19 @@ const resolvers = {
 
 Further documentation for schema declarations as typeDefs can be found [here](https://www.apollographql.com/docs/apollo-server/getting-started/#step-3-define-your-graphql-schema) and further documentation on resolver declarations can be found [here](https://www.apollographql.com/docs/apollo-server/data/resolvers).
 
-### **How to Contribute:**
+## **Test Generator Guide**
+
+**Steps:**
+
+1. Input your GraphQL queries into the input code editor
+2. Choose the type of test you want to generate on the option selector on the right editor
+3. Press generate
+4. Once you press the "generate" button, your GraphQL queries are sent to the server where they are parsed and processed. The server then responds with a corresponding test script for the given query, which is displayed on the right-hand side of the code editor. This process involves a series of server-side operations, including query validation, execution, and response formatting, all of which are carried out in compliance with the GraphQL specification.
+<p align="center">
+<img src="/client/src/images/generateTest.gif">
+</p>
+
+## **How to Contribute**
 
 The broader open source community relies on continuous contributions to empower people to learn from and create with one another. Any further contributions to this project would be greatly appreciated. Here’s how:
 
@@ -135,16 +138,16 @@ The broader open source community relies on continuous contributions to empower 
 4. Push to the Branch (git push origin feature/AmazingFeature)
 5. Open a Pull Request
 
-### **License:**
+## **Contributors:**
+
+Jake Gray: [GitHub](https://github.com/soxg), [LinkedIn](https://www.linkedin.com/in/jake-d-gray/)
+
+Jason Johnson: [GitHub](https://github.com/jaysenjonsin), [LinkedIn](https://www.linkedin.com/in/jasoncjohnson5/)
+
+Mason Shelton: [GitHub](https://github.com/MasonS1012), [LinkedIn](https://www.linkedin.com/in/mason-shelton-9ab25521a/)
+
+Pierce Yu: [GitHub](https://github.com/PierceYu), [LinkedIn](https://www.linkedin.com/in/pierce-yu/)
+
+## **License:**
 
 Distributed under the MIT License. See LICENSE for more information.
-
-### **Contributors:**
-
-    Jake Gray: [GitHub](https://github.com/soxg), [LinkedIn](https://www.linkedin.com/in/jake-d-gray/)
-
-    Jason Johnson: [GitHub](https://github.com/jaysenjonsin), [LinkedIn](https://www.linkedin.com/in/jasoncjohnson5/)
-
-    Mason Shelton: [GitHub](https://github.com/MasonS1012), [LinkedIn](https://www.linkedin.com/in/mason-shelton-9ab25521a/)
-
-    Pierce Yu: [GitHub](https://github.com/PierceYu), [LinkedIn](https://www.linkedin.com/in/pierce-yu/)
