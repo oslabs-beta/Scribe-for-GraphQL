@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prettier": "npx prettier --write 'src/**/*.{ts,tsx}'",
-    "prepare": "cd .. && husky install client/.husky"
+    "prepare": "cd .. && husky install client/.husky",
+    "test": "vitest"
   },
   "husky": {
     "hooks": {
@@ -38,14 +39,18 @@
     "zod": "^3.20.6"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^3.1.0",
     "husky": "^8.0.3",
+    "jsdom": "^22.1.0",
     "prettier": "^2.8.4",
     "pretty-quick": "^3.1.3",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "vitest": "^0.33.0"
   }
 }
